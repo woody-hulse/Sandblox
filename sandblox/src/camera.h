@@ -29,14 +29,14 @@ public:
 
     SceneCameraData* data;
 
+    float aspectRatio;
+
 private:
     glm::mat4 viewMatrix;
     glm::mat4 inverseViewMatrix;
 
     glm::mat4 perspectiveMatrix;
     glm::mat4 inversePerspectiveMatrix;
-
-    float aspectRatio;
 };
 
 

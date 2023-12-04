@@ -1,6 +1,15 @@
 #pragma once
 
+#include "utils/sceneparser.h"
 #include "primitive.h"
+
+struct IntersectData {
+    bool intersection;
+    int x;
+    int y;
+    int z;
+    int face;
+};
 
 class Terrain : public Primitive
 {
@@ -13,6 +22,8 @@ public:
     std::vector<std::vector<float>> generateHeightMap(int m, int n, float scale);
     void generateTerrain();
     void generateTerrainMesh();
+    void breakBlock(IntersectData intersectData);
+    void placeBlock(IntersectData intersectData);
 
     void makeFace(glm::vec3 topLeft,
                   glm::vec3 topRight,
@@ -24,5 +35,7 @@ public:
     static const int sizeY = 100;
     static const int sizeZ = 20;
 
+    RenderShapeData shapeData;
     int terrain[sizeX][sizeY][sizeZ];
+    bool rendered[sizeX][sizeY][sizeZ];
 };

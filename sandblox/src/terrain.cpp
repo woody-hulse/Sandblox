@@ -13,6 +13,7 @@ Terrain::Terrain()
         for (int y = 0; y < sizeY; y++) {
             for (int z = 0; z < sizeZ; z++) {
                 terrain[x][y][z] = 0;
+                rendered[x][y][z] = false;
             }
         }
     }
@@ -66,7 +67,6 @@ void Terrain::generateTerrain() {
 
     for (int x = 0; x < sizeX; x++) {
         for (int y = 0; y < sizeY; y++) {
-            std::cout << heightMap[x][y] << std::endl;
             for (int z = 0; z < sizeZ; z++) {
                 if (z < (heightMap[x][y] + 0.7) * sizeZ)
                     terrain[x][y][z] = 1;
@@ -75,11 +75,18 @@ void Terrain::generateTerrain() {
     }
 }
 
+
 void Terrain::generateTerrainMesh() {
+    m_vertexData.clear();
     for (int x = 0; x < sizeX; x++) {
         for (int y = 0; y < sizeY; y++) {
             for (int z = 0; z < sizeZ; z++) {
-                if (terrain[x][y][z] == 0) continue;
+                if (terrain[x][y][z] == 0) {
+                    rendered[x][y][z] = false;
+                    continue;
+                }
+
+                bool drawBlock = false;
 
                 glm::vec3 shift(x, z, y);
                 for (int i = -1; i <= 1; i+=2) {
@@ -87,6 +94,7 @@ void Terrain::generateTerrainMesh() {
                     if (x + i >= 0 && x + i < sizeX) {
                         if (terrain[x + i][y][z] == 0) { drawFace = true; }
                     } else drawFace = true;
+                    drawBlock = drawBlock | drawFace;
 
                     if (drawFace && i == -1)
                         makeFace(glm::vec3(-0.5f,  0.5f, -0.5f) + shift,
@@ -106,6 +114,7 @@ void Terrain::generateTerrainMesh() {
                     if (z + j >= 0 && z + j < sizeZ) {
                         if (terrain[x][y][z + j] == 0) { drawFace = true; }
                     } else drawFace = true;
+                    drawBlock = drawBlock | drawFace;
 
                     if (drawFace && j == -1)
                         makeFace(glm::vec3(-0.5f, -0.5f, 0.5f) + shift,
@@ -125,6 +134,7 @@ void Terrain::generateTerrainMesh() {
                     if (y + k >= 0 && y + k < sizeY) {
                         if (terrain[x][y + k][z] == 0) { drawFace = true; }
                     } else drawFace = true;
+                    drawBlock = drawBlock | drawFace;
 
                     if (drawFace && k == -1)
                         makeFace(glm::vec3( 0.5f,  0.5f, -0.5f) + shift,
@@ -138,6 +148,33 @@ void Terrain::generateTerrainMesh() {
                                  glm::vec3(-0.5f, -0.5f, 0.5f) + shift,
                                  glm::vec3( 0.5f, -0.5f, 0.5f) + shift);
                 }
+
+                if (drawBlock) rendered[x][y][z] = true;
+                else rendered[x][y][z] = false;
+            }
+        }
+    }
+}
+
+void Terrain::breakBlock(IntersectData intersectData) {
+    terrain[intersectData.x][intersectData.y][intersectData.z] = 0;
+    generateTerrainMesh();
+}
+
+void Terrain::placeBlock(IntersectData intersectData) {
+
+    if (intersectData.face == 0) intersectData.x += 1;
+    if (intersectData.face == 1) intersectData.x -= 1;
+    if (intersectData.face == 2) intersectData.z += 1;
+    if (intersectData.face == 3) intersectData.z -= 1;
+    if (intersectData.face == 4) intersectData.y += 1;
+    if (intersectData.face == 5) intersectData.y -= 1;
+
+    if (intersectData.x >= 0 && intersectData.x < sizeX) {
+        if (intersectData.y >= 0 && intersectData.y < sizeY) {
+            if (intersectData.z >= 0 && intersectData.z < sizeZ) {
+                terrain[intersectData.x][intersectData.y][intersectData.z] = 1;
+                generateTerrainMesh();
             }
         }
     }

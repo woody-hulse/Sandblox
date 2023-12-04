@@ -48,6 +48,8 @@ add_executable(${PROJECT_NAME}
     src/datamanager.cpp
     src/datamanager.h
     src/terrain.h src/terrain.cpp
+    src/ray.h src/ray.cpp
+    src/player.h src/player.cpp
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`

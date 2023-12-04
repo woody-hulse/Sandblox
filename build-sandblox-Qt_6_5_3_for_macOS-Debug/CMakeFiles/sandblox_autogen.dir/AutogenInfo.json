@@ -421,9 +421,21 @@
 			null
 		],
 		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.h",
+			"MU",
+			"UVLADIE3JM/moc_player.cpp",
+			null
+		],
+		[
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.h",
 			"MU",
 			"UVLADIE3JM/moc_primitive.cpp",
+			null
+		],
+		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ray.h",
+			"MU",
+			"UVLADIE3JM/moc_ray.cpp",
 			null
 		],
 		[
@@ -581,7 +593,17 @@
 			null
 		],
 		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.cpp",
+			"MU",
+			null
+		],
+		[
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ray.cpp",
 			"MU",
 			null
 		],

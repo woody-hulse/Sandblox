@@ -950,8 +950,12 @@ sandblox_autogen/timestamp: \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/main.cpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/mainwindow.cpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/mainwindow.h \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.cpp \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.cpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.h \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ray.cpp \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ray.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/sandblox.cpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/sandblox.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/settings.cpp \

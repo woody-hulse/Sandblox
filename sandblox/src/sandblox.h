@@ -23,6 +23,10 @@
 
 #include "terrain.h"
 
+#include "ray.h"
+
+#include "player.h"
+
 
 class Sandblox : public QOpenGLWidget
 {
@@ -43,6 +47,7 @@ protected:
     void paintGL() override;                            // Called whenever the OpenGL context changes or by an update() request
     void resizeGL(int width, int height) override;      // Called when window size changes
     void background(glm::vec4 color);
+    void crosshairs(glm::vec4 color);
     void drawPrimitives();
     void paintTexture(GLuint texture, bool perPixel, bool kernelBased);
 private:
@@ -54,13 +59,14 @@ private:
     void timerEvent(QTimerEvent *event) override;
 
     // Tick Related Variables
-    int m_timer;                                        // Stores timer which attempts to run ~60 times per second
-    QElapsedTimer m_elapsedTimer;                       // Stores timer which keeps track of actual time between frames
+    int m_timer;
+    QElapsedTimer m_elapsedTimer;
 
     // Input Related Variables
-    bool m_mouseDown = false;                           // Stores state of left mouse button
-    glm::vec2 m_prev_mouse_pos;                         // Stores mouse position
-    std::unordered_map<Qt::Key, bool> m_keyMap;         // Stores whether keys are pressed or not
+    bool m_leftMouseDown = false;
+    bool m_rightMouseDown = false;
+    glm::vec2 m_prev_mouse_pos;
+    std::unordered_map<Qt::Key, bool> m_keyMap;
 
     Camera camera;
     RenderData renderData;
@@ -72,6 +78,9 @@ private:
 
     GLuint m_fullscreen_vbo;
     GLuint m_fullscreen_vao;
+
+    GLuint m_crosshairs_vbo;
+    GLuint m_crosshairs_vao;
 
     int m_fbo_width;
     int m_fbo_height;
@@ -91,6 +100,11 @@ private:
     int terrain_[sizeX][sizeY][sizeZ]; // fix later
 
     Terrain terrain;
+    RayCast rayCast;
+
+    Player player;
+
+    int timerId;
 
     void verifyVAO(std::vector<GLfloat> &triangleData, GLuint index, GLsizei size, GLsizei stride, const void* offset) {
 

@@ -64,6 +64,7 @@ void Sandblox::background(glm::vec4 color) {
     glBindVertexArray(0);
 }
 
+
 void Sandblox::generateTerrain(int terrain[sizeX][sizeY][sizeZ]) {
     for (int i = 0; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
@@ -106,7 +107,7 @@ void Sandblox::initializeGL() {
     basicGlobalData.ks = 0.7f;
 
     renderData.globalData = basicGlobalData;
-    renderData.cameraData.pos = glm::vec4(12.f, 6.f, 6.f, 1.f);
+    renderData.cameraData.pos = glm::vec4(12.f, 20.f, 6.f, 1.f);
     renderData.cameraData.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
     renderData.cameraData.heightAngle = 1.f / 3.f * 3.1415f;
     renderData.cameraData.look = glm::vec4(-4.f, 0.f, -3.f, 1.f);
@@ -116,6 +117,15 @@ void Sandblox::initializeGL() {
     terrain = Terrain();
     terrain.generateTerrain();
     terrain.generateTerrainMesh();
+    ScenePrimitive primitive;
+    primitive.type = PrimitiveType::PRIMITIVE_MESH;
+    terrain.shapeData.primitive = primitive;
+    float scale = 1.f;
+    terrain.shapeData.ctm = glm::mat4(1.f);
+    terrain.shapeData.inverseCtm = glm::inverse(terrain.shapeData.ctm);
+    terrain.shapeData.primitive.material = basicMaterial;
+
+    player = Player();
 
     drawPrimitives();
 
@@ -124,41 +134,22 @@ void Sandblox::initializeGL() {
 
 void Sandblox::paintGL() {
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    int elapsedms   = m_elapsedTimer.elapsed();
+    float deltaTime = elapsedms * 0.001f;
+    m_elapsedTimer.restart();
+    camera.computeViewMatrix();
+    player.simulate(deltaTime);
 
     glUseProgram(m_shader);
 
-    RenderShapeData shapeData = renderData.shapes[0];
-    passShapeData(m_shader, renderData.globalData, shapeData);
+    passShapeData(m_shader, renderData.globalData, terrain.shapeData);
     passLightData(m_shader, lightDirection);
     passCameraData(m_shader, camera);
 
-    glBindVertexArray(shapeData.shape->vao);
-    glDrawArrays(GL_TRIANGLES, 0, shapeData.numTriangles);
+    glBindVertexArray(terrain.shapeData.shape->vao);
+    glDrawArrays(GL_TRIANGLES, 0, terrain.shapeData.numTriangles);
     //std::cout << shapeData.numTriangles << std::endl;
     glBindVertexArray(0);
-
-    /*
-    for (RenderShapeData& shapeData : renderData.shapes) {
-        passShapeData(m_shader, renderData.globalData, shapeData);
-        passLightData(m_shader, lightDirection);
-        passCameraData(m_shader, camera);
-
-        glBindVertexArray(shapeData.shape->vao);
-        glDrawArrays(GL_TRIANGLES, 0, shapeData.numTriangles);
-        //std::cout << shapeData.numTriangles << std::endl;
-        glBindVertexArray(0);
-    }
-
-    for (int i = 0; i < sizeX; i++) {
-        for (int j = 0; j < sizeY; j++) {
-            for (int k = 0; k < sizeZ; k++) {
-                //passShapeData(m_shader, basicGlobalData, shapeData);
-                //passLightData(m_shader, glm::vec4(-1.f, -1.f, -1.f, 0.f));
-            }
-        }
-    }
-    */
 
     glUseProgram(0);
 }
@@ -175,53 +166,13 @@ void Sandblox::resizeGL(int w, int h) {
 }
 
 void Sandblox::drawPrimitives() {
-    glClear(0);
     glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
     glUseProgram(m_shader);
 
     terrain.drawShape(m_shader);
 
-    RenderShapeData shapeData;
-    ScenePrimitive primitive;
-
-    primitive.type = PrimitiveType::PRIMITIVE_CUBE;
-    shapeData.primitive = primitive;
-    float scale = 1.f;
-    shapeData.ctm = glm::mat4(1.f);
-    shapeData.inverseCtm = glm::inverse(shapeData.ctm);
-    shapeData.primitive.material = basicMaterial;
-
-    shapeData.numTriangles = terrain.vertexSize() / 6;
-    shapeData.shape = &terrain;
-
-    renderData.shapes.push_back(shapeData);
-
-    /*
-    cube.drawShape(m_shader);
-
-    for (int i = 0; i < sizeX; i++) {
-        for (int j = 0; j < sizeY; j++) {
-            for (int k = 0; k < sizeZ; k++) {
-                if (terrain_[i][j][k]) {
-                    RenderShapeData shapeData;
-                    ScenePrimitive primitive;
-
-                    primitive.type = PrimitiveType::PRIMITIVE_CUBE;
-                    shapeData.primitive = primitive;
-                    float scale = 1.f;
-                    shapeData.ctm = glm::translate(glm::vec3(i, j, k)) * glm::scale(glm::vec3(scale));
-                    shapeData.inverseCtm = glm::inverse(shapeData.ctm);
-                    shapeData.primitive.material = basicMaterial;
-
-                    shapeData.numTriangles = cube.vertexSize() / 6;
-                    shapeData.shape = &cube;
-
-                    renderData.shapes.push_back(shapeData);
-                }
-            }
-        }
-    }
-    */
+    terrain.shapeData.numTriangles = terrain.vertexSize() / 6;
+    terrain.shapeData.shape = &terrain;
 
     glUseProgram(0);
 }
@@ -229,8 +180,12 @@ void Sandblox::drawPrimitives() {
 
 void Sandblox::sceneChanged() {
     camera = Camera(&renderData.cameraData, size().width(), size().height());
+    rayCast = RayCast(&terrain, &camera);
+    player = Player(&terrain, &camera);
     std::cout << glm::to_string(camera.getPerspectiveMatrix()) << std::endl;
     drawPrimitives();
+
+    //timerId = startTimer(1);
 
     update();
 }
@@ -246,14 +201,39 @@ void Sandblox::keyReleaseEvent(QKeyEvent *event) {
 
 void Sandblox::mousePressEvent(QMouseEvent *event) {
     if (event->buttons().testFlag(Qt::LeftButton)) {
-        m_mouseDown = true;
+        m_leftMouseDown = true;
         m_prev_mouse_pos = glm::vec2(event->position().x(), event->position().y());
+
+        rayCast.computeRay(glm::vec2((float)event->position().x(),
+                                     (float)event->position().y()), size().width(), size().height());
+        IntersectData intersectData = rayCast.intersectRay();
+        if (intersectData.intersection) {
+            terrain.breakBlock(intersectData);
+            drawPrimitives();
+        }
+    }
+
+    if (event->buttons().testFlag(Qt::RightButton)) {
+        m_rightMouseDown = true;
+        m_prev_mouse_pos = glm::vec2(event->position().x(), event->position().y());
+
+        rayCast.computeRay(glm::vec2((float)event->position().x(),
+                                     (float)event->position().y()), size().width(), size().height());
+        IntersectData intersectData = rayCast.intersectRay();
+        if (intersectData.intersection) {
+            terrain.placeBlock(intersectData);
+            drawPrimitives();
+        }
     }
 }
 
 void Sandblox::mouseReleaseEvent(QMouseEvent *event) {
     if (!event->buttons().testFlag(Qt::LeftButton)) {
-        m_mouseDown = false;
+        m_leftMouseDown = false;
+    }
+
+    if (!event->buttons().testFlag(Qt::RightButton)) {
+        m_rightMouseDown = false;
     }
 }
 
@@ -283,7 +263,7 @@ glm::mat4 rotate(glm::vec3 vector, float theta) {
 }
 
 void Sandblox::mouseMoveEvent(QMouseEvent *event) {
-    if (m_mouseDown) {
+    if (m_leftMouseDown) {
         int posX = event->position().x();
         int posY = event->position().y();
         float deltaX = (posX - m_prev_mouse_pos.x) * 0.01f;
@@ -291,24 +271,23 @@ void Sandblox::mouseMoveEvent(QMouseEvent *event) {
         m_prev_mouse_pos = glm::vec2(posX, posY);
 
         // Use deltaX and deltaY here to rotate
-        if (m_mouseDown) {
-            glm::mat4 xRotation = rotate(-glm::vec3(0.0f, 1.0f, 0.0f), deltaX);
-            glm::mat4 yRotation = rotate(-glm::normalize(glm::cross(
+        glm::mat4 xRotation = rotate(-glm::vec3(0.0f, 1.0f, 0.0f), deltaX);
+        glm::mat4 yRotation = rotate(-glm::normalize(glm::cross(
                                              glm::vec3(renderData.cameraData.look),
                                              glm::vec3(renderData.cameraData.up))), deltaY);
-            renderData.cameraData.look = xRotation * renderData.cameraData.look;
-            renderData.cameraData.look = yRotation * renderData.cameraData.look;
-            camera.computeViewMatrix();
-        }
+        renderData.cameraData.look = xRotation * renderData.cameraData.look;
+        renderData.cameraData.look = yRotation * renderData.cameraData.look;
+        camera.computeViewMatrix();
 
-        update();
+
     }
+
+    update();
 }
 
 void Sandblox::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
-    m_elapsedTimer.restart();
 
     glm::vec4 move(0.0f);
 
@@ -324,16 +303,20 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         move += glm::vec4(glm::normalize(glm::cross(
                               glm::vec3(renderData.cameraData.look),
                               glm::vec3(renderData.cameraData.up))), 0.f);
+    move.y = 0;
     if (m_keyMap[Qt::Key_Space])
-        move += glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-    if (m_keyMap[Qt::Key_Control])
-        move += glm::vec4(0.0f, -1.0f, 0.0f, 0.0f);
+        move += glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
 
     if (move != glm::vec4(0.0f)) {
-        float moveSpeed = 5.0f * deltaTime;
-        renderData.cameraData.pos += move * moveSpeed;
+        player.velocity.x = move.x * deltaTime;
+        player.velocity.z = move.z * deltaTime;
+        if (player.grounded && move.y > 0)
+            player.velocity.y = move.y * deltaTime;
         camera.computeViewMatrix();
     }
+
+
+    std::cout << player.grounded << " " << glm::to_string(player.velocity) << std::endl;
 
     update();
 }
@@ -379,7 +362,6 @@ void Sandblox::saveViewportImage(std::string filePath) {
     resizeGL(fixedWidth, fixedHeight);
 
     // Clear and render your scene here
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     paintGL();
 
     // Read pixels from framebuffer
