@@ -14,8 +14,8 @@ public:
     bool collisionDetect(glm::vec3 direction);
 
     glm::vec3 velocity = glm::vec3(0.f);
-    float moveSpeed = 20.0f;
-    float gravity = 0.02f;
+    float moveSpeed = 10.0f;
+    float gravity = 0.05f;
     bool grounded = false;
 
     Terrain* terrain;

@@ -50,6 +50,7 @@ add_executable(${PROJECT_NAME}
     src/terrain.h src/terrain.cpp
     src/ray.h src/ray.cpp
     src/player.h src/player.cpp
+    src/terrain4.h src/terrain4.cpp
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`

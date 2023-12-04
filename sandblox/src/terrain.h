@@ -3,6 +3,12 @@
 #include "utils/sceneparser.h"
 #include "primitive.h"
 
+
+struct Ray {
+    glm::vec4 origin;
+    glm::vec4 direction;
+};
+
 struct IntersectData {
     bool intersection;
     int x;
@@ -22,8 +28,8 @@ public:
     std::vector<std::vector<float>> generateHeightMap(int m, int n, float scale);
     void generateTerrain();
     void generateTerrainMesh();
-    void breakBlock(IntersectData intersectData);
-    void placeBlock(IntersectData intersectData);
+    void breakBlock(IntersectData& intersectData);
+    void placeBlock(IntersectData& intersectData);
 
     void makeFace(glm::vec3 topLeft,
                   glm::vec3 topRight,
@@ -33,9 +39,9 @@ public:
 
     static const int sizeX = 100;
     static const int sizeY = 100;
-    static const int sizeZ = 20;
+    static const int sizeZ = 50;
 
     RenderShapeData shapeData;
-    int terrain[sizeX][sizeY][sizeZ];
+    uint8_t terrain[sizeX][sizeY][sizeZ];
     bool rendered[sizeX][sizeY][sizeZ];
 };

@@ -3,7 +3,7 @@
 #include <random>
 #include <glm/glm.hpp>
 #include <glm/gtc/noise.hpp>
-
+#include <random>
 
 Terrain::Terrain()
 {
@@ -22,8 +22,9 @@ Terrain::Terrain()
 
 
 std::vector<std::vector<float>> Terrain::generateHeightMap(int m, int n, float scale) {
-    std::default_random_engine generator;
-    std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_real_distribution<float> distribution(-1.f, 1.f);
 
     std::vector<std::vector<glm::vec2>> gradients(m + 1, std::vector<glm::vec2>(n + 1));
     for (int i = 0; i <= m; ++i) {
@@ -61,20 +62,24 @@ std::vector<std::vector<float>> Terrain::generateHeightMap(int m, int n, float s
     return noise;
 }
 
-
 void Terrain::generateTerrain() {
-    std::vector<std::vector<float>> heightMap = generateHeightMap(sizeX, sizeY, 1.f);
+    int numLayers = 3;
+    float baseScale = 1.0f;
 
-    for (int x = 0; x < sizeX; x++) {
-        for (int y = 0; y < sizeY; y++) {
-            for (int z = 0; z < sizeZ; z++) {
-                if (z < (heightMap[x][y] + 0.7) * sizeZ)
-                    terrain[x][y][z] = 1;
+    for (int layer = 0; layer < numLayers; layer++) {
+        float scale = baseScale * std::pow(2, layer);
+        std::vector<std::vector<float>> heightMap = generateHeightMap(sizeX, sizeY, scale);
+
+        for (int x = 0; x < sizeX; ++x) {
+            for (int y = 0; y < sizeY; ++y) {
+                for (int z = 0; z < sizeZ; ++z) {
+                    if (z < (heightMap[x][y] + 0.7) * sizeZ)
+                        terrain[x][y][z] = 1;
+                }
             }
         }
     }
 }
-
 
 void Terrain::generateTerrainMesh() {
     m_vertexData.clear();
@@ -156,12 +161,12 @@ void Terrain::generateTerrainMesh() {
     }
 }
 
-void Terrain::breakBlock(IntersectData intersectData) {
+void Terrain::breakBlock(IntersectData& intersectData) {
     terrain[intersectData.x][intersectData.y][intersectData.z] = 0;
     generateTerrainMesh();
 }
 
-void Terrain::placeBlock(IntersectData intersectData) {
+void Terrain::placeBlock(IntersectData& intersectData) {
 
     if (intersectData.face == 0) intersectData.x += 1;
     if (intersectData.face == 1) intersectData.x -= 1;

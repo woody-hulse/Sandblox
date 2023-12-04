@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
 
     MainWindow w;
     w.initialize();
-    w.resize(800, 800);
+    //w.resize(800, 800);
+    w.showFullScreen();
     w.show();
 
     int return_val = a.exec();

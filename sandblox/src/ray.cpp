@@ -50,7 +50,7 @@ IntersectData RayCast::intersectRay() {
                 glm::mat4 inverseCtm = glm::mat4(glm::inverse(glm::translate(blockPosition)));
                 Ray objectRay;
                 objectRay.origin = inverseCtm * ray.origin;
-                objectRay.direction = inverseCtm * ray.direction;
+                objectRay.direction = glm::normalize(inverseCtm * ray.direction);
                 for (int i = 0; i < 3; i++) {
                     float t1 = (0.5 - objectRay.origin[i]) / objectRay.direction[i];
                     float t2 = (-0.5 - objectRay.origin[i]) / objectRay.direction[i];
@@ -78,7 +78,7 @@ IntersectData RayCast::intersectRay() {
                 }
 
                 if (t >= 0) {
-                    if (t < min_t || min_t == -1) {
+                    if (t < min_t || min_t == -1 && t < intersectDistance) {
                         min_t = t;
                         intersectData.x = x;
                         intersectData.y = y;

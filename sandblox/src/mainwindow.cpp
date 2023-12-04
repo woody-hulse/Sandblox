@@ -7,12 +7,15 @@
 #include <QSettings>
 #include <QLabel>
 #include <QGroupBox>
+#include <QCursor>
 #include <iostream>
 
 void MainWindow::initialize() {
     sandblox = new Sandblox;
     aspectRatioWidget = new AspectRatioWidget(this);
-    aspectRatioWidget->setAspectWidget(sandblox, 1.f);
+
+    float aspectRatio = 9.f / 16.f;
+    aspectRatioWidget->setAspectWidget(sandblox, aspectRatio);
     QHBoxLayout *hLayout = new QHBoxLayout; // horizontal alignment
     QVBoxLayout *vLayout = new QVBoxLayout(); // vertical alignment
     vLayout->setAlignment(Qt::AlignTop);

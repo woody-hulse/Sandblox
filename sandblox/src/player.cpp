@@ -31,8 +31,11 @@ void Player::simulate(float deltaTime) {
     }
 
     if (grounded) {
-        velocity.x *= 0.9f;
-        velocity.z *= 0.9f;
+        velocity.x *= 0.5f;
+        velocity.z *= 0.5f;
+    } else {
+        velocity.x *= 0.95f;
+        velocity.z *= 0.95f;
     }
 
     move(velocity);
@@ -40,24 +43,25 @@ void Player::simulate(float deltaTime) {
 
 
 bool Player::collisionDetect(glm::vec3 direction) {
+    float scale = 0.9f;
     std::vector<glm::vec3> corners = {
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, 0.5f, 0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, 0.5f, 0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, 0.5f, -0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, 0.5f, -0.5f),
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, 0.0f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, 0.0f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, 0.0f, -0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, 0.0f, -0.5f) * scale,
 
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, 0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, 0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, -0.5f),
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, -0.5f)
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, -0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, -0.5f) * scale
     };
 
     bool collision = false;
     for (glm::vec3 corner : corners) {
         corner += direction;
-        int x = floor(corner.x);
-        int z = floor(corner.y);
-        int y = floor(corner.z);
+        int x = floor(corner.x + 0.5f);
+        int z = floor(corner.y + 0.5f);
+        int y = floor(corner.z + 0.5f);
 
         if (x >= 0 && x < terrain->sizeX) {
             if (y >= 0 && z < terrain->sizeY) {

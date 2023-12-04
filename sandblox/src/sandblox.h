@@ -12,6 +12,7 @@
 #include <QOpenGLWidget>
 #include <QTime>
 #include <QTimer>
+#include <GLUT/glut.h>
 #include <iostream>
 
 #include "utils/sceneparser.h"
@@ -94,7 +95,7 @@ private:
     static const int sizeY = 5;
     static const int sizeZ = 5;
 
-    glm::vec4 lightDirection = glm::vec4(-0.5f, -0.8f, -1.f, 0.f);
+    glm::vec4 lightDirection = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
 
     void generateTerrain(int terrain[sizeX][sizeY][sizeZ]);
     int terrain_[sizeX][sizeY][sizeZ]; // fix later
@@ -105,6 +106,8 @@ private:
     Player player;
 
     int timerId;
+
+    bool seeMouse = false;
 
     void verifyVAO(std::vector<GLfloat> &triangleData, GLuint index, GLsizei size, GLsizei stride, const void* offset) {
 

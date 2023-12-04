@@ -5,11 +5,6 @@
 #include "camera.h"
 #include <glm/gtx/string_cast.hpp>
 
-struct Ray {
-    glm::vec4 origin;
-    glm::vec4 direction;
-};
-
 class RayCast
 {
 public:
@@ -22,6 +17,8 @@ public:
     Camera* camera;
 
     Ray ray;
+
+    float intersectDistance = 10;
 };
 
 #endif // RAY_H

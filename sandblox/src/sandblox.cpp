@@ -91,6 +91,7 @@ void Sandblox::initializeGL() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
+    setCursor(Qt::BlankCursor);
 
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
 
@@ -103,14 +104,8 @@ void Sandblox::initializeGL() {
     basicMaterial.shininess = 0.f;
 
     basicGlobalData.ka = 0.8f;
-    basicGlobalData.kd = 0.5f;
+    basicGlobalData.kd = 0.3f;
     basicGlobalData.ks = 0.7f;
-
-    renderData.globalData = basicGlobalData;
-    renderData.cameraData.pos = glm::vec4(12.f, 20.f, 6.f, 1.f);
-    renderData.cameraData.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
-    renderData.cameraData.heightAngle = 1.f / 3.f * 3.1415f;
-    renderData.cameraData.look = glm::vec4(-4.f, 0.f, -3.f, 1.f);
 
     generateTerrain(terrain_);
 
@@ -124,6 +119,12 @@ void Sandblox::initializeGL() {
     terrain.shapeData.ctm = glm::mat4(1.f);
     terrain.shapeData.inverseCtm = glm::inverse(terrain.shapeData.ctm);
     terrain.shapeData.primitive.material = basicMaterial;
+
+    renderData.globalData = basicGlobalData;
+    renderData.cameraData.pos = glm::vec4(terrain.sizeX / 2.f, terrain.sizeZ + 5.f, terrain.sizeY / 2.f, 1.f);
+    renderData.cameraData.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
+    renderData.cameraData.heightAngle = 1.f / 3.f * 3.1415f;
+    renderData.cameraData.look = glm::vec4(-4.f, 0.f, -3.f, 0.f);
 
     player = Player();
 
@@ -193,6 +194,9 @@ void Sandblox::sceneChanged() {
 
 void Sandblox::keyPressEvent(QKeyEvent *event) {
     m_keyMap[Qt::Key(event->key())] = true;
+    if (event->key() == Qt::Key_Escape) seeMouse = !seeMouse;
+    if (seeMouse) setCursor(Qt::ArrowCursor);
+    else setCursor(Qt::BlankCursor);
 }
 
 void Sandblox::keyReleaseEvent(QKeyEvent *event) {
@@ -204,8 +208,8 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         m_leftMouseDown = true;
         m_prev_mouse_pos = glm::vec2(event->position().x(), event->position().y());
 
-        rayCast.computeRay(glm::vec2((float)event->position().x(),
-                                     (float)event->position().y()), size().width(), size().height());
+        rayCast.computeRay(glm::vec2((float)size().width() / 2.f,
+                                     (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
         if (intersectData.intersection) {
             terrain.breakBlock(intersectData);
@@ -217,11 +221,13 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         m_rightMouseDown = true;
         m_prev_mouse_pos = glm::vec2(event->position().x(), event->position().y());
 
-        rayCast.computeRay(glm::vec2((float)event->position().x(),
-                                     (float)event->position().y()), size().width(), size().height());
+        rayCast.computeRay(glm::vec2((float)size().width() / 2.f,
+                                     (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
         if (intersectData.intersection) {
             terrain.placeBlock(intersectData);
+            if (player.collisionDetect(glm::vec3(0.f)))
+                terrain.breakBlock(intersectData);
             drawPrimitives();
         }
     }
@@ -263,23 +269,21 @@ glm::mat4 rotate(glm::vec3 vector, float theta) {
 }
 
 void Sandblox::mouseMoveEvent(QMouseEvent *event) {
-    if (m_leftMouseDown) {
+    if (!seeMouse) {
         int posX = event->position().x();
         int posY = event->position().y();
         float deltaX = (posX - m_prev_mouse_pos.x) * 0.01f;
         float deltaY = (posY - m_prev_mouse_pos.y) * 0.01f;
         m_prev_mouse_pos = glm::vec2(posX, posY);
 
-        // Use deltaX and deltaY here to rotate
         glm::mat4 xRotation = rotate(-glm::vec3(0.0f, 1.0f, 0.0f), deltaX);
         glm::mat4 yRotation = rotate(-glm::normalize(glm::cross(
-                                             glm::vec3(renderData.cameraData.look),
-                                             glm::vec3(renderData.cameraData.up))), deltaY);
+                                         glm::normalize(glm::vec3(renderData.cameraData.look)),
+                                         glm::normalize(glm::vec3(renderData.cameraData.up)))), deltaY);
+
         renderData.cameraData.look = xRotation * renderData.cameraData.look;
         renderData.cameraData.look = yRotation * renderData.cameraData.look;
         camera.computeViewMatrix();
-
-
     }
 
     update();
@@ -310,13 +314,12 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     if (move != glm::vec4(0.0f)) {
         player.velocity.x = move.x * deltaTime;
         player.velocity.z = move.z * deltaTime;
-        if (player.grounded && move.y > 0)
-            player.velocity.y = move.y * deltaTime;
+        if (player.grounded && move.y > 0) {
+            player.velocity.y = move.y * deltaTime * 2.f;
+            player.grounded = false;
+        }
         camera.computeViewMatrix();
     }
-
-
-    std::cout << player.grounded << " " << glm::to_string(player.velocity) << std::endl;
 
     update();
 }
