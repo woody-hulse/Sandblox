@@ -1,0 +1,27 @@
+#pragma once
+
+#include <vector>
+#include <glm/glm.hpp>
+#include <GL/glew.h>
+
+#include <iostream>
+
+class Primitive
+{
+public:
+    Primitive();
+
+    virtual void updateParams(int param1, int param2) = 0;
+    virtual std::vector<float> generateShape() = 0;
+    int vertexSize() const { return m_vertexData.size(); }
+
+    void drawShape(GLuint& shader);
+
+    GLuint vbo;
+    GLuint vao;
+
+protected:
+    std::vector<float> m_vertexData;
+    int m_param1;
+    int m_param2;
+};
