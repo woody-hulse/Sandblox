@@ -15,9 +15,12 @@ void passCameraData(GLuint& program, Camera& camera) {
     glUniformMatrix4fv(projLocation, 1, GL_FALSE, &perspectiveMatrix[0][0]);
 }
 
-void passLightData(GLuint& program, glm::vec4 lightDirection) {
-    GLint lightDirectionLocation = glGetUniformLocation(program, "lightDirection");
-    glUniform3fv(lightDirectionLocation, 1, &lightDirection[0]);
+void passLightData(GLuint& program, glm::vec4 lightDirection1, glm::vec4 lightDirection2) {
+    GLint lightDirection1Location = glGetUniformLocation(program, "lightDirection1");
+    glUniform3fv(lightDirection1Location, 1, &lightDirection1[0]);
+
+    GLint lightDirection2Location = glGetUniformLocation(program, "lightDirection2");
+    glUniform3fv(lightDirection2Location, 1, &lightDirection2[0]);
 }
 
 void passShapeData(GLuint& program, SceneGlobalData& globalData, RenderShapeData& shapeData) {

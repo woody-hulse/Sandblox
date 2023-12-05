@@ -23,6 +23,7 @@
 #include "cube.h"
 
 #include "terrain.h"
+#include "terrain4.h"
 
 #include "ray.h"
 
@@ -95,12 +96,14 @@ private:
     static const int sizeY = 5;
     static const int sizeZ = 5;
 
-    glm::vec4 lightDirection = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
+    glm::vec4 lightDirection1 = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
+    glm::vec4 lightDirection2 = glm::vec4(0.7f, 0.2f, 0.5f, 0.f);
 
     void generateTerrain(int terrain[sizeX][sizeY][sizeZ]);
     int terrain_[sizeX][sizeY][sizeZ]; // fix later
 
     Terrain terrain;
+    Terrain4 terrain4;
     RayCast rayCast;
 
     Player player;

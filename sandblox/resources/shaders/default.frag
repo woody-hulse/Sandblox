@@ -9,7 +9,8 @@ uniform vec4 k_a;
 uniform vec4 k_d;
 uniform vec4 k_s;
 
-uniform vec3 lightDirection;
+uniform vec3 lightDirection1;
+uniform vec3 lightDirection2;
 
 uniform vec3 cameraPosition;
 uniform float shininess;
@@ -32,11 +33,20 @@ void main() {
 
     fragColor += k_a;
 
-    fragColor += k_d * min(max(dot(normalize(normal), -lightDirection), 0.0f), 1.0f);
+    fragColor += k_d * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
 
     vec3 viewDirection = normalize(cameraPosition - position);
-    vec3 reflectedLight = reflect(lightDirection, normalize(normal));
+    vec3 reflectedLight = reflect(lightDirection1, normalize(normal));
     float specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
+    if (shininess > 0) specularTerm = pow(specularTerm, shininess);
+    else specularTerm = 1;
+    fragColor += k_s * specularTerm;
+
+    fragColor += k_d * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
+
+    viewDirection = normalize(cameraPosition - position);
+    reflectedLight = reflect(lightDirection2, normalize(normal));
+    specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
     if (shininess > 0) specularTerm = pow(specularTerm, shininess);
     else specularTerm = 1;
     fragColor += k_s * specularTerm;

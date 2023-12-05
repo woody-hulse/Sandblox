@@ -11,6 +11,6 @@
 
 void passCameraData(GLuint& program, Camera& camera);
 
-void passLightData(GLuint& program, glm::vec4 lightDirection);
+void passLightData(GLuint& program, glm::vec4 lightDirection1, glm::vec4 lightDirection2);
 
 void passShapeData(GLuint& program, SceneGlobalData& globalData, RenderShapeData& shapeData);

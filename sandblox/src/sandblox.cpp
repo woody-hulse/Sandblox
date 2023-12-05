@@ -103,15 +103,21 @@ void Sandblox::initializeGL() {
     basicMaterial.cSpecular = glm::vec4(0.f);
     basicMaterial.shininess = 0.f;
 
-    basicGlobalData.ka = 0.8f;
-    basicGlobalData.kd = 0.3f;
-    basicGlobalData.ks = 0.7f;
+    basicGlobalData.ka = 0.7f;
+    basicGlobalData.kd = 0.2f;
+    basicGlobalData.ks = 0.4f;
 
     generateTerrain(terrain_);
 
     terrain = Terrain();
     terrain.generateTerrain();
     terrain.generateTerrainMesh();
+
+    terrain4 = Terrain4();
+    terrain4.generateTerrain4();
+    terrain4.generateTerrain();
+    terrain4.generateTerrainMesh();
+
     ScenePrimitive primitive;
     primitive.type = PrimitiveType::PRIMITIVE_MESH;
     terrain.shapeData.primitive = primitive;
@@ -119,6 +125,14 @@ void Sandblox::initializeGL() {
     terrain.shapeData.ctm = glm::mat4(1.f);
     terrain.shapeData.inverseCtm = glm::inverse(terrain.shapeData.ctm);
     terrain.shapeData.primitive.material = basicMaterial;
+
+    ScenePrimitive primitive4;
+    primitive4.type = PrimitiveType::PRIMITIVE_MESH;
+    terrain4.shapeData.primitive = primitive4;
+    float scale4 = 1.f;
+    terrain4.shapeData.ctm = glm::mat4(1.f);
+    terrain4.shapeData.inverseCtm = glm::inverse(terrain4.shapeData.ctm);
+    terrain4.shapeData.primitive.material = basicMaterial;
 
     renderData.globalData = basicGlobalData;
     renderData.cameraData.pos = glm::vec4(terrain.sizeX / 2.f, terrain.sizeZ + 5.f, terrain.sizeY / 2.f, 1.f);
@@ -143,12 +157,12 @@ void Sandblox::paintGL() {
 
     glUseProgram(m_shader);
 
-    passShapeData(m_shader, renderData.globalData, terrain.shapeData);
-    passLightData(m_shader, lightDirection);
+    passShapeData(m_shader, renderData.globalData, terrain4.shapeData);
+    passLightData(m_shader, lightDirection1, lightDirection2);
     passCameraData(m_shader, camera);
 
-    glBindVertexArray(terrain.shapeData.shape->vao);
-    glDrawArrays(GL_TRIANGLES, 0, terrain.shapeData.numTriangles);
+    glBindVertexArray(terrain4.shapeData.shape->vao);
+    glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles);
     //std::cout << shapeData.numTriangles << std::endl;
     glBindVertexArray(0);
 
@@ -171,9 +185,12 @@ void Sandblox::drawPrimitives() {
     glUseProgram(m_shader);
 
     terrain.drawShape(m_shader);
+    terrain4.drawShape(m_shader);
 
     terrain.shapeData.numTriangles = terrain.vertexSize() / 6;
+    terrain4.shapeData.numTriangles = terrain4.vertexSize() / 6;
     terrain.shapeData.shape = &terrain;
+    terrain4.shapeData.shape = &terrain4;
 
     glUseProgram(0);
 }
@@ -181,8 +198,8 @@ void Sandblox::drawPrimitives() {
 
 void Sandblox::sceneChanged() {
     camera = Camera(&renderData.cameraData, size().width(), size().height());
-    rayCast = RayCast(&terrain, &camera);
-    player = Player(&terrain, &camera);
+    rayCast = RayCast(&terrain4, &camera);
+    player = Player(&terrain4, &camera);
     std::cout << glm::to_string(camera.getPerspectiveMatrix()) << std::endl;
     drawPrimitives();
 
@@ -212,7 +229,7 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
                                      (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
         if (intersectData.intersection) {
-            terrain.breakBlock(intersectData);
+            terrain4.breakBlock(intersectData);
             drawPrimitives();
         }
     }
@@ -225,9 +242,9 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
                                      (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
         if (intersectData.intersection) {
-            terrain.placeBlock(intersectData);
+            terrain4.placeBlock(intersectData);
             if (player.collisionDetect(glm::vec3(0.f)))
-                terrain.breakBlock(intersectData);
+                terrain4.breakBlock(intersectData);
             drawPrimitives();
         }
     }
@@ -319,6 +336,28 @@ void Sandblox::timerEvent(QTimerEvent *event) {
             player.grounded = false;
         }
         camera.computeViewMatrix();
+
+        /* add this
+        float epsilon = 0.001;
+        float delta = camera.data->pos.x - terrain4.crossSection.origin.x;
+        terrain4.crossSection.origin.x += delta;
+        terrain4.crossSection.origin.y += delta * terrain4.crossSection.direction.y;
+        */
+    }
+
+    if (m_keyMap[Qt::Key_Q]) {
+        float theta = -1.f * deltaTime;
+        terrain4.rotateCrossSection(theta, 0.f);
+        std::cout << deltaTime << " " << glm::to_string(terrain4.crossSection.direction) << std::endl;
+        terrain4.generateTerrainMesh();
+        drawPrimitives();
+    }
+
+    if (m_keyMap[Qt::Key_E]) {
+        float theta = 1.f * deltaTime;
+        terrain4.rotateCrossSection(theta, 0.f);
+        terrain4.generateTerrainMesh();
+        drawPrimitives();
     }
 
     update();

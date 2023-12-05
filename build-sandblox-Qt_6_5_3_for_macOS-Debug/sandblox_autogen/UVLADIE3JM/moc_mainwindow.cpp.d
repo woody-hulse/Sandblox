@@ -945,6 +945,7 @@
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/sandblox.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/settings.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain.h \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/aspectratiowidget/aspectratiowidget.hpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/scenedata.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/sceneparser.h \

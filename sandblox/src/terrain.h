@@ -15,11 +15,16 @@ struct IntersectData {
     int y;
     int z;
     int face;
+    float t;
 };
 
 class Terrain : public Primitive
 {
 public:
+    static const int sizeX = 36;
+    static const int sizeY = 36;
+    static const int sizeZ = 36;
+
     Terrain();
 
     std::vector<float> generateShape() override { return m_vertexData; }
@@ -27,6 +32,7 @@ public:
 
     std::vector<std::vector<float>> generateHeightMap(int m, int n, float scale);
     void generateTerrain();
+    void generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]);
     void generateTerrainMesh();
     void breakBlock(IntersectData& intersectData);
     void placeBlock(IntersectData& intersectData);
@@ -37,11 +43,7 @@ public:
                   glm::vec3 bottomRight);
     void insertVec3(std::vector<float> &data, glm::vec3 v);
 
-    static const int sizeX = 100;
-    static const int sizeY = 100;
-    static const int sizeZ = 50;
-
     RenderShapeData shapeData;
-    uint8_t terrain[sizeX][sizeY][sizeZ];
-    bool rendered[sizeX][sizeY][sizeZ];
+    uint8_t*** terrain;
+    bool*** rendered;
 };

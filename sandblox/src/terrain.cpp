@@ -9,8 +9,14 @@ Terrain::Terrain()
 {
     m_vertexData = std::vector<float>();
 
+    terrain = new uint8_t**[sizeX];
+    rendered = new bool**[sizeX];
     for (int x = 0; x < sizeX; x++) {
+        terrain[x] = new uint8_t*[sizeY];
+        rendered[x] = new bool*[sizeY];
         for (int y = 0; y < sizeY; y++) {
+            terrain[x][y] = new uint8_t[sizeZ];
+            rendered[x][y] = new bool[sizeZ];
             for (int z = 0; z < sizeZ; z++) {
                 terrain[x][y][z] = 0;
                 rendered[x][y][z] = false;
@@ -27,15 +33,15 @@ std::vector<std::vector<float>> Terrain::generateHeightMap(int m, int n, float s
     std::uniform_real_distribution<float> distribution(-1.f, 1.f);
 
     std::vector<std::vector<glm::vec2>> gradients(m + 1, std::vector<glm::vec2>(n + 1));
-    for (int i = 0; i <= m; ++i) {
-        for (int j = 0; j <= n; ++j) {
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
             gradients[i][j] = glm::normalize(glm::vec2(distribution(generator), distribution(generator)));
         }
     }
 
     std::vector<std::vector<float>> noise(m, std::vector<float>(n));
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
             float x = static_cast<float>(i) / m * scale;
             float y = static_cast<float>(j) / n * scale;
 
@@ -70,12 +76,26 @@ void Terrain::generateTerrain() {
         float scale = baseScale * std::pow(2, layer);
         std::vector<std::vector<float>> heightMap = generateHeightMap(sizeX, sizeY, scale);
 
-        for (int x = 0; x < sizeX; ++x) {
-            for (int y = 0; y < sizeY; ++y) {
-                for (int z = 0; z < sizeZ; ++z) {
-                    if (z < (heightMap[x][y] + 0.7) * sizeZ)
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                for (int z = 0; z < sizeZ; z++) {
+                    if (z < (heightMap[x][y] + 0.3) * sizeZ / 2.f)
                         terrain[x][y][z] = 1;
                 }
+            }
+        }
+    }
+}
+
+void Terrain::generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]) {
+    for (int x = 0; x < sizeX; x++) {
+        for (int y = 0; y < sizeY; y++) {
+            for (int z = 0; z < sizeZ; z++) {
+                // std::cout << x << " " << y << " " << z << ": " << heightMap[x][y] << std::endl;
+                if (z < (heightMap[x][y] + 0.3) * sizeZ / 2.f)
+                    terrain[x][y][z] = 1;
+                else
+                    terrain[x][y][z] = 0;
             }
         }
     }
