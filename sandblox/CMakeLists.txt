@@ -80,6 +80,13 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
         resources/shaders/default.vert
 )
 
+target_sources(sandblox_other_files
+  PRIVATE
+
+
+
+)
+
 # GLEW: this provides support for Windows (including 64-bit)
 if (WIN32)
   add_compile_definitions(GLEW_STATIC)

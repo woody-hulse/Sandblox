@@ -8,7 +8,8 @@
 			"_qt_internal_expose_source_file_to_ide",
 			"_qt_internal_process_resource",
 			"qt6_add_resources",
-			"set_property"
+			"set_property",
+			"target_sources"
 		],
 		"files" : 
 		[
@@ -55,6 +56,12 @@
 				"file" : 0,
 				"line" : 1735,
 				"parent" : 5
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 83,
+				"parent" : 0
 			}
 		]
 	},
@@ -72,7 +79,9 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1
+				1,
+				2,
+				3
 			]
 		}
 	],
@@ -86,6 +95,16 @@
 		{
 			"backtrace" : 6,
 			"path" : "resources/shaders/default.vert",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"path" : "resources/shaders/texture.frag",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"path" : "resources/shaders/texture.vert",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -110,6 +110,7 @@ void Terrain4::generateTerrain4() {
                     for (int w = 0; w < sizeW; w++) {
                         if (z < (heightMap4[x][y][z] + 0.6) * sizeZ)
                             terrain4[x][y][z][w] = 1;
+                        else terrain4[x][y][z][w] = 0;
                     }
                 }
             }

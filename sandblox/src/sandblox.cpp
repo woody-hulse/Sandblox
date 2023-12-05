@@ -348,7 +348,6 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Q]) {
         float theta = -1.f * deltaTime;
         terrain4.rotateCrossSection(theta, 0.f);
-        std::cout << deltaTime << " " << glm::to_string(terrain4.crossSection.direction) << std::endl;
         terrain4.generateTerrainMesh();
         drawPrimitives();
     }
@@ -358,6 +357,16 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         terrain4.rotateCrossSection(theta, 0.f);
         terrain4.generateTerrainMesh();
         drawPrimitives();
+    }
+
+    if (m_keyMap[Qt::Key_O]) {
+        terrain4.generateTerrain4();
+        terrain4.generateTerrain();
+
+
+        terrain4.generateTerrainMesh();
+        drawPrimitives();
+        camera.data->pos = glm::vec4(terrain4.sizeX / 2.f, terrain4.sizeZ + 2.f, terrain4.sizeY / 2.f, 1.f);
     }
 
     update();
