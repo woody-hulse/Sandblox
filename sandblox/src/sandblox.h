@@ -50,7 +50,8 @@ protected:
     void background(glm::vec4 color);
     void crosshairs(glm::vec4 color);
     void drawPrimitives();
-    void paintTexture(GLuint texture, bool perPixel, bool kernelBased);
+    void paintTexture(GLuint texture, glm::vec2 mousePos);
+    void makeFBO();
 private:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
@@ -76,6 +77,7 @@ private:
     int m_devicePixelRatio;
 
     GLuint m_shader;
+    GLuint m_texture_shader;
 
     GLuint m_fullscreen_vbo;
     GLuint m_fullscreen_vao;
@@ -85,6 +87,13 @@ private:
 
     int m_fbo_width;
     int m_fbo_height;
+
+    GLuint m_fbo_texture;
+    GLuint m_fbo_renderbuffer;
+    GLuint m_fbo;
+
+    GLuint m_screen_width;
+    GLuint m_screen_height;
 
     // Reference Shapes
     Cube cube;
