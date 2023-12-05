@@ -8,9 +8,6 @@
 
 #include "utils/shaderloader.h"
 
-
-// ================== Project 5: Lights, Camera
-
 Sandblox::Sandblox(QWidget *parent)
     : QOpenGLWidget(parent)
 {
@@ -37,7 +34,54 @@ void Sandblox::finish() {
     this->doneCurrent();
 }
 
+void Sandblox::makeFBO(){
+    // Task 19: Generate and bind an empty texture, set its min/mag filter interpolation, then unbind
+    glGenTextures(1, &m_fbo_texture);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_fbo_width, m_fbo_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    // Task 20: Generate and bind a renderbuffer of the right size, set its format, then unbind
+    glGenRenderbuffers(1, &m_fbo_renderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_fbo_renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_fbo_width, m_fbo_height);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    // Task 18: Generate and bind an FBO
+    glGenFramebuffers(1, &m_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+    // Task 21: Add our texture as a color attachment, and our renderbuffer as a depth+stencil attachment, to our FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbo_texture, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_fbo_renderbuffer);
+    // Task 22: Unbind the FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
+}
+
+void Sandblox::paintTexture(GLuint texture, glm::vec2 mousePos){
+    glUseProgram(m_texture_shader);
+    glBindVertexArray(m_fullscreen_vao);
+    // Task 32: Set your bool uniform on whether or not to filter the texture drawn
+    GLint loc = glGetUniformLocation(m_texture_shader, "mousePos");
+    if (loc != -1)glUniform2fv(loc, 1, &mousePos[0]);
+    loc = glGetUniformLocation(m_texture_shader, "width");
+    if (loc != -1)glUniform1i(loc, size().width());
+    loc = glGetUniformLocation(m_texture_shader, "height");
+    if (loc != -1)glUniform1i(loc, size().height());
+    // Task 10: Bind "texture" to slot 0
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);
+}
+
 void Sandblox::background(glm::vec4 color) {
+    glUseProgram(m_texture_shader);
+    GLint loc = glGetUniformLocation(m_texture_shader, "textureMap");
+    if (loc != -1)glUniform1i(loc, 0);
+    glUseProgram(0);
+
     std::vector<GLfloat> fullscreen_quad_data =
         { //     POSITIONS    //
             -1.f,  1.f, 0.0f, 0.f, 1.f,
@@ -62,6 +106,7 @@ void Sandblox::background(glm::vec4 color) {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    makeFBO();
 }
 
 
@@ -77,6 +122,11 @@ void Sandblox::generateTerrain(int terrain[sizeX][sizeY][sizeZ]) {
 
 void Sandblox::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
+    m_screen_width = size().width() * m_devicePixelRatio;
+    m_screen_height = size().height() * m_devicePixelRatio;
+    m_fbo_width = m_screen_width;
+    m_fbo_height = m_screen_height;
+    m_defaultFBO = 2;
 
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -94,6 +144,51 @@ void Sandblox::initializeGL() {
     setCursor(Qt::BlankCursor);
 
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
+    m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
+
+    //NEW CODE---------------------
+    glUseProgram(m_texture_shader);
+    GLint loc = glGetUniformLocation(m_texture_shader, "textureMap");
+    if (loc != -1)glUniform1i(loc, 0);
+    glUseProgram(0);
+
+    std::vector<GLfloat> fullscreen_quad_data =
+        { //     POSITIONS    //
+            -1.0,  1.0, 0.0f,
+            0.0,  1.0, 0.0f,
+            -1.0, -1.0, 0.0f,
+            0.0,  0.0, 0.0f,
+            1.0, -1.0, 0.0f,
+            1.0,  0.0, 0.0f,
+            1.0,  1.0, 0.0f,
+            1.0,  1.0, 0.0f,
+            -1.0,  1.0, 0.0f,
+            0.0,  1.0, 0.0f,
+            1.0, -1.0, 0.0f,
+            1.0,  0.0, 0.0f
+        };
+    // Generate and bind a VBO and a VAO for a fullscreen quad
+    glGenBuffers(1, &m_fullscreen_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
+    glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
+    glGenVertexArrays(1, &m_fullscreen_vao);
+    glBindVertexArray(m_fullscreen_vao);
+
+    // Task 14: modify the code below to add a second attribute to the vertex attribute array
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), nullptr);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+
+    // Unbind the fullscreen quad's VBO and VAO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    makeFBO();
+
+
+    //______________________________
 
     cube.updateParams(1, 1);
 
@@ -148,13 +243,15 @@ void Sandblox::initializeGL() {
 }
 
 void Sandblox::paintGL() {
-
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
     m_elapsedTimer.restart();
     camera.computeViewMatrix();
     player.simulate(deltaTime);
 
+    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+    glViewport(0, 0, m_screen_width, m_screen_height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_shader);
 
     passShapeData(m_shader, renderData.globalData, terrain4.shapeData);
@@ -167,6 +264,12 @@ void Sandblox::paintGL() {
     glBindVertexArray(0);
 
     glUseProgram(0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
+    glViewport(0, 0, m_fbo_width, m_fbo_height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    paintTexture(m_fbo_texture, glm::vec2(m_prev_mouse_pos[0], m_prev_mouse_pos[1]));
+
 }
 
 void Sandblox::resizeGL(int w, int h) {
@@ -201,7 +304,17 @@ void Sandblox::sceneChanged() {
     rayCast = RayCast(&terrain4, &camera);
     player = Player(&terrain4, &camera);
     std::cout << glm::to_string(camera.getPerspectiveMatrix()) << std::endl;
+
+//    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+//    glViewport(0, 0, m_screen_width, m_screen_height);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     drawPrimitives();
+
+//    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
+//    glViewport(0, 0, m_fbo_width, m_fbo_height);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    paintTexture(m_fbo_texture, false, false);
 
     //timerId = startTimer(1);
 
