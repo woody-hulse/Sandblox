@@ -362,6 +362,10 @@ void Sandblox::keyReleaseEvent(QKeyEvent *event) {
         }
     }
 
+    if (m_keyMap[Qt::Key_Q] || m_keyMap[Qt::Key_E]) {
+
+    }
+
     m_keyMap[Qt::Key(event->key())] = false;
 }
 
@@ -522,6 +526,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         }
         terrain4.rotateCrossSection(theta, 0.f);
         terrain4.generateTerrainMesh();
+        player.rectifyPlayer();
         drawPrimitives();
     }
 
@@ -531,6 +536,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
             terrain4.crossSection.origin = player.camera->data->pos;
         terrain4.rotateCrossSection(theta, 0.f);
         terrain4.generateTerrainMesh();
+        player.rectifyPlayer();
         drawPrimitives();
     }
 

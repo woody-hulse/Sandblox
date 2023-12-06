@@ -18,7 +18,7 @@ public:
     void move(glm::vec3 direction);
     void simulate(float deltaTime);
     bool collisionDetect(glm::vec3 direction);
-
+    void rectifyPlayer();
 
     glm::vec3 velocity = glm::vec3(0.f);
     float moveSpeed = 10.0f;

@@ -80,3 +80,9 @@ bool Player::collisionDetect(glm::vec3 direction) {
 
     return collision;
 }
+
+void Player::rectifyPlayer() {
+    while (collisionDetect(glm::vec3(0.f))) {
+        camera->data->pos.y += 0.3f;
+    }
+}
