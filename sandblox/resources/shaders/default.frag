@@ -2,6 +2,10 @@
 
 in vec3 position;
 in vec3 normal;
+in vec2 uv;
+in float blockType;
+
+uniform sampler2D samplers[8];
 
 out vec4 fragColor;
 
@@ -31,9 +35,11 @@ float attenuation(vec3 function, float distance) {
 void main() {
     fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-    fragColor += k_a;
+    vec4 color = texture(samplers[int(blockType)], uv);
 
-    fragColor += k_d * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
+    fragColor += 0.5f * color;
+
+    fragColor += 0.5f * color * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
 
     vec3 viewDirection = normalize(cameraPosition - position);
     vec3 reflectedLight = reflect(lightDirection1, normalize(normal));
@@ -42,7 +48,7 @@ void main() {
     else specularTerm = 1;
     fragColor += k_s * specularTerm;
 
-    fragColor += k_d * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
+    fragColor += 0.4f * color * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
 
     viewDirection = normalize(cameraPosition - position);
     reflectedLight = reflect(lightDirection2, normalize(normal));

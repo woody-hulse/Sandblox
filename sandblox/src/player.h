@@ -3,6 +3,12 @@
 
 #include "terrain.h"
 #include "camera.h"
+#include <map>
+
+enum GameMode {
+    ADVENTURE,
+    CREATIVE
+};
 
 class Player
 {
@@ -13,6 +19,7 @@ public:
     void simulate(float deltaTime);
     bool collisionDetect(glm::vec3 direction);
 
+
     glm::vec3 velocity = glm::vec3(0.f);
     float moveSpeed = 10.0f;
     float gravity = 0.05f;
@@ -20,6 +27,10 @@ public:
 
     Terrain* terrain;
     Camera* camera;
+
+    GameMode gameMode = GameMode::ADVENTURE;
+    int inventorySelection;
+    std::map<int, int, int> inventory;
 };
 
 #endif // PLAYER_H

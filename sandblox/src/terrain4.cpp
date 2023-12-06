@@ -36,7 +36,7 @@ Terrain4::Terrain4() : Terrain()
     }
 
     crossSection.origin = glm::vec4(sizeX / 2.f, sizeW / 2.f, 0.f, 1.f);
-    crossSection.direction = glm::normalize(glm::vec4(0.f, 1.f, 0.f, 0.f));
+    crossSection.direction = glm::normalize(glm::vec4(1.f, 0.f, 0.f, 0.f));
 }
 
 
@@ -50,7 +50,7 @@ std::vector<std::vector<std::vector<float>>> Terrain4::generateHeightMap(float s
                                                                std::vector<glm::vec3>(sizeZ + 1)));
     for (int i = 0; i <= sizeX; i++) {
         for (int j = 0; j <= sizeY; j++) {
-            for (int k = 0; k <= sizeW; k++) {
+            for (int k = 0; k <= sizeZ; k++) {
                 gradients[i][j][k] = glm::normalize(glm::vec3(distribution(generator), distribution(generator), distribution(generator)));
             }
         }
@@ -58,13 +58,13 @@ std::vector<std::vector<std::vector<float>>> Terrain4::generateHeightMap(float s
 
     std::vector<std::vector<std::vector<float>>> noise(sizeX,
                                                        std::vector<std::vector<float>>(sizeY,
-                                                       std::vector<float>(sizeW)));
+                                                       std::vector<float>(sizeZ)));
     for (int i = 0; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
-            for (int k = 0; k < sizeW; k++) {
+            for (int k = 0; k < sizeZ; k++) {
                 float x = static_cast<float>(i) / sizeX * scale;
                 float y = static_cast<float>(j) / sizeY * scale;
-                float z = static_cast<float>(k) / sizeW * scale;
+                float z = static_cast<float>(k) / sizeZ * scale;
 
                 int x0 = static_cast<int>(x);
                 int x1 = x0 + 1;
@@ -96,21 +96,183 @@ std::vector<std::vector<std::vector<float>>> Terrain4::generateHeightMap(float s
     return noise;
 }
 
-void Terrain4::generateTerrain4() {
-    int numLayers = 3;
-    float baseScale = 1.0f;
+std::vector<std::vector<std::vector<std::vector<float>>>> Terrain4::generateHeightMap4(float scale) {
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_real_distribution<float> distribution(-0.5f, 0.5f);
 
-    for (int layer = 0; layer < numLayers; layer++) {
+    std::vector<std::vector<std::vector<std::vector<glm::vec4>>>> gradients(
+        sizeX + 1, std::vector<std::vector<std::vector<glm::vec4>>>(
+            sizeY + 1, std::vector<std::vector<glm::vec4>>(
+                sizeZ + 1, std::vector<glm::vec4>(sizeW + 1)
+                )
+            )
+        );
+
+    for (int i = 0; i <= sizeX; i++) {
+        for (int j = 0; j <= sizeY; j++) {
+            for (int k = 0; k <= sizeZ; k++) {
+                for (int l = 0; l <= sizeW; l++) {
+                    gradients[i][j][k][l] = glm::normalize(
+                        glm::vec4(distribution(generator), distribution(generator), distribution(generator), distribution(generator))
+                        );
+                }
+            }
+        }
+    }
+
+    std::vector<std::vector<std::vector<std::vector<float>>>> noise(
+        sizeX, std::vector<std::vector<std::vector<float>>>(
+            sizeY, std::vector<std::vector<float>>(
+                sizeZ, std::vector<float>(sizeW)
+                )
+            )
+        );
+
+    for (int i = 0; i < sizeX; i++) {
+        for (int j = 0; j < sizeY; j++) {
+            for (int k = 0; k < sizeZ; k++) {
+                for (int l = 0; l < sizeW; l++) {
+                    float x = static_cast<float>(i) / sizeX * scale;
+                    float y = static_cast<float>(j) / sizeY * scale;
+                    float z = static_cast<float>(k) / sizeZ * scale;
+                    float w = static_cast<float>(l) / sizeW * scale;
+
+                    int x0 = static_cast<int>(x);
+                    int x1 = x0 + 1;
+                    int y0 = static_cast<int>(y);
+                    int y1 = y0 + 1;
+                    int z0 = static_cast<int>(z);
+                    int z1 = z0 + 1;
+                    int w0 = static_cast<int>(w);
+                    int w1 = w0 + 1;
+
+                    float u = x - x0;
+                    float v = y - y0;
+                    float s = z - z0;
+                    float t = w - w0;
+
+                    // bug here :(
+
+                    float x00 = glm::mix(glm::mix(glm::mix(
+                                                      glm::dot(gradients[x0][y0][z0][w0], glm::vec4(u, v, s, t)),
+                                                      glm::dot(gradients[x1][y0][z0][w0], glm::vec4(u - 1.0f, v, s, t)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z0][w0], glm::vec4(u, v - 1.0f, s, t)),
+                                                           glm::dot(gradients[x1][y1][z0][w0], glm::vec4(u - 1.0f, v - 1.0f, s, t)), u), v),
+                                         glm::mix(glm::mix(glm::dot(gradients[x0][y0][z1][w0], glm::vec4(u, v, s - 1.0f, t)),
+                                                           glm::dot(gradients[x1][y0][z1][w0], glm::vec4(u - 1.0f, v, s - 1.0f, t)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w0], glm::vec4(u, v - 1.0f, s - 1.0f, t)),
+                                                           glm::dot(gradients[x1][y1][z1][w0], glm::vec4(u - 1.0f, v - 1.0f, s - 1.0f, t)), u), v), w);
+
+                    float x10 = glm::mix(glm::mix(glm::mix(
+                                                      glm::dot(gradients[x0][y0][z0][w1], glm::vec4(u, v, s, t - 1.0f)),
+                                                      glm::dot(gradients[x1][y0][z0][w1], glm::vec4(u - 1.0f, v, s, t - 1.0f)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z0][w1], glm::vec4(u, v - 1.0f, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y1][z0][w1], glm::vec4(u - 1.0f, v - 1.0f, s, t - 1.0f)), u), v),
+                                         glm::mix(glm::mix(glm::dot(gradients[x0][y0][z1][w1], glm::vec4(u, v, s - 1.0f, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y0][z1][w1], glm::vec4(u - 1.0f, v, s - 1.0f, t - 1.0f)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w1], glm::vec4(u, v - 1.0f, s - 1.0f, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y1][z1][w1], glm::vec4(u - 1.0f, v - 1.0f, s - 1.0f, t - 1.0f)), u), v), w);
+
+                    float x01 = glm::mix(glm::mix(glm::mix(
+                                                      glm::dot(gradients[x0][y0][z1][w0], glm::vec4(u, v, s, t)),
+                                                      glm::dot(gradients[x1][y0][z1][w0], glm::vec4(u - 1.0f, v, s, t)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w0], glm::vec4(u, v - 1.0f, s, t)),
+                                                           glm::dot(gradients[x1][y1][z1][w0], glm::vec4(u - 1.0f, v - 1.0f, s, t)), u), v),
+                                         glm::mix(glm::mix(glm::dot(gradients[x0][y0][z1][w1], glm::vec4(u, v, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y0][z1][w1], glm::vec4(u - 1.0f, v, s, t - 1.0f)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w1], glm::vec4(u, v - 1.0f, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y1][z1][w1], glm::vec4(u - 1.0f, v - 1.0f, s, t - 1.0f)), u), v), w);
+
+                    float x11 = glm::mix(glm::mix(glm::mix(
+                                                      glm::dot(gradients[x0][y0][z1][w1], glm::vec4(u, v, s, t - 1.0f)),
+                                                      glm::dot(gradients[x1][y0][z1][w1], glm::vec4(u - 1.0f, v, s, t - 1.0f)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w1], glm::vec4(u, v - 1.0f, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y1][z1][w1], glm::vec4(u - 1.0f, v - 1.0f, s, t - 1.0f)), u), v),
+                                         glm::mix(glm::mix(glm::dot(gradients[x0][y0][z1][w1], glm::vec4(u, v, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y0][z1][w1], glm::vec4(u - 1.0f, v, s, t - 1.0f)), u),
+                                                  glm::mix(glm::dot(gradients[x0][y1][z1][w1], glm::vec4(u, v - 1.0f, s, t - 1.0f)),
+                                                           glm::dot(gradients[x1][y1][z1][w1], glm::vec4(u - 1.0f, v - 1.0f, s, t - 1.0f)), u), v), w);
+
+                    float a0 = glm::mix(x00, x10, v);
+                    float a1 = glm::mix(x01, x11, v);
+
+                    float b0 = glm::mix(a0, a1, w);
+
+                    noise[i][j][k][l] = b0;
+                }
+            }
+        }
+    }
+
+    return noise;
+}
+
+
+void Terrain4::addHeightMap(
+    std::vector<std::vector<std::vector<float>>>& hm1,
+    std::vector<std::vector<std::vector<float>>>& hm2) {
+    for (int x = 0; x < sizeX; x++) {
+        for (int y = 0; y < sizeY; y++) {
+            for (int w = 0; w < sizeZ; w++) {
+                hm1[x][y][w] += hm2[x][y][w];
+            }
+        }
+    }
+}
+
+
+void Terrain4::addHeightMap4(
+    std::vector<std::vector<std::vector<std::vector<float>>>>& hm1,
+    std::vector<std::vector<std::vector<std::vector<float>>>>& hm2) {
+    for (int x = 0; x < sizeX; x++) {
+        for (int y = 0; y < sizeY; y++) {
+            for (int z = 0; z < sizeZ; z++) {
+                for (int w = 0; w < sizeW; w++) {
+                    hm1[x][y][z][w] += hm2[x][y][z][w];
+                }
+            }
+        }
+    }
+}
+
+void Terrain4::generateTerrain4() {
+    int numLayers = 3; // 3
+    float baseScale = 1.f; // 1.f
+
+    heightMap = generateHeightMap(baseScale);
+    // heightMap4 = generateHeightMap4(baseScale);
+    for (int layer = 1; layer < numLayers; layer++) {
         float scale = baseScale * std::pow(2, layer);
-        heightMap4 = generateHeightMap(scale);
+        //std::vector<std::vector<std::vector<std::vector<float>>>> hm2 = generateHeightMap4(scale);
+        //addHeightMap4(heightMap4, hm2);
+
+        std::vector<std::vector<std::vector<float>>> hm2 = generateHeightMap(scale);
+        addHeightMap(heightMap, hm2);
 
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                for (int z = 0; z < sizeZ; z++) {
-                    for (int w = 0; w < sizeW; w++) {
-                        if (z < (heightMap4[x][y][z] + 0.6) * sizeZ)
-                            terrain4[x][y][z][w] = 1;
-                        else terrain4[x][y][z][w] = 0;
+                for (int w = 0; w < sizeW; w++) {
+                    int depth = 0;
+                    for (int z = sizeZ - 1; z >= 0; z--) {
+                        float height = heightMap[x][y][z]; // do we want to fix this?
+                        float val = (height + 0.5) * sizeZ;
+                        if (z < val) {
+                            if (depth == 0) {
+                                terrain4[x][y][z][w] = 1;
+                            } else if (depth < 3) {
+                                terrain4[x][y][z][w] = 2;
+                            } else {
+                                int a = 50;
+                                if (arc4random() % (sizeZ * a) > sizeZ * a - depth / 5.f) // fix
+                                    terrain4[x][y][z][w] = 4;
+                                else terrain4[x][y][z][w] = 3;
+                            }
+                            depth += 1;
+                        } else {
+                            depth = 0;
+                            terrain4[x][y][z][w] = 0;
+                        }
                     }
                 }
             }
@@ -174,8 +336,8 @@ void Terrain4::placeBlock(IntersectData& intersectData) {
     if (intersectData.x >= 0 && intersectData.x < sizeX) {
         if (intersectData.y >= 0 && intersectData.y < sizeY) {
             if (intersectData.z >= 0 && intersectData.z < sizeZ) {
-                terrain[intersectData.x][intersectData.y][intersectData.z] = 1;
-                *terrain_p[intersectData.x][intersectData.y][intersectData.z] = 1;
+                terrain[intersectData.x][intersectData.y][intersectData.z] = intersectData.blockType;
+                *terrain_p[intersectData.x][intersectData.y][intersectData.z] = intersectData.blockType;
                 generateTerrainMesh();
             }
         }

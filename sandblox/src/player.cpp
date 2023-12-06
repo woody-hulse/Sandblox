@@ -26,11 +26,11 @@ void Player::move(glm::vec3 direction) {
 }
 
 void Player::simulate(float deltaTime) {
-    if (gravity > 0.f) {
+    if (gravity > 0.f && gameMode == GameMode::ADVENTURE) {
         velocity.y -= gravity * deltaTime;
     }
 
-    if (grounded) {
+    if (grounded && gameMode == GameMode::ADVENTURE) {
         velocity.x *= 0.5f;
         velocity.z *= 0.5f;
     } else {
@@ -50,10 +50,15 @@ bool Player::collisionDetect(glm::vec3 direction) {
         glm::vec3(camera->data->pos) + glm::vec3(0.5f, 0.0f, -0.5f) * scale,
         glm::vec3(camera->data->pos) + glm::vec3(-0.5f, 0.0f, -0.5f) * scale,
 
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, 0.5f) * scale,
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, 0.5f) * scale,
-        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.5f, -0.5f) * scale,
-        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.5f, -0.5f) * scale
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -0.95f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -0.95f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -0.95f, -0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -0.95f, -0.5f) * scale,
+
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.9f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.9f, 0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(0.5f, -1.9f, -0.5f) * scale,
+        glm::vec3(camera->data->pos) + glm::vec3(-0.5f, -1.9f, -0.5f) * scale
     };
 
     bool collision = false;
@@ -66,7 +71,7 @@ bool Player::collisionDetect(glm::vec3 direction) {
         if (x >= 0 && x < terrain->sizeX) {
             if (y >= 0 && z < terrain->sizeY) {
                 if (z >= 0 && z < terrain->sizeZ) {
-                    if (terrain->terrain[x][y][z] == 1)
+                    if (terrain->terrain[x][y][z] > 0)
                         collision = true;
                 }
             }

@@ -30,6 +30,13 @@
 #include "player.h"
 
 
+struct UIElement {
+    int numVertices;
+    GLuint vao;
+    GLuint vbo;
+    GLuint texture;
+};
+
 class Sandblox : public QOpenGLWidget
 {
 private:
@@ -48,10 +55,10 @@ protected:
     void initializeGL() override;                       // Called once at the start of the program
     void paintGL() override;                            // Called whenever the OpenGL context changes or by an update() request
     void resizeGL(int width, int height) override;      // Called when window size changes
-    void background(glm::vec4 color);
-    void crosshairs(glm::vec4 color);
+    void initUI(GLuint& vao, GLuint& vbo, std::vector<GLfloat> data, int& numVertices);
+    void background();
     void drawPrimitives();
-    void paintTexture(GLuint texture, glm::vec2 mousePos);
+    void paintUI(UIElement e);
     void makeFBO();
 private:
     void keyPressEvent(QKeyEvent *event) override;
@@ -77,14 +84,13 @@ private:
     // Device Correction Variables
     int m_devicePixelRatio;
 
+    int m_ui_triangles;
+
     GLuint m_shader;
     GLuint m_texture_shader;
 
-    GLuint m_fullscreen_vbo;
-    GLuint m_fullscreen_vao;
-
-    GLuint m_crosshairs_vbo;
-    GLuint m_crosshairs_vao;
+    UIElement screen_fbo;
+    UIElement crosshair;
 
     int m_fbo_width;
     int m_fbo_height;
@@ -108,12 +114,10 @@ private:
     glm::vec4 lightDirection1 = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
     glm::vec4 lightDirection2 = glm::vec4(0.7f, 0.2f, 0.5f, 0.f);
 
-    void generateTerrain(int terrain[sizeX][sizeY][sizeZ]);
-    int terrain_[sizeX][sizeY][sizeZ]; // fix later
-
     Terrain terrain;
     Terrain4 terrain4;
     RayCast rayCast;
+    std::map<int, GLuint> textureMap;
 
     Player player;
 

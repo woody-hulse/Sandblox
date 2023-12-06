@@ -16,13 +16,14 @@ struct IntersectData {
     int z;
     int face;
     float t;
+    int blockType;
 };
 
 class Terrain : public Primitive
 {
 public:
-    static const int sizeX = 36;
-    static const int sizeY = 36;
+    static const int sizeX = 72;
+    static const int sizeY = sizeX;
     static const int sizeZ = 36;
 
     Terrain();
@@ -40,8 +41,10 @@ public:
     void makeFace(glm::vec3 topLeft,
                   glm::vec3 topRight,
                   glm::vec3 bottomLeft,
-                  glm::vec3 bottomRight);
+                  glm::vec3 bottomRight,
+                  uint8_t blockType);
     void insertVec3(std::vector<float> &data, glm::vec3 v);
+    void insertVec2(std::vector<float> &data, glm::vec2 v);
 
     RenderShapeData shapeData;
     uint8_t*** terrain;

@@ -90,12 +90,21 @@ void Terrain::generateTerrain() {
 void Terrain::generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]) {
     for (int x = 0; x < sizeX; x++) {
         for (int y = 0; y < sizeY; y++) {
-            for (int z = 0; z < sizeZ; z++) {
+            int depth = 0;
+            for (int z = sizeZ - 1; z >= 0; z--) {
                 // std::cout << x << " " << y << " " << z << ": " << heightMap[x][y] << std::endl;
-                if (z < (heightMap[x][y] + 0.3) * sizeZ / 2.f)
-                    terrain[x][y][z] = 1;
-                else
+                if (z < (heightMap[x][y] + 0.3) * sizeZ / 2.f) {
+                    if (depth == 0)
+                        terrain[x][y][z] = 1;
+                    else if (depth < 3)
+                        terrain[x][y][z] = 2;
+                    else
+                        terrain[x][y][z] = 3;
+                    depth += 1;
+                } else {
+                    depth = 0;
                     terrain[x][y][z] = 0;
+                }
             }
         }
     }
@@ -125,13 +134,15 @@ void Terrain::generateTerrainMesh() {
                         makeFace(glm::vec3(-0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3(-0.5f,  0.5f,  0.5f) + shift,
                                  glm::vec3(-0.5f, -0.5f, -0.5f) + shift,
-                                 glm::vec3(-0.5f, -0.5f,  0.5f) + shift);
+                                 glm::vec3(-0.5f, -0.5f,  0.5f) + shift,
+                                 terrain[x][y][z]);
 
                     if (drawFace && i == 1)
                         makeFace(glm::vec3( 0.5f,  0.5f,  0.5f) + shift,
                                  glm::vec3( 0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3( 0.5f, -0.5f,  0.5f) + shift,
-                                 glm::vec3( 0.5f, -0.5f, -0.5f) + shift);
+                                 glm::vec3( 0.5f, -0.5f, -0.5f) + shift,
+                                 terrain[x][y][z]);
                 }
 
                 for (int j = -1; j <= 1; j+=2) {
@@ -145,13 +156,15 @@ void Terrain::generateTerrainMesh() {
                         makeFace(glm::vec3(-0.5f, -0.5f, 0.5f) + shift,
                                  glm::vec3( 0.5f, -0.5f, 0.5f) + shift,
                                  glm::vec3(-0.5f, -0.5f, -0.5f) + shift,
-                                 glm::vec3( 0.5f, -0.5f, -0.5f) + shift);
+                                 glm::vec3( 0.5f, -0.5f, -0.5f) + shift,
+                                 terrain[x][y][z]);
 
                     if (drawFace && j == 1)
                         makeFace(glm::vec3(-0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3( 0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3(-0.5f,  0.5f,  0.5f) + shift,
-                                 glm::vec3( 0.5f,  0.5f,  0.5f) + shift);
+                                 glm::vec3( 0.5f,  0.5f,  0.5f) + shift,
+                                 terrain[x][y][z]);
                 }
 
                 for (int k = -1; k <= 1; k+=2) {
@@ -165,13 +178,15 @@ void Terrain::generateTerrainMesh() {
                         makeFace(glm::vec3( 0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3(-0.5f,  0.5f, -0.5f) + shift,
                                  glm::vec3( 0.5f, -0.5f, -0.5f) + shift,
-                                 glm::vec3(-0.5f, -0.5f, -0.5f) + shift);
+                                 glm::vec3(-0.5f, -0.5f, -0.5f) + shift,
+                                 terrain[x][y][z]);
 
                     if (drawFace && k == 1)
                         makeFace(glm::vec3(-0.5f,  0.5f, 0.5f) + shift,
                                  glm::vec3( 0.5f,  0.5f, 0.5f) + shift,
                                  glm::vec3(-0.5f, -0.5f, 0.5f) + shift,
-                                 glm::vec3( 0.5f, -0.5f, 0.5f) + shift);
+                                 glm::vec3( 0.5f, -0.5f, 0.5f) + shift,
+                                 terrain[x][y][z]);
                 }
 
                 if (drawBlock) rendered[x][y][z] = true;
@@ -198,7 +213,7 @@ void Terrain::placeBlock(IntersectData& intersectData) {
     if (intersectData.x >= 0 && intersectData.x < sizeX) {
         if (intersectData.y >= 0 && intersectData.y < sizeY) {
             if (intersectData.z >= 0 && intersectData.z < sizeZ) {
-                terrain[intersectData.x][intersectData.y][intersectData.z] = 1;
+                terrain[intersectData.x][intersectData.y][intersectData.z] = intersectData.blockType;
                 generateTerrainMesh();
             }
         }
@@ -208,24 +223,37 @@ void Terrain::placeBlock(IntersectData& intersectData) {
 void Terrain::makeFace(glm::vec3 topLeft,
                        glm::vec3 topRight,
                        glm::vec3 bottomLeft,
-                       glm::vec3 bottomRight) {
+                       glm::vec3 bottomRight,
+                       uint8_t blockType) {
 
     glm::vec3 normal1 = -glm::normalize(glm::cross(topLeft - topRight, topLeft - bottomLeft));
     glm::vec3 normal2 = -glm::normalize(glm::cross(bottomRight - bottomLeft, bottomRight - topRight));
 
     insertVec3(m_vertexData, topLeft);
     insertVec3(m_vertexData, normal1);
+    insertVec2(m_vertexData, glm::vec2(0.f, 1.f));
+    m_vertexData.push_back(blockType);
     insertVec3(m_vertexData, bottomLeft);
     insertVec3(m_vertexData, normal1);
+    insertVec2(m_vertexData, glm::vec2(0.f, 0.f));
+    m_vertexData.push_back(blockType);
     insertVec3(m_vertexData, topRight);
     insertVec3(m_vertexData, normal1);
+    insertVec2(m_vertexData, glm::vec2(1.f, 1.f));
+    m_vertexData.push_back(blockType);
 
     insertVec3(m_vertexData, topRight);
     insertVec3(m_vertexData, normal2);
+    insertVec2(m_vertexData, glm::vec2(1.f, 1.f));
+    m_vertexData.push_back(blockType);
     insertVec3(m_vertexData, bottomLeft);
     insertVec3(m_vertexData, normal2);
+    insertVec2(m_vertexData, glm::vec2(0.f, 0.f));
+    m_vertexData.push_back(blockType);
     insertVec3(m_vertexData, bottomRight);
     insertVec3(m_vertexData, normal2);
+    insertVec2(m_vertexData, glm::vec2(1.f, 0.f));
+    m_vertexData.push_back(blockType);
 }
 
 void Terrain::insertVec3(std::vector<float> &data, glm::vec3 v) {
@@ -233,3 +261,9 @@ void Terrain::insertVec3(std::vector<float> &data, glm::vec3 v) {
     data.push_back(v.y);
     data.push_back(v.z);
 }
+
+void Terrain::insertVec2(std::vector<float> &data, glm::vec2 v) {
+    data.push_back(v.x);
+    data.push_back(v.y);
+}
+

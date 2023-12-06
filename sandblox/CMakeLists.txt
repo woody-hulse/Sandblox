@@ -76,6 +76,15 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
     PREFIX
         "/"
     FILES
+        resources/textures/grass.png
+        resources/textures/dirt.png
+        resources/textures/rock.png
+        resources/textures/ore.png
+        resources/textures/grass2.png
+        resources/textures/dirt2.png
+        resources/textures/rock2.png
+        resources/textures/ore2.png
+        resources/textures/planks.png
         resources/shaders/default.frag
         resources/shaders/default.vert
         resources/shaders/texture.frag

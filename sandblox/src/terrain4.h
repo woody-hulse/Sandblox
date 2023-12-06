@@ -9,6 +9,13 @@ public:
     Terrain4();
 
     std::vector<std::vector<std::vector<float>>> generateHeightMap(float scale);
+    std::vector<std::vector<std::vector<std::vector<float>>>> generateHeightMap4(float scale);
+    void addHeightMap(
+        std::vector<std::vector<std::vector<float>>>& hm1,
+        std::vector<std::vector<std::vector<float>>>& hm2);
+    void addHeightMap4(
+        std::vector<std::vector<std::vector<std::vector<float>>>>& hm1,
+        std::vector<std::vector<std::vector<std::vector<float>>>>& hm2);
     void generateTerrain4();
     void generateTerrain();
     void breakBlock(IntersectData& intersectData);
@@ -18,12 +25,13 @@ public:
 
     Ray crossSection;
 
-    static const int sizeW = 24;
+    static const int sizeW = sizeX;
 
     uint8_t**** terrain4;
     uint8_t**** terrain_p;
     bool**** rendered4;
-    std::vector<std::vector<std::vector<float>>> heightMap4;
+    std::vector<std::vector<std::vector<float>>> heightMap;
+    std::vector<std::vector<std::vector<std::vector<float>>>> heightMap4;
 };
 
 #endif // TERRAIN4_H

@@ -332,7 +332,7 @@ build StaticGLEW_autogen: phony CMakeFiles/StaticGLEW_autogen StaticGLEW_autogen
 #############################################
 # Custom command for .rcc/qrc_Resources.cpp
 
-build .rcc/qrc_Resources.cpp | ${cmake_ninja_workdir}.rcc/qrc_Resources.cpp: CUSTOM_COMMAND /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.frag /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.vert .rcc/Resources.qrc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/rcc || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a sandblox_autogen sandblox_autogen_timestamp_deps
+build .rcc/qrc_Resources.cpp | ${cmake_ninja_workdir}.rcc/qrc_Resources.cpp: CUSTOM_COMMAND /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/grass.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/dirt.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/rock.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/ore.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/grass2.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/dirt2.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/rock2.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/ore2.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/planks.png /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.frag /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.vert /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/texture.frag /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/texture.vert .rcc/Resources.qrc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/rcc || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a sandblox_autogen sandblox_autogen_timestamp_deps
   COMMAND = cd /Users/woodyhulse/Documents/class/cs1230/Sandblox/build-sandblox-Qt_6_5_3_for_macOS-Debug && /Users/woodyhulse/Qt/6.5.3/macos/./libexec/rcc --output /Users/woodyhulse/Documents/class/cs1230/Sandblox/build-sandblox-Qt_6_5_3_for_macOS-Debug/.rcc/qrc_Resources.cpp --name Resources /Users/woodyhulse/Documents/class/cs1230/Sandblox/build-sandblox-Qt_6_5_3_for_macOS-Debug/.rcc/Resources.qrc --no-zstd
   DESC = Running rcc for resource Resources
   restat = 1
@@ -361,7 +361,7 @@ build StaticGLEW_autogen/timestamp StaticGLEW_autogen/mocs_compilation.cpp | ${c
 #############################################
 # Phony custom command for CMakeFiles/sandblox_autogen_timestamp_deps
 
-build CMakeFiles/sandblox_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic libStaticGLEW.a || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a
+build CMakeFiles/sandblox_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc libStaticGLEW.a || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a
 
 
 #############################################
@@ -373,7 +373,7 @@ build CMakeFiles/sandblox_autogen | ${cmake_ninja_workdir}CMakeFiles/sandblox_au
 #############################################
 # Phony custom command for CMakeFiles/StaticGLEW_autogen_timestamp_deps
 
-build CMakeFiles/StaticGLEW_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic
+build CMakeFiles/StaticGLEW_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc
 
 
 #############################################

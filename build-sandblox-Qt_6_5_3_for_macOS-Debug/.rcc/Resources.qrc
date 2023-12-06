@@ -1,7 +1,18 @@
 <RCC>
   <qresource prefix="/">
+    <file alias="resources/textures/grass.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/grass.png</file>
+    <file alias="resources/textures/dirt.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/dirt.png</file>
+    <file alias="resources/textures/rock.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/rock.png</file>
+    <file alias="resources/textures/ore.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/ore.png</file>
+    <file alias="resources/textures/grass2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/grass2.png</file>
+    <file alias="resources/textures/dirt2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/dirt2.png</file>
+    <file alias="resources/textures/rock2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/rock2.png</file>
+    <file alias="resources/textures/ore2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/ore2.png</file>
+    <file alias="resources/textures/planks.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/planks.png</file>
     <file alias="resources/shaders/default.frag">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.frag</file>
     <file alias="resources/shaders/default.vert">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.vert</file>
+    <file alias="resources/shaders/texture.frag">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/texture.frag</file>
+    <file alias="resources/shaders/texture.vert">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/texture.vert</file>
   </qresource>
 </RCC>
 

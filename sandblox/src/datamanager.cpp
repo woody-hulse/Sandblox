@@ -44,4 +44,24 @@ void passShapeData(GLuint& program, SceneGlobalData& globalData, RenderShapeData
 
     GLint shininessLocation = glGetUniformLocation(program, "shininess");
     glUniform1f(shininessLocation, shapeData.primitive.material.shininess);
+
+    GLint textureLocation = glGetUniformLocation(program, "sampler");
+    glUniform1i(textureLocation, 0);
+}
+
+GLint getArrayLocation(GLuint& program, int index, std::string name) {
+    std::string str = name + "[" + std::to_string(index) + "]";
+    char* dataName = new char[str.length() + 1];
+    strcpy(dataName, str.c_str());
+    return glGetUniformLocation(program, dataName);
+}
+
+void passTextures(GLuint& program, std::map<int, GLuint> textures) {
+    for (const auto texture : textures) {
+        glActiveTexture(GL_TEXTURE0 + texture.first);
+        glBindTexture(GL_TEXTURE_2D, texture.second);
+
+        GLint textureLocation = getArrayLocation(program, texture.first, "samplers");
+        glUniform1i(textureLocation, texture.first);
+    }
 }

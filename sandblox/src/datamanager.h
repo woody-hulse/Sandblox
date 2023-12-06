@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <map>
 
 #include "glm/gtx/string_cast.hpp"
 
@@ -14,3 +15,5 @@ void passCameraData(GLuint& program, Camera& camera);
 void passLightData(GLuint& program, glm::vec4 lightDirection1, glm::vec4 lightDirection2);
 
 void passShapeData(GLuint& program, SceneGlobalData& globalData, RenderShapeData& shapeData);
+
+void passTextures(GLuint& program, std::map<int, GLuint> textures);

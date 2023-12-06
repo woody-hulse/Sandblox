@@ -21,8 +21,6 @@ Sandblox::Sandblox(QWidget *parent)
     m_keyMap[Qt::Key_D]       = false;
     m_keyMap[Qt::Key_Control] = false;
     m_keyMap[Qt::Key_Space]   = false;
-
-    // If you must use this function, do not edit anything above this
 }
 
 void Sandblox::finish() {
@@ -35,7 +33,6 @@ void Sandblox::finish() {
 }
 
 void Sandblox::makeFBO(){
-    // Task 19: Generate and bind an empty texture, set its min/mag filter interpolation, then unbind
     glGenTextures(1, &m_fbo_texture);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
@@ -43,60 +40,71 @@ void Sandblox::makeFBO(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
-    // Task 20: Generate and bind a renderbuffer of the right size, set its format, then unbind
+
     glGenRenderbuffers(1, &m_fbo_renderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_fbo_renderbuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_fbo_width, m_fbo_height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    // Task 18: Generate and bind an FBO
+
     glGenFramebuffers(1, &m_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-    // Task 21: Add our texture as a color attachment, and our renderbuffer as a depth+stencil attachment, to our FBO
+
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbo_texture, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_fbo_renderbuffer);
-    // Task 22: Unbind the FBO
+
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
 }
 
-void Sandblox::paintTexture(GLuint texture, glm::vec2 mousePos){
+GLuint createTexture(const glm::vec4& color) {
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    unsigned char pixelData[4] = {
+        static_cast<unsigned char>(color.r * 255),
+        static_cast<unsigned char>(color.g * 255),
+        static_cast<unsigned char>(color.b * 255),
+        static_cast<unsigned char>(color.a * 255)
+    };
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return textureID;
+}
+
+void Sandblox::paintUI(UIElement e){
     glUseProgram(m_texture_shader);
-    glBindVertexArray(m_fullscreen_vao);
-    // Task 32: Set your bool uniform on whether or not to filter the texture drawn
-    GLint loc = glGetUniformLocation(m_texture_shader, "mousePos");
-    if (loc != -1)glUniform2fv(loc, 1, &mousePos[0]);
-    loc = glGetUniformLocation(m_texture_shader, "width");
-    if (loc != -1)glUniform1i(loc, size().width());
-    loc = glGetUniformLocation(m_texture_shader, "height");
-    if (loc != -1)glUniform1i(loc, size().height());
-    // Task 10: Bind "texture" to slot 0
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(e.vao);
+
+    GLint textureLocation = glGetUniformLocation(m_texture_shader, "sampler");
+    glUniform1i(textureLocation, 0);
+    GLint widthLocation = glGetUniformLocation(m_texture_shader, "width");
+    glUniform1i(widthLocation, size().width() * m_devicePixelRatio);
+    GLint heightLocation = glGetUniformLocation(m_texture_shader, "height");
+    glUniform1i(heightLocation, size().height() * m_devicePixelRatio);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, e.texture);
+    glDrawArrays(GL_TRIANGLES, 0, e.numVertices);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);
 }
 
-void Sandblox::background(glm::vec4 color) {
-    glUseProgram(m_texture_shader);
-    GLint loc = glGetUniformLocation(m_texture_shader, "textureMap");
-    if (loc != -1)glUniform1i(loc, 0);
-    glUseProgram(0);
+void Sandblox::initUI(GLuint& vao, GLuint& vbo, std::vector<GLfloat> data, int& numVertices) {
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, data.size()*sizeof(GLfloat), data.data(), GL_STATIC_DRAW);
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
-    std::vector<GLfloat> fullscreen_quad_data =
-        { //     POSITIONS    //
-            -1.f,  1.f, 0.0f, 0.f, 1.f,
-            -1.f, -1.f, 0.0f, 0.f, 0.f,
-            1.f, -1.f, 0.0f, 1.f, 0.f,
-            1.f,  1.f, 0.0f, 1.f, 1.f,
-            -1.f,  1.f, 0.0f, 0.f, 1.f,
-            1.f, -1.f, 0.0f, 1.f, 0.f
-        };
-
-    glGenBuffers(1, &m_fullscreen_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
-    glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
-    glGenVertexArrays(1, &m_fullscreen_vao);
-    glBindVertexArray(m_fullscreen_vao);
+    numVertices = data.size() / 5;
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr);
@@ -106,18 +114,60 @@ void Sandblox::background(glm::vec4 color) {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    makeFBO();
 }
 
+void Sandblox::background() {
 
-void Sandblox::generateTerrain(int terrain[sizeX][sizeY][sizeZ]) {
-    for (int i = 0; i < sizeX; i++) {
-        for (int j = 0; j < sizeY; j++) {
-            for (int k = 0; k < sizeZ; k++) {
-                terrain[i][j][k] = 1;
-            }
-        }
-    }
+    std::vector<GLfloat> fullscreen_quad_data =
+    {
+        -1.f,  1.f, 0.f, 0.f, 1.f,
+        -1.f, -1.f, 0.f, 0.f, 0.f,
+         1.f, -1.f, 0.f, 1.f, 0.f,
+         1.f,  1.f, 0.f, 1.f, 1.f,
+        -1.f,  1.f, 0.f, 0.f, 1.f,
+         1.f, -1.f, 0.f, 1.f, 0.f
+    };
+
+    float s1 = 0.0015f;
+    float s2 = 0.01f;
+    float ar = (float)m_screen_width / m_screen_height;
+    std::vector<GLfloat> crosshairs_quad_data =
+    {
+        -s1,  s2*ar, 0.f, 0.f, 0.f,
+        -s1, -s2*ar, 0.f, 0.f, 0.f,
+         s1, -s2*ar, 0.f, 0.f, 0.f,
+         s1,  s2*ar, 0.f, 0.f, 0.f,
+        -s1,  s2*ar, 0.f, 0.f, 0.f,
+         s1, -s2*ar, 0.f, 0.f, 0.f,
+
+        -s2,  s1*ar, 0.f, 0.f, 0.f,
+        -s2, -s1*ar, 0.f, 0.f, 0.f,
+         s2, -s1*ar, 0.f, 0.f, 0.f,
+         s2,  s1*ar, 0.f, 0.f, 0.f,
+        -s2,  s1*ar, 0.f, 0.f, 0.f,
+         s2, -s1*ar, 0.f, 0.f, 0.f
+    };
+
+    makeFBO();
+
+    initUI(screen_fbo.vao, screen_fbo.vbo, fullscreen_quad_data, screen_fbo.numVertices);
+    screen_fbo.texture = m_fbo_texture;
+
+    initUI(crosshair.vao, crosshair.vbo, crosshairs_quad_data, crosshair.numVertices);
+    GLuint m_crosshair_texture = createTexture(glm::vec4(0.6f, 0.6f, 0.6f, 1.f));
+    crosshair.texture = m_crosshair_texture;
+}
+
+void createImageTexture(GLuint& texture, QImage image, int index) {
+    glGenTextures(1, &texture);
+    glActiveTexture(GL_TEXTURE0 + index);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Sandblox::initializeGL() {
@@ -146,49 +196,7 @@ void Sandblox::initializeGL() {
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
 
-    //NEW CODE---------------------
-    glUseProgram(m_texture_shader);
-    GLint loc = glGetUniformLocation(m_texture_shader, "textureMap");
-    if (loc != -1)glUniform1i(loc, 0);
-    glUseProgram(0);
-
-    std::vector<GLfloat> fullscreen_quad_data =
-        { //     POSITIONS    //
-            -1.0,  1.0, 0.0f,
-            0.0,  1.0, 0.0f,
-            -1.0, -1.0, 0.0f,
-            0.0,  0.0, 0.0f,
-            1.0, -1.0, 0.0f,
-            1.0,  0.0, 0.0f,
-            1.0,  1.0, 0.0f,
-            1.0,  1.0, 0.0f,
-            -1.0,  1.0, 0.0f,
-            0.0,  1.0, 0.0f,
-            1.0, -1.0, 0.0f,
-            1.0,  0.0, 0.0f
-        };
-    // Generate and bind a VBO and a VAO for a fullscreen quad
-    glGenBuffers(1, &m_fullscreen_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
-    glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
-    glGenVertexArrays(1, &m_fullscreen_vao);
-    glBindVertexArray(m_fullscreen_vao);
-
-    // Task 14: modify the code below to add a second attribute to the vertex attribute array
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), nullptr);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
-
-    // Unbind the fullscreen quad's VBO and VAO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    makeFBO();
-
-
-    //______________________________
+    background();
 
     cube.updateParams(1, 1);
 
@@ -202,7 +210,32 @@ void Sandblox::initializeGL() {
     basicGlobalData.kd = 0.2f;
     basicGlobalData.ks = 0.4f;
 
-    generateTerrain(terrain_);
+    QImage grass = QImage(QString(":/resources/textures/grass.png"));
+    grass = grass.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    QImage dirt = QImage(QString(":/resources/textures/dirt2.png"));
+    dirt = dirt.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    QImage rock = QImage(QString(":/resources/textures/rock2.png"));
+    rock = rock.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    QImage ore = QImage(QString(":/resources/textures/ore2.png"));
+    ore = ore.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    QImage planks = QImage(QString(":/resources/textures/planks.png"));
+    planks = planks.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+
+    textureMap[1] = createTexture(glm::vec4(1.f, 0.f, 0.f, 1.f));
+    createImageTexture(textureMap[1], grass, 1);
+    textureMap[2] = createTexture(glm::vec4(0.f, 1.f, 0.f, 1.f));
+    createImageTexture(textureMap[2], dirt, 2);
+    textureMap[3] = createTexture(glm::vec4(0.f, 0.f, 1.f, 1.f));
+    createImageTexture(textureMap[3], rock, 3);
+    textureMap[4] = createTexture(glm::vec4(1.f, 0.f, 1.f, 1.f));
+    createImageTexture(textureMap[4], ore, 4);
+    textureMap[5] = createTexture(glm::vec4(1.f, 0.f, 1.f, 1.f));
+    createImageTexture(textureMap[5], planks, 5);
 
     terrain = Terrain();
     terrain.generateTerrain();
@@ -242,6 +275,7 @@ void Sandblox::initializeGL() {
     sceneChanged();
 }
 
+
 void Sandblox::paintGL() {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
@@ -258,18 +292,20 @@ void Sandblox::paintGL() {
     passLightData(m_shader, lightDirection1, lightDirection2);
     passCameraData(m_shader, camera);
 
+    passTextures(m_shader, textureMap);
     glBindVertexArray(terrain4.shapeData.shape->vao);
     glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles);
-    //std::cout << shapeData.numTriangles << std::endl;
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    paintUI(crosshair);
 
     glUseProgram(0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-    glViewport(0, 0, m_fbo_width, m_fbo_height);
+    glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    paintTexture(m_fbo_texture, glm::vec2(m_prev_mouse_pos[0], m_prev_mouse_pos[1]));
-
+    paintUI(screen_fbo);
 }
 
 void Sandblox::resizeGL(int w, int h) {
@@ -290,8 +326,8 @@ void Sandblox::drawPrimitives() {
     terrain.drawShape(m_shader);
     terrain4.drawShape(m_shader);
 
-    terrain.shapeData.numTriangles = terrain.vertexSize() / 6;
-    terrain4.shapeData.numTriangles = terrain4.vertexSize() / 6;
+    terrain.shapeData.numTriangles = terrain.vertexSize() / 9;
+    terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
     terrain.shapeData.shape = &terrain;
     terrain4.shapeData.shape = &terrain4;
 
@@ -303,20 +339,8 @@ void Sandblox::sceneChanged() {
     camera = Camera(&renderData.cameraData, size().width(), size().height());
     rayCast = RayCast(&terrain4, &camera);
     player = Player(&terrain4, &camera);
-    std::cout << glm::to_string(camera.getPerspectiveMatrix()) << std::endl;
-
-//    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-//    glViewport(0, 0, m_screen_width, m_screen_height);
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     drawPrimitives();
-
-//    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-//    glViewport(0, 0, m_fbo_width, m_fbo_height);
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    paintTexture(m_fbo_texture, false, false);
-
-    //timerId = startTimer(1);
 
     update();
 }
@@ -330,6 +354,14 @@ void Sandblox::keyPressEvent(QKeyEvent *event) {
 }
 
 void Sandblox::keyReleaseEvent(QKeyEvent *event) {
+    if (m_keyMap[Qt::Key_P]) {
+        if (player.gameMode == GameMode::CREATIVE) player.gameMode = GameMode::ADVENTURE;
+        else{
+            player.gameMode = GameMode::CREATIVE;
+            player.velocity = glm::vec4(0.0f);
+        }
+    }
+
     m_keyMap[Qt::Key(event->key())] = false;
 }
 
@@ -354,6 +386,7 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         rayCast.computeRay(glm::vec2((float)size().width() / 2.f,
                                      (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
+        intersectData.blockType = 5;
         if (intersectData.intersection) {
             terrain4.placeBlock(intersectData);
             if (player.collisionDetect(glm::vec3(0.f)))
@@ -422,51 +455,80 @@ void Sandblox::mouseMoveEvent(QMouseEvent *event) {
 void Sandblox::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
+    float delta = 0.01;
 
     glm::vec4 move(0.0f);
 
-    if (m_keyMap[Qt::Key_W])
-        move += glm::normalize(renderData.cameraData.look);
-    if (m_keyMap[Qt::Key_S])
-        move += -glm::normalize(renderData.cameraData.look);
-    if (m_keyMap[Qt::Key_A])
-        move += -glm::vec4(glm::normalize(glm::cross(
-                               glm::vec3(renderData.cameraData.look),
-                               glm::vec3(renderData.cameraData.up))), 0.f);
-    if (m_keyMap[Qt::Key_D])
-        move += glm::vec4(glm::normalize(glm::cross(
-                              glm::vec3(renderData.cameraData.look),
-                              glm::vec3(renderData.cameraData.up))), 0.f);
-    move.y = 0;
-    if (m_keyMap[Qt::Key_Space])
-        move += glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
+    if (m_keyMap[Qt::Key_W]) {
+        glm::vec4 direction = renderData.cameraData.look;
+        direction.y = 0;
+        if (player.gameMode == GameMode::ADVENTURE) move += glm::normalize(direction);
+        else player.move(glm::normalize(direction) * delta);
+    }
+    if (m_keyMap[Qt::Key_S]) {
+        glm::vec4 direction = -renderData.cameraData.look;
+        direction.y = 0;
+        if (player.gameMode == GameMode::ADVENTURE) move += glm::normalize(direction);
+        else player.move(glm::normalize(direction) * delta);
+    }
+    if (m_keyMap[Qt::Key_A]) {
+        glm::vec3 direction = -glm::cross(
+            glm::vec3(renderData.cameraData.look),
+            glm::vec3(renderData.cameraData.up));
+        direction.y = 0;
+        if (player.gameMode == GameMode::ADVENTURE) move += glm::vec4(glm::normalize(direction), 0.f);
+        else player.move(glm::normalize(direction) * delta);
+    }
+    if (m_keyMap[Qt::Key_D]) {
+        glm::vec3 direction = glm::cross(
+            glm::vec3(renderData.cameraData.look),
+            glm::vec3(renderData.cameraData.up));
+        direction.y = 0;
+        if (player.gameMode == GameMode::ADVENTURE) move += glm::vec4(glm::normalize(direction), 0.f);
+        else player.move(glm::normalize(direction) * delta);
+    }
+
+    if (player.gameMode == GameMode::CREATIVE) player.grounded = false;
+
+    if (m_keyMap[Qt::Key_Space]) {
+        if (player.gameMode == GameMode::CREATIVE)
+            player.move(glm::vec3(0.0f, 1.0f, 0.0f) * delta);
+        else
+            move += glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+    }
+    if (m_keyMap[Qt::Key_Shift] && player.gameMode == GameMode::CREATIVE)
+        player.move(glm::vec3(0.0f, -1.0f, 0.0f) * delta);
 
     if (move != glm::vec4(0.0f)) {
-        player.velocity.x = move.x * deltaTime;
-        player.velocity.z = move.z * deltaTime;
-        if (player.grounded && move.y > 0) {
-            player.velocity.y = move.y * deltaTime * 2.f;
+        player.velocity.x = move.x * delta;
+        player.velocity.z = move.z * delta;
+        if (player.grounded || player.gameMode == GameMode::CREATIVE) {
+            player.velocity.y = move.y * delta * 2.f;
             player.grounded = false;
         }
         camera.computeViewMatrix();
-
-        /* add this
-        float epsilon = 0.001;
-        float delta = camera.data->pos.x - terrain4.crossSection.origin.x;
-        terrain4.crossSection.origin.x += delta;
-        terrain4.crossSection.origin.y += delta * terrain4.crossSection.direction.y;
-        */
     }
 
     if (m_keyMap[Qt::Key_Q]) {
-        float theta = -1.f * deltaTime;
+        float theta = -10.f * delta;
+        if (player.gameMode == GameMode::ADVENTURE) {
+            glm::vec4 pos = player.camera->data->pos;
+            terrain4.crossSection.origin = glm::vec4(
+                fmin(fmax(pos.x, 0.f), terrain4.sizeX),
+                fmin(fmax(pos.y, 0.f), terrain4.sizeY),
+                0.f,
+                0.f
+                );
+        }
         terrain4.rotateCrossSection(theta, 0.f);
         terrain4.generateTerrainMesh();
         drawPrimitives();
     }
 
     if (m_keyMap[Qt::Key_E]) {
-        float theta = 1.f * deltaTime;
+        float theta = 10.f * delta;
+        if (player.gameMode == GameMode::ADVENTURE)
+            terrain4.crossSection.origin = player.camera->data->pos;
         terrain4.rotateCrossSection(theta, 0.f);
         terrain4.generateTerrainMesh();
         drawPrimitives();
@@ -476,80 +538,10 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         terrain4.generateTerrain4();
         terrain4.generateTerrain();
 
-
         terrain4.generateTerrainMesh();
         drawPrimitives();
         camera.data->pos = glm::vec4(terrain4.sizeX / 2.f, terrain4.sizeZ + 2.f, terrain4.sizeY / 2.f, 1.f);
-    }
+    }   
 
     update();
-}
-
-// DO NOT EDIT
-void Sandblox::saveViewportImage(std::string filePath) {
-    // Make sure we have the right context and everything has been drawn
-    makeCurrent();
-
-    int fixedWidth = 1024;
-    int fixedHeight = 768;
-
-    // Create Frame Buffer
-    GLuint fbo;
-    glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-    // Create a color attachment texture
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fixedWidth, fixedHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
-
-    // Optional: Create a depth buffer if your rendering uses depth testing
-    GLuint rbo;
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, fixedWidth, fixedHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "Error: Framebuffer is not complete!" << std::endl;
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        return;
-    }
-
-    // Adjust the default FBO
-    GLuint oldFBO = m_defaultFBO;
-    m_defaultFBO = fbo;
-
-    // resize the openGL viewport and propagate new default FBO
-    resizeGL(fixedWidth, fixedHeight);
-
-    // Clear and render your scene here
-    paintGL();
-
-    // Read pixels from framebuffer
-    std::vector<unsigned char> pixels(fixedWidth * fixedHeight * 3);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glReadPixels(0, 0, fixedWidth, fixedHeight, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
-
-    // Unbind the framebuffer and return the default FBO
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    m_defaultFBO = oldFBO;
-    resizeGL(size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
-
-    // Convert to QImage
-    QImage image(pixels.data(), fixedWidth, fixedHeight, QImage::Format_RGB888);
-    QImage flippedImage = image.mirrored(); // Flip the image vertically
-
-    // Save to file using Qt
-    QString qFilePath = QString::fromStdString(filePath);
-    if (!flippedImage.save(qFilePath)) {
-        std::cerr << "Failed to save image to " << filePath << std::endl;
-    }
-
-    // Clean up
-    glDeleteTextures(1, &texture);
-    glDeleteRenderbuffers(1, &rbo);
-    glDeleteFramebuffers(1, &fbo);
 }
