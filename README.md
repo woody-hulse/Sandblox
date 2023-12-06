@@ -1,2 +1,1 @@
-# Sandblox
-CSCI1230 Final Project
+# Sandblox 4D
