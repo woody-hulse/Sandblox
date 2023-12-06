@@ -1,0 +1,554 @@
+## This file contains all the build statements describing the
+# compilation DAG.
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# 
+# Which is the root file.
+# =============================================================================
+
+# =============================================================================
+# Project: sandblox
+# Configurations: Debug
+# =============================================================================
+
+#############################################
+# Minimal version of Ninja required by this file
+
+ninja_required_version = 1.5
+
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
+# =============================================================================
+# Include auxiliary files.
+
+
+#############################################
+# Include rules file.
+
+include CMakeFiles/rules.ninja
+
+# =============================================================================
+
+#############################################
+# Logical path to working directory; prefix for absolute paths.
+
+cmake_ninja_workdir = /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/
+# =============================================================================
+# Object build statements for EXECUTABLE target sandblox
+
+
+#############################################
+# Order-only phony target for sandblox
+
+build cmake_object_order_depends_target_sandblox: phony || .rcc/qrc_Resources.cpp cmake_object_order_depends_target_StaticGLEW sandblox_autogen sandblox_autogen/mocs_compilation.cpp sandblox_autogen/timestamp sandblox_autogen_timestamp_deps
+
+build CMakeFiles/sandblox.dir/sandblox_autogen/mocs_compilation.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/sandblox_autogen/mocs_compilation.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/sandblox_autogen
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/main.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/main.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/main.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/sandblox.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/sandblox.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/sandblox.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/mainwindow.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/mainwindow.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/mainwindow.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/settings.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/settings.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/settings.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/utils/scenefilereader.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/utils/scenefilereader.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/utils/scenefilereader.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src/utils
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/utils/sceneparser.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/utils/sceneparser.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/utils/sceneparser.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src/utils
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/camera.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/camera.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/camera.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/cube.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/cube.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/cube.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/primitive.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/primitive.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/primitive.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/datamanager.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/datamanager.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/datamanager.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/terrain.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/terrain.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/terrain.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/ray.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/ray.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/ray.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/player.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/player.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/player.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/src/terrain4.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/src/terrain4.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/src/terrain4.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/src
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+build CMakeFiles/sandblox.dir/.rcc/qrc_Resources.cpp.o: CXX_COMPILER__sandblox_Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/.rcc/qrc_Resources.cpp || cmake_object_order_depends_target_sandblox
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB
+  DEP_FILE = CMakeFiles/sandblox.dir/.rcc/qrc_Resources.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include -iframework /Applications/Qt/6.2.4/macos/lib -isystem /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Headers -isystem /Applications/Qt/6.2.4/macos/mkspecs/macx-clang -isystem /Applications/Qt/6.2.4/macos/include -isystem /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Headers -isystem /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Headers
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  OBJECT_FILE_DIR = CMakeFiles/sandblox.dir/.rcc
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_PDB = sandblox.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target sandblox
+
+
+#############################################
+# Link the executable sandblox
+
+build sandblox: CXX_EXECUTABLE_LINKER__sandblox_Debug CMakeFiles/sandblox.dir/sandblox_autogen/mocs_compilation.cpp.o CMakeFiles/sandblox.dir/src/main.cpp.o CMakeFiles/sandblox.dir/src/sandblox.cpp.o CMakeFiles/sandblox.dir/src/mainwindow.cpp.o CMakeFiles/sandblox.dir/src/settings.cpp.o CMakeFiles/sandblox.dir/src/utils/scenefilereader.cpp.o CMakeFiles/sandblox.dir/src/utils/sceneparser.cpp.o CMakeFiles/sandblox.dir/src/camera.cpp.o CMakeFiles/sandblox.dir/src/cube.cpp.o CMakeFiles/sandblox.dir/src/primitive.cpp.o CMakeFiles/sandblox.dir/src/datamanager.cpp.o CMakeFiles/sandblox.dir/src/terrain.cpp.o CMakeFiles/sandblox.dir/src/ray.cpp.o CMakeFiles/sandblox.dir/src/player.cpp.o CMakeFiles/sandblox.dir/src/terrain4.cpp.o CMakeFiles/sandblox.dir/.rcc/qrc_Resources.cpp.o | libStaticGLEW.a /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Versions/A/QtOpenGLWidgets /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Versions/A/QtOpenGL /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Versions/A/QtWidgets /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Versions/A/QtGui /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Versions/A/QtXml /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Versions/A/QtCore || libStaticGLEW.a sandblox_autogen sandblox_autogen_timestamp_deps
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk
+  LINK_LIBRARIES = -Wl,-rpath,/Applications/Qt/6.2.4/macos/lib  libStaticGLEW.a  /Applications/Qt/6.2.4/macos/lib/QtOpenGLWidgets.framework/Versions/A/QtOpenGLWidgets  /Applications/Qt/6.2.4/macos/lib/QtOpenGL.framework/Versions/A/QtOpenGL  /Applications/Qt/6.2.4/macos/lib/QtWidgets.framework/Versions/A/QtWidgets  /Applications/Qt/6.2.4/macos/lib/QtGui.framework/Versions/A/QtGui  -Xlinker -framework -Xlinker OpenGL  -Xlinker -framework -Xlinker AGL  -framework AppKit  -framework ImageIO  -framework Metal  /Applications/Qt/6.2.4/macos/lib/QtXml.framework/Versions/A/QtXml  /Applications/Qt/6.2.4/macos/lib/QtCore.framework/Versions/A/QtCore  -framework DiskArbitration  -framework IOKit
+  LINK_PATH = -F/Applications/Qt/6.2.4/macos/lib
+  OBJECT_DIR = CMakeFiles/sandblox.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/sandblox.dir/
+  TARGET_FILE = sandblox
+  TARGET_PDB = sandblox.pdb
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target StaticGLEW
+
+
+#############################################
+# Order-only phony target for StaticGLEW
+
+build cmake_object_order_depends_target_StaticGLEW: phony || StaticGLEW_autogen StaticGLEW_autogen/mocs_compilation.cpp StaticGLEW_autogen/timestamp StaticGLEW_autogen_timestamp_deps
+
+build CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen/mocs_compilation.cpp.o: CXX_COMPILER__StaticGLEW_Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/StaticGLEW_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_StaticGLEW
+  DEP_FILE = CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen/mocs_compilation.cpp.o.d
+  FLAGS = -Wno-deprecated-volatile -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -std=gnu++20
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/StaticGLEW_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include
+  OBJECT_DIR = CMakeFiles/StaticGLEW.dir
+  OBJECT_FILE_DIR = CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen
+  TARGET_COMPILE_PDB = CMakeFiles/StaticGLEW.dir/StaticGLEW.pdb
+  TARGET_PDB = libStaticGLEW.pdb
+
+build CMakeFiles/StaticGLEW.dir/glew/src/glew.c.o: C_COMPILER__StaticGLEW_Debug /Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/src/glew.c || cmake_object_order_depends_target_StaticGLEW
+  DEP_FILE = CMakeFiles/StaticGLEW.dir/glew/src/glew.c.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk
+  INCLUDES = -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug -I/Users/woodyhulse/Documents/Sandblox4D/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/StaticGLEW_autogen/include -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/src -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/sandblox -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/PRIVATE -I/Users/woodyhulse/Documents/Sandblox4D/sandblox/glew/include
+  OBJECT_DIR = CMakeFiles/StaticGLEW.dir
+  OBJECT_FILE_DIR = CMakeFiles/StaticGLEW.dir/glew/src
+  TARGET_COMPILE_PDB = CMakeFiles/StaticGLEW.dir/StaticGLEW.pdb
+  TARGET_PDB = libStaticGLEW.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target StaticGLEW
+
+
+#############################################
+# Link the static library libStaticGLEW.a
+
+build libStaticGLEW.a: CXX_STATIC_LIBRARY_LINKER__StaticGLEW_Debug CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen/mocs_compilation.cpp.o CMakeFiles/StaticGLEW.dir/glew/src/glew.c.o || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps
+  ARCH_FLAGS = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk
+  LANGUAGE_COMPILE_FLAGS = -Wno-deprecated-volatile -g
+  OBJECT_DIR = CMakeFiles/StaticGLEW.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/StaticGLEW.dir/StaticGLEW.pdb
+  TARGET_FILE = libStaticGLEW.a
+  TARGET_PDB = libStaticGLEW.pdb
+
+
+#############################################
+# Utility command for sandblox_other_files
+
+build sandblox_other_files: phony
+
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/ccmake -S/Users/woodyhulse/Documents/Sandblox4D/sandblox -B/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --regenerate-during-build -S/Users/woodyhulse/Documents/Sandblox4D/sandblox -B/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles/install.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build CMakeFiles/install/local.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install/local: phony CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build install/strip: phony CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for sandblox_autogen_timestamp_deps
+
+build sandblox_autogen_timestamp_deps: phony CMakeFiles/sandblox_autogen_timestamp_deps libStaticGLEW.a
+
+
+#############################################
+# Utility command for sandblox_autogen
+
+build sandblox_autogen: phony CMakeFiles/sandblox_autogen sandblox_autogen/timestamp sandblox_autogen/mocs_compilation.cpp sandblox_autogen_timestamp_deps
+
+
+#############################################
+# Utility command for StaticGLEW_autogen_timestamp_deps
+
+build StaticGLEW_autogen_timestamp_deps: phony CMakeFiles/StaticGLEW_autogen_timestamp_deps
+
+
+#############################################
+# Utility command for StaticGLEW_autogen
+
+build StaticGLEW_autogen: phony CMakeFiles/StaticGLEW_autogen StaticGLEW_autogen/timestamp StaticGLEW_autogen/mocs_compilation.cpp StaticGLEW_autogen_timestamp_deps
+
+
+#############################################
+# Custom command for .rcc/qrc_Resources.cpp
+
+build .rcc/qrc_Resources.cpp | ${cmake_ninja_workdir}.rcc/qrc_Resources.cpp: CUSTOM_COMMAND /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/grass.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/dirt.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/rock.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/ore.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/grass2.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/dirt2.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/rock2.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/ore2.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/textures/planks.png /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/shaders/default.frag /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/shaders/default.vert /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/shaders/texture.frag /Users/woodyhulse/Documents/Sandblox4D/sandblox/resources/shaders/texture.vert .rcc/Resources.qrc /Applications/Qt/6.2.4/macos/./libexec/rcc || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a sandblox_autogen sandblox_autogen_timestamp_deps
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/6.2.4/macos/./libexec/rcc --output /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/.rcc/qrc_Resources.cpp --name Resources /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/.rcc/Resources.qrc --no-zstd
+  DESC = Running rcc for resource Resources
+  restat = 1
+
+
+#############################################
+# Custom command for sandblox_autogen/timestamp
+
+build sandblox_autogen/timestamp sandblox_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}sandblox_autogen/timestamp ${cmake_ninja_workdir}sandblox_autogen/mocs_compilation.cpp: CUSTOM_COMMAND /Applications/Qt/6.2.4/macos/./libexec/moc /Applications/Qt/6.2.4/macos/./libexec/uic || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a sandblox_autogen_timestamp_deps
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E cmake_autogen /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/sandblox_autogen.dir/AutogenInfo.json Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E touch /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/timestamp && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E cmake_transform_depfile Ninja gccdepfile /Users/woodyhulse/Documents/Sandblox4D/sandblox /Users/woodyhulse/Documents/Sandblox4D/sandblox /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/sandblox_autogen/deps /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/d/7bfaf1899182f2ea5cc888b7f7a14ba53055348c5266b2f3b6a31f65fe6c93c2.d
+  DESC = Automatic MOC and UIC for target sandblox
+  depfile = /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/d/7bfaf1899182f2ea5cc888b7f7a14ba53055348c5266b2f3b6a31f65fe6c93c2.d
+  restat = 1
+
+
+#############################################
+# Custom command for StaticGLEW_autogen/timestamp
+
+build StaticGLEW_autogen/timestamp StaticGLEW_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}StaticGLEW_autogen/timestamp ${cmake_ninja_workdir}StaticGLEW_autogen/mocs_compilation.cpp: CUSTOM_COMMAND /Applications/Qt/6.2.4/macos/./libexec/moc /Applications/Qt/6.2.4/macos/./libexec/uic || StaticGLEW_autogen_timestamp_deps
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E cmake_autogen /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/StaticGLEW_autogen.dir/AutogenInfo.json Debug && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E touch /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/StaticGLEW_autogen/timestamp && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -E cmake_transform_depfile Ninja gccdepfile /Users/woodyhulse/Documents/Sandblox4D/sandblox /Users/woodyhulse/Documents/Sandblox4D/sandblox /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/StaticGLEW_autogen/deps /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/d/14a4839e28751d5c45c03d2f7eb9aa8f480cfc8239136104cd7a86ef8329b8e9.d
+  DESC = Automatic MOC and UIC for target StaticGLEW
+  depfile = /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/CMakeFiles/d/14a4839e28751d5c45c03d2f7eb9aa8f480cfc8239136104cd7a86ef8329b8e9.d
+  restat = 1
+
+
+#############################################
+# Phony custom command for CMakeFiles/sandblox_autogen_timestamp_deps
+
+build CMakeFiles/sandblox_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen_timestamp_deps: phony libStaticGLEW.a /Applications/Qt/6.2.4/macos/./libexec/uic /Applications/Qt/6.2.4/macos/./libexec/moc || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a
+
+
+#############################################
+# Phony custom command for CMakeFiles/sandblox_autogen
+
+build CMakeFiles/sandblox_autogen | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen: phony sandblox_autogen/timestamp || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a sandblox_autogen_timestamp_deps
+
+
+#############################################
+# Phony custom command for CMakeFiles/StaticGLEW_autogen_timestamp_deps
+
+build CMakeFiles/StaticGLEW_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen_timestamp_deps: phony /Applications/Qt/6.2.4/macos/./libexec/uic /Applications/Qt/6.2.4/macos/./libexec/moc
+
+
+#############################################
+# Phony custom command for CMakeFiles/StaticGLEW_autogen
+
+build CMakeFiles/StaticGLEW_autogen | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen: phony StaticGLEW_autogen/timestamp || StaticGLEW_autogen_timestamp_deps
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/woodyhulse/Documents/Sandblox4D/sandblox/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build glm/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/ccmake -S/Users/woodyhulse/Documents/Sandblox4D/sandblox -B/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build glm/edit_cache: phony glm/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build glm/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --regenerate-during-build -S/Users/woodyhulse/Documents/Sandblox4D/sandblox -B/Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build glm/rebuild_cache: phony glm/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build glm/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build glm/CMakeFiles/install.util: CUSTOM_COMMAND glm/all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build glm/install: phony glm/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build glm/CMakeFiles/install/local.util: CUSTOM_COMMAND glm/all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build glm/install/local: phony glm/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build glm/CMakeFiles/install/strip.util: CUSTOM_COMMAND glm/all
+  COMMAND = cd /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm && /Applications/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build glm/install/strip: phony glm/CMakeFiles/install/strip.util
+
+# =============================================================================
+# Target aliases.
+
+build StaticGLEW: phony libStaticGLEW.a
+
+# =============================================================================
+# Folder targets.
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug
+
+build all: phony sandblox libStaticGLEW.a glm/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/woodyhulse/Documents/Sandblox4D/build-sandblox-Qt_6_2_4_for_macOS-Debug/glm
+
+build glm/all: phony
+
+# =============================================================================
+# Built-in targets
+
+
+#############################################
+# Re-run CMake if any of its inputs changed.
+
+build build.ninja: RERUN_CMAKE | .qtc/package-manager/auto-setup.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/FindWrapAtomic.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/FindWrapOpenGL.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Config.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigExtras.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Dependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Targets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6VersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtFeature.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtFeatureCommon.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicPluginHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicTargetHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigExtras.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigureFileTemplate.in /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlVersionlessTargets.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCCompiler.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCCompilerABI.c /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompiler.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompilerABI.cpp /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCompilerIdDetection.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCXXCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompileFeatures.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerABI.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerId.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineSystem.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindBinUtils.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindDependencyMacro.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeNinjaFindMake.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseArguments.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitIncludeInfo.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitLinkInfo.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseLibraryArchitecture.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystem.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCXXCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCompilerCommon.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXCompilerFlag.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckIncludeFile.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckLibraryExists.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ADSP-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMCC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Borland-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Cray-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GHS-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/HP-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IAR-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Intel-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/LCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/MSVC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVHPC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PGI-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PathScale-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SCO-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/TI-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Watcom-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XL-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/zOS-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindOpenGL.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageMessage.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindThreads.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/GNUInstallDirs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckCompilerFlag.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckFlagCommonConfig.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/FeatureTesting.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/MacroAddFileDependencies.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-AppleClang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Determine-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /Users/woodyhulse/Documents/Sandblox4D/sandblox/CMakeLists.txt /Users/woodyhulse/Documents/Sandblox4D/sandblox/glm/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
+  pool = console
+
+
+#############################################
+# A missing CMake input file is not an error.
+
+build .qtc/package-manager/auto-setup.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/FindWrapAtomic.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/FindWrapOpenGL.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Config.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigExtras.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Dependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6Targets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/Qt6VersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtFeature.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtFeatureCommon.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicPluginHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicTargetHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigExtras.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreConfigureFileTemplate.in /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Core/Qt6CoreVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6CoreTools/Qt6CoreToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBus/Qt6DBusVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6DBusTools/Qt6DBusToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Gui/Qt6GuiVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6GuiTools/Qt6GuiToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGL/Qt6OpenGLVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6OpenGLWidgets/Qt6OpenGLWidgetsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsVersionlessTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlAdditionalTargetInfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfig.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfigVersion.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlConfigVersionImpl.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlDependencies.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlTargets-relwithdebinfo.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlTargets.cmake /Applications/Qt/6.2.4/macos/lib/cmake/Qt6Xml/Qt6XmlVersionlessTargets.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCCompiler.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCCompilerABI.c /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompiler.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompilerABI.cpp /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCompilerIdDetection.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCXXCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompileFeatures.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerABI.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerId.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineSystem.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindBinUtils.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindDependencyMacro.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeNinjaFindMake.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseArguments.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitIncludeInfo.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitLinkInfo.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseLibraryArchitecture.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystem.cmake.in /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCXXCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCompilerCommon.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXCompilerFlag.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckIncludeFile.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckLibraryExists.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ADSP-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMCC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Borland-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Cray-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GHS-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/HP-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IAR-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Intel-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/LCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/MSVC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVHPC-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PGI-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PathScale-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SCO-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/TI-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Watcom-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XL-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/zOS-C-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindOpenGL.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageMessage.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindThreads.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/GNUInstallDirs.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckCompilerFlag.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckFlagCommonConfig.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckSourceCompiles.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/FeatureTesting.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/MacroAddFileDependencies.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-AppleClang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang-C.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Determine-CXX.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin.cmake /Applications/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /Users/woodyhulse/Documents/Sandblox4D/sandblox/CMakeLists.txt /Users/woodyhulse/Documents/Sandblox4D/sandblox/glm/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
+
+
+#############################################
+# Clean additional files.
+
+build CMakeFiles/clean.additional: CLEAN_ADDITIONAL
+  CONFIG = Debug
+
+
+#############################################
+# Clean all the built files.
+
+build clean: CLEAN CMakeFiles/clean.additional
+
+
+#############################################
+# Print all primary targets available.
+
+build help: HELP
+
+
+#############################################
+# Make the all target the default.
+
+default all

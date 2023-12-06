@@ -379,6 +379,7 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         IntersectData intersectData = rayCast.intersectRay();
         if (intersectData.intersection) {
             terrain4.breakBlock(intersectData);
+            player.inventory[intersectData.blockType - 1] ++;
             drawPrimitives();
         }
     }
@@ -390,11 +391,14 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         rayCast.computeRay(glm::vec2((float)size().width() / 2.f,
                                      (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
-        intersectData.blockType = 5;
-        if (intersectData.intersection) {
+        intersectData.blockType = player.inventorySelection + 1;
+        if (intersectData.intersection && player.inventory[player.inventorySelection] > 0) {
             terrain4.placeBlock(intersectData);
-            if (player.collisionDetect(glm::vec3(0.f)))
+            if (player.collisionDetect(glm::vec3(0.f))) {
                 terrain4.breakBlock(intersectData);
+            } else {
+                player.inventory[player.inventorySelection] --;
+            }
             drawPrimitives();
         }
     }
@@ -461,8 +465,8 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     float deltaTime = elapsedms * 0.001f;
     float delta = 0.01;
 
+    // movement
     glm::vec4 move(0.0f);
-
     if (m_keyMap[Qt::Key_W]) {
         glm::vec4 direction = renderData.cameraData.look;
         direction.y = 0;
@@ -513,6 +517,8 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         camera.computeViewMatrix();
     }
 
+
+    // cross section rotation
     if (m_keyMap[Qt::Key_Q]) {
         float theta = -10.f * delta;
         if (player.gameMode == GameMode::ADVENTURE) {
@@ -540,6 +546,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         drawPrimitives();
     }
 
+    // redraw environment
     if (m_keyMap[Qt::Key_O]) {
         terrain4.generateTerrain4();
         terrain4.generateTerrain();
@@ -547,7 +554,14 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         terrain4.generateTerrainMesh();
         drawPrimitives();
         camera.data->pos = glm::vec4(terrain4.sizeX / 2.f, terrain4.sizeZ + 2.f, terrain4.sizeY / 2.f, 1.f);
-    }   
+    }
+
+    // inventory
+    if (m_keyMap[Qt::Key_1]) player.inventorySelection = 0;
+    if (m_keyMap[Qt::Key_2]) player.inventorySelection = 1;
+    if (m_keyMap[Qt::Key_3]) player.inventorySelection = 2;
+    if (m_keyMap[Qt::Key_4]) player.inventorySelection = 3;
+    if (m_keyMap[Qt::Key_5]) player.inventorySelection = 4;
 
     update();
 }

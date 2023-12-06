@@ -29,8 +29,8 @@ public:
     Camera* camera;
 
     GameMode gameMode = GameMode::ADVENTURE;
-    int inventorySelection;
-    std::map<int, int, int> inventory;
+    int inventorySelection = 4;
+    int inventory[5] = {0, 0, 0, 0, 2};
 };
 
 #endif // PLAYER_H

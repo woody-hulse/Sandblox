@@ -319,6 +319,7 @@ void Terrain4::rotateCrossSection(float theta, float t) {
 
 
 void Terrain4::breakBlock(IntersectData& intersectData) {
+    intersectData.blockType = terrain[intersectData.x][intersectData.y][intersectData.z];
     terrain[intersectData.x][intersectData.y][intersectData.z] = 0;
     *terrain_p[intersectData.x][intersectData.y][intersectData.z] = 0;
     generateTerrainMesh();

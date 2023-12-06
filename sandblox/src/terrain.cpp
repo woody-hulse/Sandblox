@@ -197,6 +197,7 @@ void Terrain::generateTerrainMesh() {
 }
 
 void Terrain::breakBlock(IntersectData& intersectData) {
+    intersectData.blockType = terrain[intersectData.x][intersectData.y][intersectData.z];
     terrain[intersectData.x][intersectData.y][intersectData.z] = 0;
     generateTerrainMesh();
 }
