@@ -11,7 +11,7 @@ class Primitive
 public:
     Primitive();
 
-    virtual void updateParams(int param1, int param2) = 0;
+    virtual void updateParams(uint8_t blockType) = 0;
     virtual std::vector<float> generateShape() = 0;
     int vertexSize() const { return m_vertexData.size(); }
 

@@ -51,6 +51,9 @@ add_executable(${PROJECT_NAME}
     src/ray.h src/ray.cpp
     src/player.h src/player.cpp
     src/terrain4.h src/terrain4.cpp
+    src/ui.h src/ui.cpp
+    src/number.h
+    src/number.cpp
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
@@ -85,6 +88,10 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
         resources/textures/rock2.png
         resources/textures/ore2.png
         resources/textures/planks.png
+        resources/textures/wood.png
+        resources/textures/leaves.png
+        resources/textures/brick.png
+        resources/textures/brick2.png
         resources/shaders/default.frag
         resources/shaders/default.vert
         resources/shaders/texture.frag

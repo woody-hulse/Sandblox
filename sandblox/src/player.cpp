@@ -27,7 +27,7 @@ void Player::move(glm::vec3 direction) {
 
 void Player::simulate(float deltaTime) {
     if (gravity > 0.f && gameMode == GameMode::ADVENTURE) {
-        velocity.y -= gravity * deltaTime;
+        velocity.y -= gravity * 0.01;
     }
 
     if (grounded && gameMode == GameMode::ADVENTURE) {

@@ -8,6 +8,37 @@
 #include <random>
 #include <algorithm>
 
+#define FASTFLOOR(x) ( ((x)>0) ? ((int)x) : (((int)x)-1) )
+
+static unsigned char simplex[64][4] = {
+    {0,1,2,3},{0,1,3,2},{0,0,0,0},{0,2,3,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},{1,2,3,0},
+    {0,2,1,3},{0,0,0,0},{0,3,1,2},{0,3,2,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},{1,3,2,0},
+    {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},
+    {1,2,0,3},{0,0,0,0},{1,3,0,2},{0,0,0,0},{0,0,0,0},{0,0,0,0},{2,3,0,1},{2,3,1,0},
+    {1,0,2,3},{1,0,3,2},{0,0,0,0},{0,0,0,0},{0,0,0,0},{2,0,3,1},{0,0,0,0},{2,1,3,0},
+    {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},
+    {2,0,1,3},{0,0,0,0},{0,0,0,0},{0,0,0,0},{3,0,1,2},{3,0,2,1},{0,0,0,0},{3,1,2,0},
+    {2,1,0,3},{0,0,0,0},{0,0,0,0},{0,0,0,0},{3,1,0,2},{0,0,0,0},{3,2,0,1},{3,2,1,0}
+};
+
+
+void Terrain4::generatePermutation(unsigned char permutation[], int size) {
+    for (int i = 0; i < size; i++) {
+        permutation[i] = (unsigned char)i;
+    }
+
+    // fisher-yates shuffle algorithm
+    srand((unsigned int)time(NULL));
+    for (int i = size - 1; i > 0; i--) {
+        int j = arc4random() % (i + 1);
+
+        unsigned char temp = permutation[i];
+        permutation[i] = permutation[j];
+        permutation[j] = temp;
+    }
+}
+
+
 Terrain4::Terrain4() : Terrain()
 {
     m_vertexData = std::vector<float>();
@@ -37,6 +68,8 @@ Terrain4::Terrain4() : Terrain()
 
     crossSection.origin = glm::vec4(sizeX / 2.f, sizeW / 2.f, 0.f, 1.f);
     crossSection.direction = glm::normalize(glm::vec4(1.f, 0.f, 0.f, 0.f));
+
+    generatePermutation(permutation, 512);
 }
 
 
@@ -93,6 +126,163 @@ std::vector<std::vector<std::vector<float>>> Terrain4::generateHeightMap(float s
             }
         }
     }
+    return noise;
+}
+
+float grad(int hash, float x, float y, float z, float t) {
+    int h = hash & 31;
+    float u = h<24 ? x : y;
+    float v = h<16 ? y : z;
+    float w = h<8 ? z : t;
+    return ((h&1)? -u : u) + ((h&2)? -v : v) + ((h&4)? -w : w);
+}
+
+float Terrain4::simplex4(float x, float y, float z, float w) {
+
+    float F4 = (sqrt(5.0)-1.0)/4.0;
+    float G4 = (5.0-sqrt(5.0))/20.0;
+
+    float n[5];
+
+    int i[3];
+    int j[3];
+    int k[3];
+    int l[3];
+
+    // Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
+    float s = (x + y + z + w) * F4;
+    float xs = x + s;
+    float ys = y + s;
+    float zs = z + s;
+    float ws = w + s;
+    int i_ = FASTFLOOR(xs);
+    int j_ = FASTFLOOR(ys);
+    int k_ = FASTFLOOR(zs);
+    int l_ = FASTFLOOR(ws);
+
+    float t = (i_ + j_ + k_ + l_) * G4;
+    float X0 = i_ - t;
+    float Y0 = j_ - t;
+    float Z0 = k_ - t;
+    float W0 = l_ - t;
+
+    float x0 = x - X0;
+    float y0 = y - Y0;
+    float z0 = z - Z0;
+    float w0 = w - W0;
+
+
+    int c1 = (x0 > y0) ? 32 : 0;
+    int c2 = (x0 > z0) ? 16 : 0;
+    int c3 = (y0 > z0) ? 8 : 0;
+    int c4 = (x0 > w0) ? 4 : 0;
+    int c5 = (y0 > w0) ? 2 : 0;
+    int c6 = (z0 > w0) ? 1 : 0;
+    int c = c1 + c2 + c3 + c4 + c5 + c6;
+
+    i[0] = simplex[c][0]>=3 ? 1 : 0;
+    j[0] = simplex[c][1]>=3 ? 1 : 0;
+    k[0] = simplex[c][2]>=3 ? 1 : 0;
+    l[0] = simplex[c][3]>=3 ? 1 : 0;
+
+    i[1] = simplex[c][0]>=2 ? 1 : 0;
+    j[1] = simplex[c][1]>=2 ? 1 : 0;
+    k[1] = simplex[c][2]>=2 ? 1 : 0;
+    l[1] = simplex[c][3]>=2 ? 1 : 0;
+
+    i[2] = simplex[c][0]>=1 ? 1 : 0;
+    j[2] = simplex[c][1]>=1 ? 1 : 0;
+    k[2] = simplex[c][2]>=1 ? 1 : 0;
+    l[2] = simplex[c][3]>=1 ? 1 : 0;
+
+
+    float x1 = x0 - i[0] + G4;
+    float y1 = y0 - j[0] + G4;
+    float z1 = z0 - k[0] + G4;
+    float w1 = w0 - l[0] + G4;
+
+    float x2 = x0 - i[1] + 2.0f * G4;
+    float y2 = y0 - j[1] + 2.0f * G4;
+    float z2 = z0 - k[1] + 2.0f * G4;
+    float w2 = w0 - l[1] + 2.0f * G4;
+
+    float x3 = x0 - i[2] + 3.0f * G4;
+    float y3 = y0 - j[2] + 3.0f * G4;
+    float z3 = z0 - k[2] + 3.0f * G4;
+    float w3 = w0 - l[2] + 3.0f * G4;
+
+    float x4 = x0 - 1.0f + 4.0f * G4;
+    float y4 = y0 - 1.0f + 4.0f * G4;
+    float z4 = z0 - 1.0f + 4.0f * G4;
+    float w4 = w0 - 1.0f + 4.0f * G4;
+
+
+    int ii = i_ % 256;
+    int jj = j_ % 256;
+    int kk = k_ % 256;
+    int ll = l_ % 256;
+
+    float t0 = 0.6f - x0*x0 - y0*y0 - z0*z0 - w0*w0;
+    if(t0 < 0.0f) n[0] = 0.0f;
+    else {
+        t0 *= t0;
+        n[0] = t0 * t0 * grad(permutation[ii+permutation[jj+permutation[kk+permutation[ll]]]], x0, y0, z0, w0);
+    }
+
+    float t1 = 0.6f - x1*x1 - y1*y1 - z1*z1 - w1*w1;
+    if(t1 < 0.0f) n[1] = 0.0f;
+    else {
+        t1 *= t1;
+        n[1] = t1 * t1 * grad(permutation[ii+i[0]+permutation[jj+j[0]+permutation[kk+k[0]+permutation[ll+l[0]]]]], x1, y1, z1, w1);
+    }
+
+    float t2 = 0.6f - x2*x2 - y2*y2 - z2*z2 - w2*w2;
+    if(t2 < 0.0f) n[2] = 0.0f;
+    else {
+        t2 *= t2;
+        n[2] = t2 * t2 * grad(permutation[ii+i[1]+permutation[jj+j[1]+permutation[kk+k[1]+permutation[ll+l[1]]]]], x2, y2, z2, w2);
+    }
+
+    float t3 = 0.6f - x3*x3 - y3*y3 - z3*z3 - w3*w3;
+    if(t3 < 0.0f) n[3] = 0.0f;
+    else {
+        t3 *= t3;
+        n[3] = t3 * t3 * grad(permutation[ii+i[2]+permutation[jj+j[2]+permutation[kk+k[2]+permutation[ll+l[2]]]]], x3, y3, z3, w3);
+    }
+
+    float t4 = 0.6f - x4*x4 - y4*y4 - z4*z4 - w4*w4;
+    if(t4 < 0.0f) n[4] = 0.0f;
+    else {
+        t4 *= t4;
+        n[4] = t4 * t4 * grad(permutation[ii+1+permutation[jj+1+permutation[kk+1+permutation[ll+1]]]], x4, y4, z4, w4);
+    }
+
+    return 27.0f * (n[0] + n[1] + n[2] + n[3] + n[4]);
+}
+
+std::vector<std::vector<std::vector<std::vector<float>>>> Terrain4::generateSimplexHeightMap4(float scale) {
+    std::vector<std::vector<std::vector<std::vector<float>>>> noise(
+        sizeX, std::vector<std::vector<std::vector<float>>>(
+            sizeY, std::vector<std::vector<float>>(
+                sizeZ, std::vector<float>(sizeW)
+                )
+            )
+        );
+
+    for (int i = 0; i < sizeX; i++) {
+        for (int j = 0; j < sizeY; j++) {
+            for (int k = 0; k < sizeZ; k++) {
+                for (int l = 0; l < sizeW; l++) {
+                    float x = (float)i / sizeX * scale;
+                    float y = (float)j / sizeY * scale;
+                    float z = (float)k / sizeZ * scale;
+                    float w = (float)l / sizeW * scale;
+                    noise[i][j][k][l] = simplex4(x, y, z, w);
+                }
+            }
+        }
+    }
+
     return noise;
 }
 
@@ -237,25 +427,27 @@ void Terrain4::addHeightMap4(
 }
 
 void Terrain4::generateTerrain4() {
-    int numLayers = 3; // 3
-    float baseScale = 1.f; // 1.f
+    int numLayers = 2; // 3
+    float baseScale = 2.f; // 1.f
 
-    heightMap = generateHeightMap(baseScale);
-    // heightMap4 = generateHeightMap4(baseScale);
+    //heightMap = generateHeightMap(baseScale);
+    //heightMap4 = generateHeightMap4(baseScale);
+    generatePermutation(permutation, 512);
+    heightMap4 = generateSimplexHeightMap4(baseScale);
     for (int layer = 1; layer < numLayers; layer++) {
-        float scale = baseScale * std::pow(2, layer);
+        //float scale = baseScale * std::pow(2, layer);
         //std::vector<std::vector<std::vector<std::vector<float>>>> hm2 = generateHeightMap4(scale);
         //addHeightMap4(heightMap4, hm2);
 
-        std::vector<std::vector<std::vector<float>>> hm2 = generateHeightMap(scale);
-        addHeightMap(heightMap, hm2);
+        //std::vector<std::vector<std::vector<float>>> hm2 = generateHeightMap(scale);
+        //addHeightMap(heightMap, hm2);
 
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 for (int w = 0; w < sizeW; w++) {
                     int depth = 0;
                     for (int z = sizeZ - 1; z >= 0; z--) {
-                        float height = heightMap[x][y][z]; // do we want to fix this?
+                        float height = heightMap4[x][y][z][w]; // do we want to fix this?
                         float val = (height + 0.5) * sizeZ;
                         if (z < val) {
                             if (depth == 0) {
@@ -281,33 +473,6 @@ void Terrain4::generateTerrain4() {
 }
 
 
-std::vector<IntersectData> Terrain4::terrainRayIntersect() {
-    std::vector<IntersectData> intersections;
-
-    float x = crossSection.origin.x;
-    float y = crossSection.origin.y;
-
-    glm::vec2 pos(x, y);
-
-    float dx = crossSection.direction.x;
-    float dy = crossSection.direction.y;
-
-    float epsilon = 0.01f;
-    float step = fmin(1 / (abs(dx) + epsilon), 1 / (abs(dy) + epsilon));
-
-    glm::vec2 dir = glm::vec2(dx, dy) * step;
-
-    while (0 <= pos.x && int(pos.x) < sizeX && 0 <= pos.y && int(pos.y) < sizeW) {
-        IntersectData data;
-        data.x = int(pos.x);
-        data.y = int(pos.y);
-        intersections.push_back(data);
-
-        pos += dir;
-    }
-
-    return intersections;
-}
 
 void Terrain4::rotateCrossSection(float theta, float t) {
     float newX = crossSection.direction.x * cos(theta) - crossSection.direction.y * sin(theta);
@@ -346,54 +511,82 @@ void Terrain4::placeBlock(IntersectData& intersectData) {
 }
 
 
+std::vector<IntersectData> Terrain4::terrainRayIntersect(Ray ray) {
+    std::vector<IntersectData> intersections;
+
+    float x = ray.origin.x;
+    float y = ray.origin.y;
+
+    glm::vec2 pos(x, y);
+
+    float dx = ray.direction.x;
+    float dy = ray.direction.y;
+
+    float epsilon = 0.01f;
+    float step = fmin(1 / (abs(dx) + epsilon), 1 / (abs(dy) + epsilon));
+
+    glm::vec2 dir = glm::vec2(dx, dy) * step;
+
+    while (0 <= pos.x && int(pos.x) < sizeX && 0 <= pos.y && int(pos.y) < sizeW) {
+        IntersectData data;
+        data.x = int(pos.x);
+        data.y = int(pos.y);
+        intersections.push_back(data);
+
+        pos += dir;
+    }
+
+    return intersections;
+}
+
+
+std::vector<std::vector<IntersectData>> Terrain4::terrainPlaneIntersect(glm::vec3 a, glm::vec3 b, glm::vec3 p) {
+    std::vector<std::vector<IntersectData>> intersections(sizeX, std::vector<IntersectData>(sizeY));
+
+    glm::vec3 normal = glm::cross(a, b);
+    int count = 0;
+    for (int x = 0; x < sizeX; x++) {
+        for (int y = 0; y < sizeY; y++) {
+            for (int w = 0; w < sizeW; w++) {
+                glm::vec3 center(x + 0.5f, y + 0.5f, w + 0.5f);
+                if (abs(glm::dot(glm::normalize(center - p), normal)) < 0.01f)
+                    count++;
+            }
+        }
+    }
+
+    std::cout << count <<  " " << sizeX * sizeZ << std::endl;
+
+    return intersections;
+}
+
+
+void Terrain4::generateTerrain(bool test) {
+
+
+}
+
+
 void Terrain4::generateTerrain() {
-    std::vector<IntersectData> pos = terrainRayIntersect();
+
+    glm::vec3 p = glm::vec3(sizeX / 2.f, sizeY / 2.f, sizeZ / 2.f);
+    glm::vec3 a = glm::normalize(crossSection.direction);
+    glm::vec3 b = glm::normalize(glm::vec3(crossSection.origin) - p);
+    //terrainPlaneIntersect(a, b, p);
+
+
+    std::vector<IntersectData> pos = terrainRayIntersect(crossSection);
     crossSection.direction = -crossSection.direction;
 
-    std::vector<IntersectData> neg = terrainRayIntersect();
+    std::vector<IntersectData> neg = terrainRayIntersect(crossSection);
     neg.pop_back();
     crossSection.direction = -crossSection.direction;
 
     int cellX = int(crossSection.origin.x);
     int cellY = int(crossSection.origin.y);
 
-    float heightMap[sizeX][sizeY] = {{0}};
-
-    IntersectData pData;
-    pData.x = -1;
-    pData.y = -1;
-    int i = 0;
-    int cellIndex = 0;
-    int direction = 0;
-    while (i < neg.size()) {
-        // std::cout << neg[i].x << " " << neg[i].y << std::endl;
-        if (pData.x == neg[i].x || pData.y == neg[i].y) {
-        }
-
-        pData = neg[i];
-        i++;
-    }
-
-    pData.x = -1;
-    pData.y = -1;
-    i = 0;
-    while (i < pos.size()) {
-        // std::cout << pos[i].x << " " << pos[i].y << std::endl;
-        if (pData.x == pos[i].x || pData.y == pos[i].y) {
-
-        }
-
-        pData = pos[i];
-        i++;
-    }
-
-    // std::cout << glm::to_string(crossSection.direction) <<  std::endl;
-
-    // neg.insert(neg.end(), pos.begin(), pos.end());
-
     for (int i = cellX; i >= 0; i--) {
         for (int j = 0; j < sizeY; j++) {
-            // std::cout << neg.size() << " " << neg[i].x << " " << neg[i].y << " " << i << " " << j << " " << heightMap4[neg[i].x][neg[i].y][j] << std::endl;
             for (int k = 0; k < sizeZ; k++) {
                 if (cellX - i < neg.size()) {
                     terrain[i][j][k] = terrain4[j][neg[cellX - i].x][k][neg[cellX - i].y]; // fix?
@@ -402,8 +595,6 @@ void Terrain4::generateTerrain() {
             }
         }
     }
-
-    // std::cout << "a " << cellX << " " << sizeX << " " << cellY << " " << sizeY << std::endl;
 
     for (int i = cellX + 1; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
@@ -415,10 +606,6 @@ void Terrain4::generateTerrain() {
             }
         }
     }
-
-    // sstd::cout << "test " << glm::to_string(crossSection.origin) << std::endl;
-
-    // generateTerrainFromHeightMap(heightMap);
 }
 
 

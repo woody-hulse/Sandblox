@@ -29,10 +29,11 @@ public:
     Terrain();
 
     std::vector<float> generateShape() override { return m_vertexData; }
-    void updateParams(int param1, int param2) override { generateTerrainMesh(); };
+    void updateParams(uint8_t blockType) override { generateTerrainMesh(); };
 
     std::vector<std::vector<float>> generateHeightMap(int m, int n, float scale);
     void generateTerrain();
+    void generateTerrain(std::vector<std::vector<GLint>> a, std::vector<std::vector<GLint>> b);
     void generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]);
     void generateTerrainMesh();
     void breakBlock(IntersectData& intersectData);

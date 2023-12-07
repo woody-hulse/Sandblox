@@ -87,6 +87,17 @@ void Terrain::generateTerrain() {
     }
 }
 
+void Terrain::generateTerrain(std::vector<std::vector<GLint>> a, std::vector<std::vector<GLint>> b) {
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = 0; j < a[i].size(); j++) {
+            for (int k = 0; k < sizeZ; k++) {
+                if (a[i][j] == 1) terrain[i][j][k] = 1;
+                if (b[i][j] == 1) terrain[i][j][k] = 2;
+            }
+        }
+    }
+}
+
 void Terrain::generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]) {
     for (int x = 0; x < sizeX; x++) {
         for (int y = 0; y < sizeY; y++) {

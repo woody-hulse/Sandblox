@@ -25,17 +25,12 @@
 #include "terrain.h"
 #include "terrain4.h"
 
+#include "ui.h"
+#include "number.h"
+
 #include "ray.h"
 
 #include "player.h"
-
-
-struct UIElement {
-    int numVertices;
-    GLuint vao;
-    GLuint vbo;
-    GLuint texture;
-};
 
 class Sandblox : public QOpenGLWidget
 {
@@ -59,6 +54,7 @@ protected:
     void background();
     void drawPrimitives();
     void paintUI(UIElement e);
+    void updateInventoryUI();
     void makeFBO();
 private:
     void keyPressEvent(QKeyEvent *event) override;
@@ -78,6 +74,8 @@ private:
     glm::vec2 m_prev_mouse_pos;
     std::unordered_map<Qt::Key, bool> m_keyMap;
 
+    SceneCameraData cameraDataUI;
+    Camera cameraUI;
     Camera camera;
     RenderData renderData;
 
@@ -91,6 +89,7 @@ private:
 
     UIElement screen_fbo;
     UIElement crosshair;
+    std::vector<UIOverlay> UIOverlays;
 
     int m_fbo_width;
     int m_fbo_height;
@@ -107,10 +106,6 @@ private:
     SceneMaterial basicMaterial;
     SceneGlobalData basicGlobalData;
 
-    static const int sizeX = 5;
-    static const int sizeY = 5;
-    static const int sizeZ = 5;
-
     glm::vec4 lightDirection1 = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
     glm::vec4 lightDirection2 = glm::vec4(0.7f, 0.2f, 0.5f, 0.f);
 
@@ -118,31 +113,12 @@ private:
     Terrain4 terrain4;
     RayCast rayCast;
     std::map<int, GLuint> textureMap;
+    std::map<int, GLuint> textureMap_text;
+    std::vector<UIElement> inventoryUI;
 
     Player player;
 
     int timerId;
 
     bool seeMouse = false;
-
-    void verifyVAO(std::vector<GLfloat> &triangleData, GLuint index, GLsizei size, GLsizei stride, const void* offset) {
-
-        int newStride = int(stride / 4);
-        int groupNum = 0;
-        int newOffset = static_cast<int>(reinterpret_cast<intptr_t>(offset)) / 4;
-
-        for (int i = newOffset; i < triangleData.size(); i = i + newStride) {
-            std::cout << "Group " << groupNum << " of Values for VAO index " << index << std::endl;
-            std::cout << "[";
-            for (auto j = i; j < i + size; ++j) {
-                if (j != i + size - 1) {
-                    std::cout << triangleData[j]<< ", ";
-                } else {
-                    std::cout << triangleData[j]<< "]" << std::endl;
-                }
-            }
-            groupNum = groupNum + 1;
-        }
-        std::cout << "" << std::endl;
-    }
 };

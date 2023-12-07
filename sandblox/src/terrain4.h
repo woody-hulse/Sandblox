@@ -10,6 +10,7 @@ public:
 
     std::vector<std::vector<std::vector<float>>> generateHeightMap(float scale);
     std::vector<std::vector<std::vector<std::vector<float>>>> generateHeightMap4(float scale);
+    std::vector<std::vector<std::vector<std::vector<float>>>> generateSimplexHeightMap4(float scale);
     void addHeightMap(
         std::vector<std::vector<std::vector<float>>>& hm1,
         std::vector<std::vector<std::vector<float>>>& hm2);
@@ -18,9 +19,11 @@ public:
         std::vector<std::vector<std::vector<std::vector<float>>>>& hm2);
     void generateTerrain4();
     void generateTerrain();
+    void generateTerrain(bool test);
     void breakBlock(IntersectData& intersectData);
     void placeBlock(IntersectData& intersectData);
-    std::vector<IntersectData> terrainRayIntersect();
+    std::vector<IntersectData> terrainRayIntersect(Ray ray);
+    std::vector<std::vector<IntersectData>> terrainPlaneIntersect(glm::vec3 a, glm::vec3 b, glm::vec3 pos);
     void rotateCrossSection(float theta, float t);
 
     Ray crossSection;
@@ -32,6 +35,13 @@ public:
     bool**** rendered4;
     std::vector<std::vector<std::vector<float>>> heightMap;
     std::vector<std::vector<std::vector<std::vector<float>>>> heightMap4;
+
+    unsigned char permutation[512];
+
+    void generatePermutation(unsigned char permutation[], int size);
+
+    // Simplex4 implementation inspired heavily by Stefan Gustavson's 4D extension of 3D simplex noise
+    float simplex4(float x, float y, float z, float h);
 };
 
 #endif // TERRAIN4_H

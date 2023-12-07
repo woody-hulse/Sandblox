@@ -29,8 +29,8 @@ public:
     Camera* camera;
 
     GameMode gameMode = GameMode::ADVENTURE;
-    int inventorySelection = 4;
-    int inventory[5] = {0, 0, 0, 0, 2};
+    int inventorySelection = 0;
+    int inventory[8] = {0, 0, 0, 0, 200, 0, 0, 0};
 };
 
 #endif // PLAYER_H

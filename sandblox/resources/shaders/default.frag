@@ -35,7 +35,7 @@ float attenuation(vec3 function, float distance) {
 void main() {
     fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-    vec4 color = texture(samplers[int(blockType)], uv);
+    vec4 color = texture(samplers[int(blockType) - 1], uv);
 
     fragColor += 0.5f * color;
 

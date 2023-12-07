@@ -23,7 +23,7 @@
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 75,
+				"line" : 78,
 				"parent" : 0
 			},
 			{
@@ -187,6 +187,54 @@
 				"file" : 0,
 				"line" : 1735,
 				"parent" : 27
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 1937,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1735,
+				"parent" : 29
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 1937,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1735,
+				"parent" : 31
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 1937,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1735,
+				"parent" : 33
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 1937,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1735,
+				"parent" : 35
 			}
 		]
 	},
@@ -211,17 +259,21 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9,
+				10,
+				11,
+				12
 			]
 		},
 		{
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				9,
-				10,
-				11,
-				12
+				13,
+				14,
+				15,
+				16
 			]
 		}
 	],
@@ -274,21 +326,41 @@
 		},
 		{
 			"backtrace" : 22,
+			"path" : "resources/textures/wood.png",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 24,
+			"path" : "resources/textures/leaves.png",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 26,
+			"path" : "resources/textures/brick.png",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 28,
+			"path" : "resources/textures/brick2.png",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 30,
 			"path" : "resources/shaders/default.frag",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 24,
+			"backtrace" : 32,
 			"path" : "resources/shaders/default.vert",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 26,
+			"backtrace" : 34,
 			"path" : "resources/shaders/texture.frag",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 28,
+			"backtrace" : 36,
 			"path" : "resources/shaders/texture.vert",
 			"sourceGroupIndex" : 1
 		}

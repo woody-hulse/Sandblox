@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
+#include <random>
 
 #include "utils/shaderloader.h"
 
@@ -148,14 +149,32 @@ void Sandblox::background() {
          s2, -s1*ar, 0.f, 0.f, 0.f
     };
 
+    GLuint m_crosshair_texture = createTexture(glm::vec4(0.6f, 0.6f, 0.6f, 1.f));
+    UIOverlay crosshairs(
+        std::vector<float>({
+         -s1,  s2*ar,
+         -s1, -s2*ar,
+          s1, -s2*ar,
+          s1,  s2*ar,
+         -s1,  s2*ar,
+          s1, -s2*ar,
+
+         -s2,  s1*ar,
+         -s2, -s1*ar,
+          s2, -s1*ar,
+          s2,  s1*ar,
+         -s2,  s1*ar,
+          s2, -s1*ar
+        }),
+        m_crosshair_texture
+        );
+    UIOverlays.push_back(crosshairs);
+    // UIOverlays.push_back(six_b);
+
     makeFBO();
 
     initUI(screen_fbo.vao, screen_fbo.vbo, fullscreen_quad_data, screen_fbo.numVertices);
     screen_fbo.texture = m_fbo_texture;
-
-    initUI(crosshair.vao, crosshair.vbo, crosshairs_quad_data, crosshair.numVertices);
-    GLuint m_crosshair_texture = createTexture(glm::vec4(0.6f, 0.6f, 0.6f, 1.f));
-    crosshair.texture = m_crosshair_texture;
 }
 
 void createImageTexture(GLuint& texture, QImage image, int index) {
@@ -168,6 +187,29 @@ void createImageTexture(GLuint& texture, QImage image, int index) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Sandblox::updateInventoryUI() {
+    inventoryUI.clear();
+    glUseProgram(m_shader);
+    for (const auto map : textureMap) {
+        UIElement block;
+        cube.updateParams(map.first);
+        cube.drawShape(m_shader);
+        block.vao = cube.vao;
+        block.vbo = cube.vbo;
+        block.texture = map.first;
+        block.numVertices = cube.vertexSize();
+        block.shapeData.ctm = glm::translate(glm::vec3(30.f, -17.f, -3.8 * 1.5f + map.first * 1.5f));
+        if (player.inventorySelection == map.first)
+            block.shapeData.ctm *= glm::scale(glm::vec3(1.1f, 1.0f, 1.1f));
+        else
+            block.shapeData.ctm *= glm::scale(glm::vec3(0.8f, 0.7f, 0.8f));
+        block.shapeData.inverseCtm = glm::inverse(block.shapeData.ctm);
+        block.shapeData.primitive.material = basicMaterial;
+        inventoryUI.push_back(block);
+    }
+    glUseProgram(0);
 }
 
 void Sandblox::initializeGL() {
@@ -198,7 +240,7 @@ void Sandblox::initializeGL() {
 
     background();
 
-    cube.updateParams(1, 1);
+    cube.updateParams(1);
 
     basicMaterial.clear();
     basicMaterial.cAmbient = glm::vec4(0.87f, 0.56f, 0.2f, 1.f);
@@ -225,21 +267,40 @@ void Sandblox::initializeGL() {
     QImage planks = QImage(QString(":/resources/textures/planks.png"));
     planks = planks.convertToFormat(QImage::Format_RGBA8888).mirrored();
 
+    QImage wood = QImage(QString(":/resources/textures/wood.png"));
+    wood = wood.convertToFormat(QImage::Format_RGBA8888).mirrored();
 
-    textureMap[1] = createTexture(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    createImageTexture(textureMap[1], grass, 1);
-    textureMap[2] = createTexture(glm::vec4(0.f, 1.f, 0.f, 1.f));
-    createImageTexture(textureMap[2], dirt, 2);
-    textureMap[3] = createTexture(glm::vec4(0.f, 0.f, 1.f, 1.f));
-    createImageTexture(textureMap[3], rock, 3);
-    textureMap[4] = createTexture(glm::vec4(1.f, 0.f, 1.f, 1.f));
-    createImageTexture(textureMap[4], ore, 4);
-    textureMap[5] = createTexture(glm::vec4(1.f, 0.f, 1.f, 1.f));
-    createImageTexture(textureMap[5], planks, 5);
+    QImage leaves = QImage(QString(":/resources/textures/leaves.png"));
+    leaves = leaves.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    QImage brick = QImage(QString(":/resources/textures/brick2.png"));
+    brick = brick.convertToFormat(QImage::Format_RGBA8888).mirrored();
+
+    textureMap[0] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[0], grass, 0);
+    textureMap[1] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[1], dirt, 1);
+    textureMap[2] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[2], rock, 2);
+    textureMap[3] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[3], ore, 3);
+    textureMap[4] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[4], planks, 4);
+    textureMap[5] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[5], wood, 5);
+    textureMap[6] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[6], leaves, 6);
+    textureMap[7] = createTexture(glm::vec4(1.f));
+    createImageTexture(textureMap[7], brick, 7);
+
+    textureMap_text[1] = createTexture(glm::vec4(1.f));
+    textureMap_text[2] = createTexture(glm::vec4(0.f));
+
+    updateInventoryUI();
 
     terrain = Terrain();
     terrain.generateTerrain();
-    terrain.generateTerrainMesh();
+    //terrain.generateTerrainMesh();
 
     terrain4 = Terrain4();
     terrain4.generateTerrain4();
@@ -268,6 +329,13 @@ void Sandblox::initializeGL() {
     renderData.cameraData.heightAngle = 1.f / 3.f * 3.1415f;
     renderData.cameraData.look = glm::vec4(-4.f, 0.f, -3.f, 0.f);
 
+
+    cameraDataUI.pos = glm::vec4(-5.f, 0.f, 0.f, 1.f);
+    cameraDataUI.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
+    cameraDataUI.heightAngle = renderData.cameraData.heightAngle;
+    cameraDataUI.look = glm::vec4(1.f, 0.f, 0.f, 0.f);
+    cameraUI = Camera(&cameraDataUI, size().width(), size().height());
+
     player = Player();
 
     drawPrimitives();
@@ -283,6 +351,8 @@ void Sandblox::paintGL() {
     camera.computeViewMatrix();
     player.simulate(deltaTime);
 
+    glEnable(GL_DEPTH_TEST);
+
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glViewport(0, 0, m_screen_width, m_screen_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -296,9 +366,22 @@ void Sandblox::paintGL() {
     glBindVertexArray(terrain4.shapeData.shape->vao);
     glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles);
     glBindVertexArray(0);
+
+    glDisable(GL_DEPTH_TEST);
+    for (UIElement block : inventoryUI) {
+        passCameraData(m_shader, cameraUI);
+        passShapeData(m_shader, renderData.globalData, block.shapeData);
+        glBindVertexArray(block.vao);
+        glDrawArrays(GL_TRIANGLES, 0, cube.vertexSize() / 9);
+        glBindVertexArray(0);
+    }
+    glEnable(GL_DEPTH_TEST);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    paintUI(crosshair);
+    for (UIOverlay overlay : UIOverlays) {
+        overlay.paint(m_texture_shader, size().width(), size().height());
+    }
 
     glUseProgram(0);
 
@@ -306,6 +389,7 @@ void Sandblox::paintGL() {
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     paintUI(screen_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Sandblox::resizeGL(int w, int h) {
@@ -323,12 +407,12 @@ void Sandblox::drawPrimitives() {
     glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
     glUseProgram(m_shader);
 
-    terrain.drawShape(m_shader);
+    //terrain.drawShape(m_shader);
     terrain4.drawShape(m_shader);
 
-    terrain.shapeData.numTriangles = terrain.vertexSize() / 9;
+    //terrain.shapeData.numTriangles = terrain.vertexSize() / 9;
     terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
-    terrain.shapeData.shape = &terrain;
+    //terrain.shapeData.shape = &terrain;
     terrain4.shapeData.shape = &terrain4;
 
     glUseProgram(0);
@@ -392,12 +476,12 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
                                      (float)size().height() / 2.f), size().width(), size().height());
         IntersectData intersectData = rayCast.intersectRay();
         intersectData.blockType = player.inventorySelection + 1;
-        if (intersectData.intersection && player.inventory[player.inventorySelection] > 0) {
+        if (intersectData.intersection) { // && (player.inventory[player.inventorySelection] > 0 || player.gameMode == GameMode::CREATIVE)) {
             terrain4.placeBlock(intersectData);
             if (player.collisionDetect(glm::vec3(0.f))) {
                 terrain4.breakBlock(intersectData);
             } else {
-                player.inventory[player.inventorySelection] --;
+                // player.inventory[player.inventorySelection] --;
             }
             drawPrimitives();
         }
@@ -471,13 +555,13 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         glm::vec4 direction = renderData.cameraData.look;
         direction.y = 0;
         if (player.gameMode == GameMode::ADVENTURE) move += glm::normalize(direction);
-        else player.move(glm::normalize(direction) * delta);
+        else player.move(glm::normalize(direction) * player.moveSpeed * delta / 2.f);
     }
     if (m_keyMap[Qt::Key_S]) {
         glm::vec4 direction = -renderData.cameraData.look;
         direction.y = 0;
         if (player.gameMode == GameMode::ADVENTURE) move += glm::normalize(direction);
-        else player.move(glm::normalize(direction) * delta);
+        else player.move(glm::normalize(direction) * player.moveSpeed * delta / 2.f);
     }
     if (m_keyMap[Qt::Key_A]) {
         glm::vec3 direction = -glm::cross(
@@ -485,7 +569,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
             glm::vec3(renderData.cameraData.up));
         direction.y = 0;
         if (player.gameMode == GameMode::ADVENTURE) move += glm::vec4(glm::normalize(direction), 0.f);
-        else player.move(glm::normalize(direction) * delta);
+        else player.move(glm::normalize(direction) * player.moveSpeed * delta / 2.f);
     }
     if (m_keyMap[Qt::Key_D]) {
         glm::vec3 direction = glm::cross(
@@ -493,19 +577,19 @@ void Sandblox::timerEvent(QTimerEvent *event) {
             glm::vec3(renderData.cameraData.up));
         direction.y = 0;
         if (player.gameMode == GameMode::ADVENTURE) move += glm::vec4(glm::normalize(direction), 0.f);
-        else player.move(glm::normalize(direction) * delta);
+        else player.move(glm::normalize(direction) * player.moveSpeed * delta / 2.f);
     }
 
     if (player.gameMode == GameMode::CREATIVE) player.grounded = false;
 
     if (m_keyMap[Qt::Key_Space]) {
         if (player.gameMode == GameMode::CREATIVE)
-            player.move(glm::vec3(0.0f, 1.0f, 0.0f) * delta);
+            player.move(glm::vec3(0.0f, 1.0f, 0.0f) * player.moveSpeed * delta / 2.f);
         else
             move += glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
     }
     if (m_keyMap[Qt::Key_Shift] && player.gameMode == GameMode::CREATIVE)
-        player.move(glm::vec3(0.0f, -1.0f, 0.0f) * delta);
+        player.move(glm::vec3(0.0f, -1.0f, 0.0f) * player.moveSpeed * delta / 2.f);
 
     if (move != glm::vec4(0.0f)) {
         player.velocity.x = move.x * delta;
@@ -557,11 +641,38 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     }
 
     // inventory
-    if (m_keyMap[Qt::Key_1]) player.inventorySelection = 0;
-    if (m_keyMap[Qt::Key_2]) player.inventorySelection = 1;
-    if (m_keyMap[Qt::Key_3]) player.inventorySelection = 2;
-    if (m_keyMap[Qt::Key_4]) player.inventorySelection = 3;
-    if (m_keyMap[Qt::Key_5]) player.inventorySelection = 4;
+    if (m_keyMap[Qt::Key_1]){
+        player.inventorySelection = 0;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_2]) {
+        player.inventorySelection = 1;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_3]) {
+        player.inventorySelection = 2;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_4]) {
+        player.inventorySelection = 3;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_5]) {
+        player.inventorySelection = 4;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_6]) {
+        player.inventorySelection = 5;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_7]) {
+        player.inventorySelection = 6;
+        updateInventoryUI();
+    }
+    if (m_keyMap[Qt::Key_8]) {
+        player.inventorySelection = 7;
+        updateInventoryUI();
+    }
 
     update();
 }

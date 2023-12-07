@@ -421,6 +421,12 @@
 			null
 		],
 		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/number.h",
+			"MU",
+			"UVLADIE3JM/moc_number.cpp",
+			null
+		],
+		[
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.h",
 			"MU",
 			"UVLADIE3JM/moc_player.cpp",
@@ -460,6 +466,12 @@
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.h",
 			"MU",
 			"UVLADIE3JM/moc_terrain4.cpp",
+			null
+		],
+		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ui.h",
+			"MU",
+			"UVLADIE3JM/moc_ui.cpp",
 			null
 		],
 		[
@@ -599,6 +611,11 @@
 			null
 		],
 		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/number.cpp",
+			"MU",
+			null
+		],
+		[
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.cpp",
 			"MU",
 			null
@@ -630,6 +647,11 @@
 		],
 		[
 			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ui.cpp",
 			"MU",
 			null
 		],

@@ -939,6 +939,7 @@
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/camera.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/cube.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/datamanager.h \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/number.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ray.h \
@@ -946,6 +947,7 @@
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/settings.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.h \
+  /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ui.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/aspectratiowidget/aspectratiowidget.hpp \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/scenedata.h \
   /Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/sceneparser.h \

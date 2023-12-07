@@ -950,6 +950,8 @@ sandblox_autogen/timestamp: \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/main.cpp \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/mainwindow.cpp \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/mainwindow.h \
+	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/number.cpp \
+	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/number.h \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.cpp \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/player.h \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/primitive.cpp \
@@ -964,6 +966,8 @@ sandblox_autogen/timestamp: \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain.h \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.cpp \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/terrain4.h \
+	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ui.cpp \
+	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/ui.h \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/aspectratiowidget/aspectratiowidget.hpp \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/scenedata.h \
 	/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/src/utils/scenefilereader.cpp \

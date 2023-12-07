@@ -9,6 +9,10 @@
     <file alias="resources/textures/rock2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/rock2.png</file>
     <file alias="resources/textures/ore2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/ore2.png</file>
     <file alias="resources/textures/planks.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/planks.png</file>
+    <file alias="resources/textures/wood.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/wood.png</file>
+    <file alias="resources/textures/leaves.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/leaves.png</file>
+    <file alias="resources/textures/brick.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/brick.png</file>
+    <file alias="resources/textures/brick2.png">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/textures/brick2.png</file>
     <file alias="resources/shaders/default.frag">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.frag</file>
     <file alias="resources/shaders/default.vert">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/default.vert</file>
     <file alias="resources/shaders/texture.frag">/Users/woodyhulse/Documents/class/cs1230/Sandblox/sandblox/resources/shaders/texture.frag</file>
