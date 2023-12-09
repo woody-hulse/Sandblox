@@ -377,7 +377,7 @@ build StaticGLEW_autogen/timestamp StaticGLEW_autogen/mocs_compilation.cpp | ${c
 #############################################
 # Phony custom command for CMakeFiles/sandblox_autogen_timestamp_deps
 
-build CMakeFiles/sandblox_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic libStaticGLEW.a || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a
+build CMakeFiles/sandblox_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/sandblox_autogen_timestamp_deps: phony libStaticGLEW.a /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc || StaticGLEW_autogen StaticGLEW_autogen_timestamp_deps libStaticGLEW.a
 
 
 #############################################
@@ -389,7 +389,7 @@ build CMakeFiles/sandblox_autogen | ${cmake_ninja_workdir}CMakeFiles/sandblox_au
 #############################################
 # Phony custom command for CMakeFiles/StaticGLEW_autogen_timestamp_deps
 
-build CMakeFiles/StaticGLEW_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic
+build CMakeFiles/StaticGLEW_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/StaticGLEW_autogen_timestamp_deps: phony /Users/woodyhulse/Qt/6.5.3/macos/./libexec/uic /Users/woodyhulse/Qt/6.5.3/macos/./libexec/moc
 
 
 #############################################

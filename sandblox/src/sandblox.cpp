@@ -586,7 +586,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         if (player.gameMode == GameMode::CREATIVE)
             player.move(glm::vec3(0.0f, 1.0f, 0.0f) * player.moveSpeed * delta / 2.f);
         else
-            move += glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+            move += glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
     }
     if (m_keyMap[Qt::Key_Shift] && player.gameMode == GameMode::CREATIVE)
         player.move(glm::vec3(0.0f, -1.0f, 0.0f) * player.moveSpeed * delta / 2.f);

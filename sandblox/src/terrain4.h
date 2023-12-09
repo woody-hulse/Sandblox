@@ -40,8 +40,8 @@ public:
 
     void generatePermutation(unsigned char permutation[], int size);
 
-    // Simplex4 implementation inspired heavily by Stefan Gustavson's 4D extension of 3D simplex noise
-    float simplex4(float x, float y, float z, float h);
+    // Simplex4 implementation inspired by Stefan Gustavson's 4D extension of 3D simplex noise
+    float simplex4(float x, float y, float z, float w);
 };
 
 #endif // TERRAIN4_H

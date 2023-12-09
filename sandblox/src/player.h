@@ -22,7 +22,7 @@ public:
 
     glm::vec3 velocity = glm::vec3(0.f);
     float moveSpeed = 10.0f;
-    float gravity = 0.05f;
+    float gravity = 0.03f;
     bool grounded = false;
 
     Terrain* terrain;

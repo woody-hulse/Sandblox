@@ -8,8 +8,6 @@
 #include <random>
 #include <algorithm>
 
-#define FASTFLOOR(x) ( ((x)>0) ? ((int)x) : (((int)x)-1) )
-
 static unsigned char simplex[64][4] = {
     {0,1,2,3},{0,1,3,2},{0,0,0,0},{0,2,3,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},{1,2,3,0},
     {0,2,1,3},{0,0,0,0},{0,3,1,2},{0,3,2,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},{1,3,2,0},
@@ -139,125 +137,71 @@ float grad(int hash, float x, float y, float z, float t) {
 
 float Terrain4::simplex4(float x, float y, float z, float w) {
 
-    float F4 = (sqrt(5.0)-1.0)/4.0;
-    float G4 = (5.0-sqrt(5.0))/20.0;
+    float F4 = (sqrt(5.0) - 1.0) / 4.0;
+    float G4 = (5.0 - sqrt(5.0)) / 20.0;
 
-    float n[5];
+    float X[5]; int i[5];
+    float Y[5]; int j[5];
+    float Z[5]; int k[5];
+    float W[5]; int l[5];
 
-    int i[3];
-    int j[3];
-    int k[3];
-    int l[3];
-
-    // Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
+    // Get simplex cell indices
     float s = (x + y + z + w) * F4;
     float xs = x + s;
     float ys = y + s;
     float zs = z + s;
     float ws = w + s;
-    int i_ = FASTFLOOR(xs);
-    int j_ = FASTFLOOR(ys);
-    int k_ = FASTFLOOR(zs);
-    int l_ = FASTFLOOR(ws);
+    int i_ = floor(xs);
+    int j_ = floor(ys);
+    int k_ = floor(zs);
+    int l_ = floor(ws);
 
+    // Compute simplex corners
     float t = (i_ + j_ + k_ + l_) * G4;
-    float X0 = i_ - t;
-    float Y0 = j_ - t;
-    float Z0 = k_ - t;
-    float W0 = l_ - t;
+    X[0] = x - i_ + t;
+    Y[0] = y - j_ + t;
+    Z[0] = z - k_ + t;
+    W[0] = w - l_ + t;
 
-    float x0 = x - X0;
-    float y0 = y - Y0;
-    float z0 = z - Z0;
-    float w0 = w - W0;
-
-
-    int c1 = (x0 > y0) ? 32 : 0;
-    int c2 = (x0 > z0) ? 16 : 0;
-    int c3 = (y0 > z0) ? 8 : 0;
-    int c4 = (x0 > w0) ? 4 : 0;
-    int c5 = (y0 > w0) ? 2 : 0;
-    int c6 = (z0 > w0) ? 1 : 0;
+    // Simplex lookup
+    int c1 = (X[0] > Y[0]) ? 32 : 0;
+    int c2 = (X[0] > Z[0]) ? 16 : 0;
+    int c3 = (Y[0] > Z[0]) ? 8 : 0;
+    int c4 = (X[0] > W[0]) ? 4 : 0;
+    int c5 = (Y[0] > W[0]) ? 2 : 0;
+    int c6 = (Z[0] > W[0]) ? 1 : 0;
     int c = c1 + c2 + c3 + c4 + c5 + c6;
 
-    i[0] = simplex[c][0]>=3 ? 1 : 0;
-    j[0] = simplex[c][1]>=3 ? 1 : 0;
-    k[0] = simplex[c][2]>=3 ? 1 : 0;
-    l[0] = simplex[c][3]>=3 ? 1 : 0;
-
-    i[1] = simplex[c][0]>=2 ? 1 : 0;
-    j[1] = simplex[c][1]>=2 ? 1 : 0;
-    k[1] = simplex[c][2]>=2 ? 1 : 0;
-    l[1] = simplex[c][3]>=2 ? 1 : 0;
-
-    i[2] = simplex[c][0]>=1 ? 1 : 0;
-    j[2] = simplex[c][1]>=1 ? 1 : 0;
-    k[2] = simplex[c][2]>=1 ? 1 : 0;
-    l[2] = simplex[c][3]>=1 ? 1 : 0;
-
-
-    float x1 = x0 - i[0] + G4;
-    float y1 = y0 - j[0] + G4;
-    float z1 = z0 - k[0] + G4;
-    float w1 = w0 - l[0] + G4;
-
-    float x2 = x0 - i[1] + 2.0f * G4;
-    float y2 = y0 - j[1] + 2.0f * G4;
-    float z2 = z0 - k[1] + 2.0f * G4;
-    float w2 = w0 - l[1] + 2.0f * G4;
-
-    float x3 = x0 - i[2] + 3.0f * G4;
-    float y3 = y0 - j[2] + 3.0f * G4;
-    float z3 = z0 - k[2] + 3.0f * G4;
-    float w3 = w0 - l[2] + 3.0f * G4;
-
-    float x4 = x0 - 1.0f + 4.0f * G4;
-    float y4 = y0 - 1.0f + 4.0f * G4;
-    float z4 = z0 - 1.0f + 4.0f * G4;
-    float w4 = w0 - 1.0f + 4.0f * G4;
-
-
-    int ii = i_ % 256;
-    int jj = j_ % 256;
-    int kk = k_ % 256;
-    int ll = l_ % 256;
-
-    float t0 = 0.6f - x0*x0 - y0*y0 - z0*z0 - w0*w0;
-    if(t0 < 0.0f) n[0] = 0.0f;
-    else {
-        t0 *= t0;
-        n[0] = t0 * t0 * grad(permutation[ii+permutation[jj+permutation[kk+permutation[ll]]]], x0, y0, z0, w0);
+    i[0] = 0; i[4] = 1;
+    j[0] = 0; j[4] = 1;
+    k[0] = 0; k[4] = 1;
+    l[0] = 0; l[4] = 1;
+    for (int a = 1; a < 4; a++) {
+        i[a] = simplex[c][0] >= 4 - a ? 1 : 0;
+        j[a] = simplex[c][1] >= 4 - a ? 1 : 0;
+        k[a] = simplex[c][2] >= 4 - a ? 1 : 0;
+        l[a] = simplex[c][3] >= 4 - a ? 1 : 0;
     }
 
-    float t1 = 0.6f - x1*x1 - y1*y1 - z1*z1 - w1*w1;
-    if(t1 < 0.0f) n[1] = 0.0f;
-    else {
-        t1 *= t1;
-        n[1] = t1 * t1 * grad(permutation[ii+i[0]+permutation[jj+j[0]+permutation[kk+k[0]+permutation[ll+l[0]]]]], x1, y1, z1, w1);
+    for (int a = 1; a < 5; a++) {
+        X[a] = X[0] + a * G4 - i[a];
+        Y[a] = Y[0] + a * G4 - j[a];
+        Z[a] = Z[0] + a * G4 - k[a];
+        W[a] = W[0] + a * G4 - l[a];
     }
 
-    float t2 = 0.6f - x2*x2 - y2*y2 - z2*z2 - w2*w2;
-    if(t2 < 0.0f) n[2] = 0.0f;
-    else {
-        t2 *= t2;
-        n[2] = t2 * t2 * grad(permutation[ii+i[1]+permutation[jj+j[1]+permutation[kk+k[1]+permutation[ll+l[1]]]]], x2, y2, z2, w2);
+    // Compute weights of each corner and apply gradient
+    float n[5];
+    for (int a = 0; a < 5; a++) {
+        float ta = 0.6f - (X[a]*X[a] + Y[a]*Y[a] + Z[a]*Z[a] + W[a]*W[a]);
+        if (ta < 0.f) n[a] = 0.f;
+        else n[a] = ta*ta*ta*ta * grad(permutation[i_ % 256 + i[a] +
+                                       permutation[j_ % 256 + j[a] +
+                                       permutation[k_ % 256 + k[a] +
+                                       permutation[l_ % 256 + l[a]]]]], X[a], Y[a], Z[a], W[a]);
     }
 
-    float t3 = 0.6f - x3*x3 - y3*y3 - z3*z3 - w3*w3;
-    if(t3 < 0.0f) n[3] = 0.0f;
-    else {
-        t3 *= t3;
-        n[3] = t3 * t3 * grad(permutation[ii+i[2]+permutation[jj+j[2]+permutation[kk+k[2]+permutation[ll+l[2]]]]], x3, y3, z3, w3);
-    }
-
-    float t4 = 0.6f - x4*x4 - y4*y4 - z4*z4 - w4*w4;
-    if(t4 < 0.0f) n[4] = 0.0f;
-    else {
-        t4 *= t4;
-        n[4] = t4 * t4 * grad(permutation[ii+1+permutation[jj+1+permutation[kk+1+permutation[ll+1]]]], x4, y4, z4, w4);
-    }
-
-    return 27.0f * (n[0] + n[1] + n[2] + n[3] + n[4]);
+    return (n[0] + n[1] + n[2] + n[3] + n[4]) * 27.f;
 }
 
 std::vector<std::vector<std::vector<std::vector<float>>>> Terrain4::generateSimplexHeightMap4(float scale) {
