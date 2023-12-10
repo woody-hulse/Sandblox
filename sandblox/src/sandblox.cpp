@@ -219,8 +219,12 @@ void Sandblox::initializeGL() {
     m_fbo_width = m_screen_width;
     m_fbo_height = m_screen_height;
     m_defaultFBO = 2;
+    backgroundColor = glm::vec4(0.3f, 0.4f, 0.9f, 1.0f);
+    newBackgroundColor = backgroundColor;
+    survival = false;
 
     m_timer = startTimer(1000/60);
+    totalTimeElapsed = 0.f;
     m_elapsedTimer.start();
 
     glewExperimental = GL_TRUE;
@@ -338,7 +342,7 @@ void Sandblox::initializeGL() {
 
     player = Player();
 
-    drawPrimitives();
+    //drawPrimitives();
 
     sceneChanged();
 }
@@ -356,10 +360,12 @@ void Sandblox::paintGL() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glViewport(0, 0, m_screen_width, m_screen_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(m_shader);
+    glClearColor(newBackgroundColor[0], newBackgroundColor[1], newBackgroundColor[2], newBackgroundColor[3]);
 
+    glUseProgram(m_shader);
     passShapeData(m_shader, renderData.globalData, terrain4.shapeData);
-    passLightData(m_shader, lightDirection1, lightDirection2);
+    if (survival)passLightData(m_shader, lightDirection1, lightDirection3);
+    else passLightData(m_shader, lightDirection1, lightDirection2);
     passCameraData(m_shader, camera);
 
     passTextures(m_shader, textureMap);
@@ -388,6 +394,7 @@ void Sandblox::paintGL() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     paintUI(screen_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -404,7 +411,9 @@ void Sandblox::resizeGL(int w, int h) {
 }
 
 void Sandblox::drawPrimitives() {
-    glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
+    glClearColor(newBackgroundColor[0], newBackgroundColor[1], newBackgroundColor[2], newBackgroundColor[3]);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     glUseProgram(m_shader);
 
     //terrain.drawShape(m_shader);
@@ -433,6 +442,10 @@ void Sandblox::sceneChanged() {
 void Sandblox::keyPressEvent(QKeyEvent *event) {
     m_keyMap[Qt::Key(event->key())] = true;
     if (event->key() == Qt::Key_Escape) seeMouse = !seeMouse;
+    if (event->key() == Qt::Key_K){
+        newBackgroundColor = glm::vec4(0.15f, 0.25f, 0.75f, 1.0f);
+        survival = !survival;
+    }
     if (seeMouse) setCursor(Qt::ArrowCursor);
     else setCursor(Qt::BlankCursor);
 }
@@ -548,6 +561,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
     float delta = 0.01;
+    totalTimeElapsed += deltaTime;
 
     // movement
     glm::vec4 move(0.0f);
@@ -672,6 +686,24 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_8]) {
         player.inventorySelection = 7;
         updateInventoryUI();
+    }
+
+    //survival mode stuffs
+    float dayLength = 5.f;
+    if (survival){
+        lightDirection3 = rotate(glm::vec3(1.f,0.f,0.f), deltaTime / dayLength * glm::radians(360.f)) * lightDirection3;
+        //lightDirection2 = rotate(glm::vec3(1.f,0.f,0.f), deltaTime / dayLength * glm::radians(360.f)) * lightDirection2;
+        if (fmod(totalTimeElapsed, dayLength) < dayLength / 2.f){
+            newBackgroundColor += glm::vec4(deltaTime / dayLength);
+        }
+        else{
+            //lightDirection1 = lightDirection2;
+            newBackgroundColor -= glm::vec4(deltaTime / dayLength);
+        }
+        //newBackgroundColor = backgroundColor + glm::vec4(fmod(totalTimeElapsed, 5.0f) * 0.05);
+    }
+    else{
+        newBackgroundColor = backgroundColor;
     }
 
     update();

@@ -67,6 +67,7 @@ private:
     // Tick Related Variables
     int m_timer;
     QElapsedTimer m_elapsedTimer;
+    float totalTimeElapsed;
 
     // Input Related Variables
     bool m_leftMouseDown = false;
@@ -108,6 +109,12 @@ private:
 
     glm::vec4 lightDirection1 = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
     glm::vec4 lightDirection2 = glm::vec4(0.7f, 0.2f, 0.5f, 0.f);
+    glm::vec4 lightDirection3 = glm::vec4(0.f, 1.f, 0.f, 0.f);
+
+    glm::vec4 backgroundColor;
+    glm::vec4 newBackgroundColor;
+
+    bool survival;
 
     Terrain terrain;
     Terrain4 terrain4;
