@@ -689,9 +689,9 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     }
 
     //survival mode stuffs
-    float dayLength = 5.f;
+    float dayLength = 30.f;
     if (survival){
-        lightDirection3 = rotate(glm::vec3(1.f,0.f,0.f), deltaTime / dayLength * glm::radians(360.f)) * lightDirection3;
+        lightDirection3 = rotate(glm::vec3(1.f,-1.f,0.f), -deltaTime / dayLength * glm::radians(360.f)) * lightDirection3;
         //lightDirection2 = rotate(glm::vec3(1.f,0.f,0.f), deltaTime / dayLength * glm::radians(360.f)) * lightDirection2;
         if (fmod(totalTimeElapsed, dayLength) < dayLength / 2.f){
             newBackgroundColor += glm::vec4(deltaTime / dayLength);
