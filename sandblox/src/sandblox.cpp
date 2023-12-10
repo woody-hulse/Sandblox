@@ -243,14 +243,25 @@ void Sandblox::initializeGL() {
     cube.updateParams(1);
 
     basicMaterial.clear();
-    basicMaterial.cAmbient = glm::vec4(0.87f, 0.56f, 0.2f, 1.f);
+    basicMaterial.cAmbient = glm::vec4(1.f);
     basicMaterial.cDiffuse = glm::vec4(1.f);
     basicMaterial.cSpecular = glm::vec4(0.f);
     basicMaterial.shininess = 0.f;
 
+    cloudMaterial.clear();
+    cloudMaterial.cAmbient = glm::vec4(1.f, 1.f, 1.f, 0.7f);
+    cloudMaterial.cDiffuse = glm::vec4(0.3f);
+    cloudMaterial.cSpecular = glm::vec4(0.f);
+    cloudMaterial.shininess = 0.f;
+
     basicGlobalData.ka = 0.7f;
-    basicGlobalData.kd = 0.2f;
-    basicGlobalData.ks = 0.4f;
+    basicGlobalData.kd = 0.3f;
+    basicGlobalData.ks = 0.1f;
+
+    cloudGlobalData.ka = 0.9f;
+    cloudGlobalData.kd = 0.1f;
+    cloudGlobalData.ks = 0.0f;
+
 
     QImage grass = QImage(QString(":/resources/textures/grass.png"));
     grass = grass.convertToFormat(QImage::Format_RGBA8888).mirrored();
@@ -293,6 +304,10 @@ void Sandblox::initializeGL() {
     textureMap[7] = createTexture(glm::vec4(1.f));
     createImageTexture(textureMap[7], brick, 7);
 
+    for (int i = 0; i < 8; i++) {
+        textureMap_clouds[i] = createTexture(glm::vec4(0.78f, 0.87f, 1.f, 1.f));
+    }
+
     textureMap_text[1] = createTexture(glm::vec4(1.f));
     textureMap_text[2] = createTexture(glm::vec4(0.f));
 
@@ -306,6 +321,11 @@ void Sandblox::initializeGL() {
     terrain4.generateTerrain4();
     terrain4.generateTerrain();
     terrain4.generateTerrainMesh();
+
+    clouds = Terrain4(terrain4.sizeX, terrain4.sizeY, 8, terrain4.sizeW);
+    clouds.generateTerrain4();
+    clouds.generateTerrain();
+    clouds.generateTerrainMesh();
 
     ScenePrimitive primitive;
     primitive.type = PrimitiveType::PRIMITIVE_MESH;
@@ -323,12 +343,22 @@ void Sandblox::initializeGL() {
     terrain4.shapeData.inverseCtm = glm::inverse(terrain4.shapeData.ctm);
     terrain4.shapeData.primitive.material = basicMaterial;
 
+    ScenePrimitive primitive4Clouds;
+    primitive4Clouds.type = PrimitiveType::PRIMITIVE_MESH;
+    clouds.shapeData.primitive = primitive4Clouds;
+    float scale4Clouds = 2.f;
+    clouds.shapeData.ctm = glm::translate(glm::vec3(-terrain4.sizeX * 0.5f,
+                                                     terrain4.sizeZ + 20,
+                                                    -terrain4.sizeY * 0.5f))*
+                           glm::scale(glm::vec3(scale4Clouds, 1.f, scale4Clouds));
+    clouds.shapeData.inverseCtm = glm::inverse(clouds.shapeData.ctm);
+    clouds.shapeData.primitive.material = cloudMaterial;
+
     renderData.globalData = basicGlobalData;
     renderData.cameraData.pos = glm::vec4(terrain.sizeX / 2.f, terrain.sizeZ + 5.f, terrain.sizeY / 2.f, 1.f);
     renderData.cameraData.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
     renderData.cameraData.heightAngle = 1.f / 3.f * 3.1415f;
     renderData.cameraData.look = glm::vec4(-4.f, 0.f, -3.f, 0.f);
-
 
     cameraDataUI.pos = glm::vec4(-5.f, 0.f, 0.f, 1.f);
     cameraDataUI.up = glm::vec4(0.f, 1.f, 0.f, 0.f);
@@ -338,7 +368,7 @@ void Sandblox::initializeGL() {
 
     player = Player();
 
-    drawPrimitives();
+    drawPrimitives(true);
 
     sceneChanged();
 }
@@ -367,7 +397,23 @@ void Sandblox::paintGL() {
     glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles);
     glBindVertexArray(0);
 
+    passShapeData(m_shader, cloudGlobalData, clouds.shapeData);
+    passLightData(m_shader, lightDirection1, lightDirection2);
+    passCameraData(m_shader, camera);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    passTextures(m_shader, textureMap_clouds);
+    glBindVertexArray(clouds.shapeData.shape->vao);
+    glDrawArrays(GL_TRIANGLES, 0, clouds.shapeData.numTriangles);
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+
     glDisable(GL_DEPTH_TEST);
+
+    passTextures(m_shader, textureMap);
     for (UIElement block : inventoryUI) {
         passCameraData(m_shader, cameraUI);
         passShapeData(m_shader, renderData.globalData, block.shapeData);
@@ -403,17 +449,20 @@ void Sandblox::resizeGL(int w, int h) {
     m_fbo_height = m_screen_height;
 }
 
-void Sandblox::drawPrimitives() {
+void Sandblox::drawPrimitives(bool drawClouds) {
     glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
     glUseProgram(m_shader);
 
     //terrain.drawShape(m_shader);
     terrain4.drawShape(m_shader);
+    if (drawClouds) clouds.drawShape(m_shader);
 
     //terrain.shapeData.numTriangles = terrain.vertexSize() / 9;
     terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
+    if (drawClouds) clouds.shapeData.numTriangles = clouds.vertexSize() / 9;
     //terrain.shapeData.shape = &terrain;
     terrain4.shapeData.shape = &terrain4;
+    if (drawClouds) clouds.shapeData.shape = &clouds;
 
     glUseProgram(0);
 }
@@ -424,7 +473,7 @@ void Sandblox::sceneChanged() {
     rayCast = RayCast(&terrain4, &camera);
     player = Player(&terrain4, &camera);
 
-    drawPrimitives();
+    drawPrimitives(true);
 
     update();
 }
@@ -464,7 +513,7 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
         if (intersectData.intersection) {
             terrain4.breakBlock(intersectData);
             player.inventory[intersectData.blockType - 1] ++;
-            drawPrimitives();
+            drawPrimitives(false);
         }
     }
 
@@ -483,7 +532,7 @@ void Sandblox::mousePressEvent(QMouseEvent *event) {
             } else {
                 // player.inventory[player.inventorySelection] --;
             }
-            drawPrimitives();
+            drawPrimitives(false);
         }
     }
 }
@@ -614,20 +663,23 @@ void Sandblox::timerEvent(QTimerEvent *event) {
                 0.f
                 );
         }
-        terrain4.rotateCrossSection(theta, 0.f);
+        terrain4.rotateCrossSection(theta, 0.f, clouds);
         terrain4.generateTerrainMesh();
+        clouds.generateTerrainMesh();
         player.rectifyPlayer();
-        drawPrimitives();
+        drawPrimitives(true);
     }
 
     if (m_keyMap[Qt::Key_E]) {
         float theta = 10.f * delta;
-        if (player.gameMode == GameMode::ADVENTURE)
+        if (player.gameMode == GameMode::ADVENTURE) {
             terrain4.crossSection.origin = player.camera->data->pos;
-        terrain4.rotateCrossSection(theta, 0.f);
+        }
+        terrain4.rotateCrossSection(theta, 0.f, clouds);
         terrain4.generateTerrainMesh();
+        clouds.generateTerrainMesh();
         player.rectifyPlayer();
-        drawPrimitives();
+        drawPrimitives(true);
     }
 
     // redraw environment
@@ -636,7 +688,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
         terrain4.generateTerrain();
 
         terrain4.generateTerrainMesh();
-        drawPrimitives();
+        drawPrimitives(true);
         camera.data->pos = glm::vec4(terrain4.sizeX / 2.f, terrain4.sizeZ + 2.f, terrain4.sizeY / 2.f, 1.f);
     }
 

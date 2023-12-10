@@ -38,7 +38,7 @@ void Camera::computeViewMatrix() {
 
 void Camera::computePerspectiveMatrix() {
     float nearPlane = 0.1f;
-    float farPlane = 100.f;
+    float farPlane = 200.f;
 
     if (data == nullptr) return;
     glm::mat4 A(

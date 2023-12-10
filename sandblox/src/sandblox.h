@@ -52,7 +52,7 @@ protected:
     void resizeGL(int width, int height) override;      // Called when window size changes
     void initUI(GLuint& vao, GLuint& vbo, std::vector<GLfloat> data, int& numVertices);
     void background();
-    void drawPrimitives();
+    void drawPrimitives(bool drawClouds);
     void paintUI(UIElement e);
     void updateInventoryUI();
     void makeFBO();
@@ -104,15 +104,19 @@ private:
     // Reference Shapes
     Cube cube;
     SceneMaterial basicMaterial;
+    SceneMaterial cloudMaterial;
     SceneGlobalData basicGlobalData;
+    SceneGlobalData cloudGlobalData;
 
     glm::vec4 lightDirection1 = glm::vec4(-0.5f, -0.8f, 1.f, 0.f);
     glm::vec4 lightDirection2 = glm::vec4(0.7f, 0.2f, 0.5f, 0.f);
 
     Terrain terrain;
     Terrain4 terrain4;
+    Terrain4 clouds;
     RayCast rayCast;
     std::map<int, GLuint> textureMap;
+    std::map<int, GLuint> textureMap_clouds;
     std::map<int, GLuint> textureMap_text;
     std::vector<UIElement> inventoryUI;
 

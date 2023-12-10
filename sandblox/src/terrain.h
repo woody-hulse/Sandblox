@@ -22,11 +22,12 @@ struct IntersectData {
 class Terrain : public Primitive
 {
 public:
-    static const int sizeX = 72;
-    static const int sizeY = sizeX;
-    static const int sizeZ = 36;
+    int sizeX = 72;
+    int sizeY = sizeX;
+    int sizeZ = 36;
 
     Terrain();
+    Terrain(int sizeX, int sizeY, int sizeZ);
 
     std::vector<float> generateShape() override { return m_vertexData; }
     void updateParams(uint8_t blockType) override { generateTerrainMesh(); };
@@ -34,7 +35,6 @@ public:
     std::vector<std::vector<float>> generateHeightMap(int m, int n, float scale);
     void generateTerrain();
     void generateTerrain(std::vector<std::vector<GLint>> a, std::vector<std::vector<GLint>> b);
-    void generateTerrainFromHeightMap(float heightMap[sizeX][sizeY]);
     void generateTerrainMesh();
     void breakBlock(IntersectData& intersectData);
     void placeBlock(IntersectData& intersectData);

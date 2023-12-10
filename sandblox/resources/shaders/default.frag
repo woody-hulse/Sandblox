@@ -37,9 +37,9 @@ void main() {
 
     vec4 color = texture(samplers[int(blockType) - 1], uv);
 
-    fragColor += 0.5f * color;
+    fragColor += k_a * color;
 
-    fragColor += 0.5f * color * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
+    fragColor += k_d * color * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
 
     vec3 viewDirection = normalize(cameraPosition - position);
     vec3 reflectedLight = reflect(lightDirection1, normalize(normal));
@@ -48,7 +48,7 @@ void main() {
     else specularTerm = 1;
     fragColor += k_s * specularTerm;
 
-    fragColor += 0.4f * color * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
+    fragColor += k_d * color * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
 
     viewDirection = normalize(cameraPosition - position);
     reflectedLight = reflect(lightDirection2, normalize(normal));

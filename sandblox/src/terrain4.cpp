@@ -19,7 +19,6 @@ static unsigned char simplex[64][4] = {
     {2,1,0,3},{0,0,0,0},{0,0,0,0},{0,0,0,0},{3,1,0,2},{0,0,0,0},{3,2,0,1},{3,2,1,0}
 };
 
-
 void Terrain4::generatePermutation(unsigned char permutation[], int size) {
     for (int i = 0; i < size; i++) {
         permutation[i] = (unsigned char)i;
@@ -56,6 +55,59 @@ Terrain4::Terrain4() : Terrain()
                 terrain4[x][y][z] = new uint8_t[sizeW];
                 rendered4[x][y][z] = new bool[sizeW];
                 for (int w = 0; w < sizeW; w++) {
+                    terrain4[x][y][z][w] = 0;
+                    rendered4[x][y][z][w] = false;
+                }
+                terrain_p[x][y][z] = &terrain4[x][y][z][0];
+            }
+        }
+    }
+
+    crossSection.origin = glm::vec4(sizeX / 2.f, sizeW / 2.f, 0.f, 1.f);
+    crossSection.direction = glm::normalize(glm::vec4(1.f, 0.f, 0.f, 0.f));
+
+    generatePermutation(permutation, 512);
+}
+
+Terrain4::Terrain4(int sizeX, int sizeY, int sizeZ, int sizeW) {
+    m_vertexData = std::vector<float>();
+
+    this->sizeX = sizeX;
+    this->sizeY = sizeY;
+    this->sizeZ = sizeZ;
+    this->sizeW = sizeW;
+
+    m_vertexData = std::vector<float>();
+
+    terrain = new uint8_t**[sizeX];
+    rendered = new bool**[sizeX];
+
+    terrain4 = new uint8_t***[sizeX];
+    terrain_p = new uint8_t***[sizeX];
+    rendered4 = new bool***[sizeX];
+    for (int x = 0; x < sizeX; x++) {
+        terrain[x] = new uint8_t*[sizeY];
+        rendered[x] = new bool*[sizeY];
+
+        terrain4[x] = new uint8_t**[sizeY];
+        terrain_p[x] = new uint8_t**[sizeY];
+        rendered4[x] = new bool**[sizeY];
+        for (int y = 0; y < sizeY; y++) {
+            terrain[x][y] = new uint8_t[sizeZ];
+            rendered[x][y] = new bool[sizeZ];
+
+            terrain4[x][y] = new uint8_t*[sizeZ];
+            terrain_p[x][y] = new uint8_t*[sizeZ];
+            rendered4[x][y] = new bool*[sizeZ];
+            for (int z = 0; z < sizeZ; z++) {
+                terrain[x][y][z] = 0;
+                rendered[x][y][z] = false;
+
+                terrain4[x][y][z] = new uint8_t[sizeW];
+                rendered4[x][y][z] = new bool[sizeW];
+                for (int w = 0; w < sizeW; w++) {
+                    terrain[x][y][z] = 0;
+                    rendered[x][y][z] = false;
                     terrain4[x][y][z][w] = 0;
                     rendered4[x][y][z][w] = false;
                 }
@@ -163,7 +215,7 @@ float Terrain4::simplex4(float x, float y, float z, float w) {
     Z[0] = z - k_ + t;
     W[0] = w - l_ + t;
 
-    // Simplex lookup
+    // Simplex char lookup
     int c1 = (X[0] > Y[0]) ? 32 : 0;
     int c2 = (X[0] > Z[0]) ? 16 : 0;
     int c3 = (Y[0] > Z[0]) ? 8 : 0;
@@ -172,18 +224,19 @@ float Terrain4::simplex4(float x, float y, float z, float w) {
     int c6 = (Z[0] > W[0]) ? 1 : 0;
     int c = c1 + c2 + c3 + c4 + c5 + c6;
 
+    // Compute corners based on offsets from simplex lookup
     i[0] = 0; i[4] = 1;
     j[0] = 0; j[4] = 1;
     k[0] = 0; k[4] = 1;
     l[0] = 0; l[4] = 1;
-    for (int a = 1; a < 4; a++) {
-        i[a] = simplex[c][0] >= 4 - a ? 1 : 0;
-        j[a] = simplex[c][1] >= 4 - a ? 1 : 0;
-        k[a] = simplex[c][2] >= 4 - a ? 1 : 0;
-        l[a] = simplex[c][3] >= 4 - a ? 1 : 0;
-    }
-
     for (int a = 1; a < 5; a++) {
+        if (a != 4) {
+            i[a] = simplex[c][0] >= 4 - a ? 1 : 0;
+            j[a] = simplex[c][1] >= 4 - a ? 1 : 0;
+            k[a] = simplex[c][2] >= 4 - a ? 1 : 0;
+            l[a] = simplex[c][3] >= 4 - a ? 1 : 0;
+        }
+
         X[a] = X[0] + a * G4 - i[a];
         Y[a] = Y[0] + a * G4 - j[a];
         Z[a] = Z[0] + a * G4 - k[a];
@@ -220,6 +273,7 @@ std::vector<std::vector<std::vector<std::vector<float>>>> Terrain4::generateSimp
                     float x = (float)i / sizeX * scale;
                     float y = (float)j / sizeY * scale;
                     float z = (float)k / sizeZ * scale;
+                    if (sizeZ == 8) z = (float)k / 16 * scale;
                     float w = (float)l / sizeW * scale;
                     noise[i][j][k][l] = simplex4(x, y, z, w);
                 }
@@ -409,6 +463,12 @@ void Terrain4::generateTerrain4() {
                             depth = 0;
                             terrain4[x][y][z][w] = 0;
                         }
+
+                        if (sizeZ == 8) {
+                            if (abs(height) > 0.6)
+                                terrain4[x][y][z][w] = 1;
+                            else terrain4[x][y][z][w] = 0;
+                        }
                     }
                 }
             }
@@ -424,6 +484,14 @@ void Terrain4::rotateCrossSection(float theta, float t) {
     crossSection.direction = glm::vec4(newX, newY, 0.f, 0.f);
 
     generateTerrain();
+}
+
+void Terrain4::rotateCrossSection(float theta, float t, Terrain4& terrain2) {
+    float newX = crossSection.direction.x * cos(theta) - crossSection.direction.y * sin(theta);
+    float newY = crossSection.direction.x * sin(theta) + crossSection.direction.y * cos(theta);
+    crossSection.direction = glm::vec4(newX, newY, 0.f, 0.f);
+
+    generateTerrain(terrain2);
 }
 
 
@@ -533,8 +601,8 @@ void Terrain4::generateTerrain() {
         for (int j = 0; j < sizeY; j++) {
             for (int k = 0; k < sizeZ; k++) {
                 if (cellX - i < neg.size()) {
-                    terrain[i][j][k] = terrain4[j][neg[cellX - i].x][k][neg[cellX - i].y]; // fix?
-                    terrain_p[i][j][k] = &terrain4[j][neg[cellX - i].x][k][neg[cellX - i].y];
+                    terrain[i][j][k] = terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y]; // fix?
+                    terrain_p[i][j][k] = &terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y];
                 } else terrain[i][j][k] = 0; // fix
             }
         }
@@ -544,9 +612,66 @@ void Terrain4::generateTerrain() {
         for (int j = 0; j < sizeY; j++) {
             for (int k = 0; k < sizeZ; k++) {
                 if (i - cellX - 1 < pos.size()) {
-                    terrain[i][j][k] = terrain4[j][pos[i - cellX - 1].x][k][pos[i - cellX - 1].y];
-                    terrain_p[i][j][k] = &terrain4[j][pos[i - cellX - 1].x][k][pos[i - cellX - 1].y];
+                    terrain[i][j][k] = terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
+                    terrain_p[i][j][k] = &terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
                 } else terrain[i][j][k] = 0;
+            }
+        }
+    }
+}
+
+void Terrain4::generateTerrain(Terrain4& terrain2) {
+
+    glm::vec3 p = glm::vec3(sizeX / 2.f, sizeY / 2.f, sizeZ / 2.f);
+    glm::vec3 a = glm::normalize(crossSection.direction);
+    glm::vec3 b = glm::normalize(glm::vec3(crossSection.origin) - p);
+    //terrainPlaneIntersect(a, b, p);
+
+
+    std::vector<IntersectData> pos = terrainRayIntersect(crossSection);
+    crossSection.direction = -crossSection.direction;
+
+    std::vector<IntersectData> neg = terrainRayIntersect(crossSection);
+    neg.pop_back();
+    crossSection.direction = -crossSection.direction;
+
+    int cellX = int(crossSection.origin.x);
+    int cellY = int(crossSection.origin.y);
+
+    for (int i = cellX; i >= 0; i--) {
+        for (int j = 0; j < sizeY; j++) {
+            for (int k = 0; k < sizeZ; k++) {
+                if (cellX - i < neg.size()) {
+                    terrain[i][j][k] = terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y]; // fix?
+                    terrain_p[i][j][k] = &terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y];
+
+                    if (k < terrain2.sizeZ) {
+                        terrain2.terrain[i][j][k] = terrain2.terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y];
+                        terrain2.terrain_p[i][j][k] = &terrain2.terrain4[neg[cellX - i].x][j][k][neg[cellX - i].y];
+                    }
+                } else {
+                    terrain[i][j][k] = 0; // fix
+                    if (k < terrain2.sizeZ) terrain2.terrain[i][j][k] = 0;
+                }
+            }
+        }
+    }
+
+    for (int i = cellX + 1; i < sizeX; i++) {
+        for (int j = 0; j < sizeY; j++) {
+            for (int k = 0; k < sizeZ; k++) {
+                if (i - cellX - 1 < pos.size()) {
+                    terrain[i][j][k] = terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
+                    terrain_p[i][j][k] = &terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
+
+                    if (k < terrain2.sizeZ) {
+                        terrain2.terrain[i][j][k] = terrain2.terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
+                        terrain2.terrain_p[i][j][k] = &terrain2.terrain4[pos[i - cellX - 1].x][j][k][pos[i - cellX - 1].y];
+                    }
+                } else {
+                    terrain[i][j][k] = 0;
+                    if (k < terrain2.sizeZ) terrain2.terrain[i][j][k] = 0;
+                }
             }
         }
     }
