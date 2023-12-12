@@ -61,7 +61,9 @@ add_subdirectory(glm)
 
 # GLEW: this creates its library and allows you to `#include "GL/glew.h"`
 add_library(StaticGLEW STATIC glew/src/glew.c
+
 )
+
 include_directories(${PROJECT_NAME} PRIVATE glew/include)
 
 # Specifies libraries to be linked (Qt components, glew, etc)
@@ -96,13 +98,8 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
         resources/shaders/default.vert
         resources/shaders/texture.frag
         resources/shaders/texture.vert
-)
-
-target_sources(sandblox_other_files
-  PRIVATE
-
-
-
+        resources/shaders/shadow.frag
+        resources/shaders/shadow.vert
 )
 
 # GLEW: this provides support for Windows (including 64-bit)

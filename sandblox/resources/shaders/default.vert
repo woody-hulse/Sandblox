@@ -9,12 +9,15 @@ out vec3 position;
 out vec3 normal;
 out vec2 uv;
 out float blockType;
+out vec4 FragPosLightSpace;
 
 uniform mat4 matrix;
 uniform mat4 matrixInverse;
 
 uniform mat4 m_view;
 uniform mat4 m_proj;
+uniform mat4 lightSpaceMatrix;
+
 
 void main() {
     vec4 p = matrix * vec4(objectPosition, 1);
@@ -25,4 +28,6 @@ void main() {
 
     uv = objectUV;
     blockType = objectType;
+
+    FragPosLightSpace = lightSpaceMatrix * vec4(position, 1.0);
 }

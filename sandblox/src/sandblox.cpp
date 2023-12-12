@@ -175,6 +175,29 @@ void Sandblox::background() {
 
     initUI(screen_fbo.vao, screen_fbo.vbo, fullscreen_quad_data, screen_fbo.numVertices);
     screen_fbo.texture = m_fbo_texture;
+
+    //Binding Shadow Map FrameBuffer ------
+    glGenFramebuffers(1, &depthMapFBO);
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+    unsigned int depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+                 SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    // Prevents darkness outside the frustrum
+    float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_defaultFBO);
 }
 
 void createImageTexture(GLuint& texture, QImage image, int index) {
@@ -218,7 +241,7 @@ void Sandblox::initializeGL() {
     m_screen_height = size().height() * m_devicePixelRatio;
     m_fbo_width = m_screen_width;
     m_fbo_height = m_screen_height;
-    m_defaultFBO = 2;
+    m_defaultFBO = 3;
     backgroundColor = glm::vec4(0.3f, 0.4f, 0.9f, 1.0f);
     newBackgroundColor = backgroundColor;
     survival = false;
@@ -241,6 +264,7 @@ void Sandblox::initializeGL() {
 
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
+    m_shadow_map = ShaderLoader::createShaderProgram(":/resources/shaders/shadow.vert", ":/resources/shaders/shadow.frag");
 
     background();
 
@@ -355,6 +379,48 @@ void Sandblox::paintGL() {
     camera.computeViewMatrix();
     player.simulate(deltaTime);
 
+    //Creating Shadow map---------------------
+
+    float near_plane = 0.1f, far_plane = 100.f;
+    glm::mat4 orthgonalProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    glm::vec3 lightdir = survival ? glm::vec3(lightDirection3) : glm::vec3(lightDirection1);
+    glm::mat4 lightView = glm::lookAt(-20.0f * lightdir, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
+    //glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    glUseProgram(m_shadow_map);
+    glUniformMatrix4fv(glGetUniformLocation(m_shadow_map, "lightSpaceMatrix"), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
+    unsigned int shadowMapWidth = 2048, shadowMapHeight = 2048;
+
+
+    // Depth testing needed for Shadow Map
+    glEnable(GL_DEPTH_TEST);
+
+    // Preparations for the Shadow Map
+    glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+
+    //FIX! Want: send all object space points and corresponding ctms to m_shadow_map and draw scene ****************
+    //creating vbo
+    terrain4.drawShape(m_shadow_map);
+    terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
+    terrain4.shapeData.shape = &terrain4;
+    glBindVertexArray(terrain4.shapeData.shape->vao);
+
+    //drawing scene in shadow map
+
+    GLint modelLocation = glGetUniformLocation(m_shadow_map, "matrix");
+    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, &terrain.shapeData.ctm[0][0]);
+    //glDrawArrays(GL_TRIANGLES, 0, terrain.shapeData.numTriangles / 9);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
+    glUseProgram(0);
+
+    //************************
+
+    //--------------------------------------
+
     glEnable(GL_DEPTH_TEST);
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
@@ -365,10 +431,16 @@ void Sandblox::paintGL() {
     glUseProgram(m_shader);
     passShapeData(m_shader, renderData.globalData, terrain4.shapeData);
     if (survival)passLightData(m_shader, lightDirection1, lightDirection3);
-    else passLightData(m_shader, lightDirection1, lightDirection2);
+    else passLightData(m_shader, lightDirection2, lightDirection1);
     passCameraData(m_shader, camera);
 
     passTextures(m_shader, textureMap);
+
+    //Binding shadow map as texture and sending lightspacematrix
+    glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glUniformMatrix4fv(glGetUniformLocation(m_shader, "lightSpaceMatrix"), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
+    //-----------------------------
     glBindVertexArray(terrain4.shapeData.shape->vao);
     glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles);
     glBindVertexArray(0);
@@ -691,8 +763,7 @@ void Sandblox::timerEvent(QTimerEvent *event) {
     //survival mode stuffs
     float dayLength = 30.f;
     if (survival){
-        lightDirection3 = rotate(glm::vec3(1.f,-1.f,0.f), -deltaTime / dayLength * glm::radians(360.f)) * lightDirection3;
-        //lightDirection2 = rotate(glm::vec3(1.f,0.f,0.f), deltaTime / dayLength * glm::radians(360.f)) * lightDirection2;
+        lightDirection3 = rotate(glm::vec3(0.f,0.f,1.f), -deltaTime / dayLength * glm::radians(360.f)) * lightDirection3;
         if (fmod(totalTimeElapsed, dayLength) < dayLength / 2.f){
             newBackgroundColor += glm::vec4(deltaTime / dayLength);
         }
