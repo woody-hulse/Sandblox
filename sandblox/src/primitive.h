@@ -19,9 +19,9 @@ public:
 
     GLuint vbo;
     GLuint vao;
+    std::vector<float> m_vertexData;
 
 protected:
-    std::vector<float> m_vertexData;
     int m_param1;
     int m_param2;
 };

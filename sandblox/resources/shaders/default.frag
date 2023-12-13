@@ -46,29 +46,32 @@ float attenuation(vec3 function, float distance) {
 }
 
 void main() {
-    float shadow = shadowCalc();
+    vec3 pos = FragPosLightSpace.xyz * 0.5 + 0.5;
+    float depth = texture(shadowMap, pos.xy).r / 5.f;
+    fragColor = vec4(vec3(depth), 1.0);
+//    float shadow = shadowCalc();
 
-    fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+//    fragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-    vec4 color = texture(samplers[int(blockType) - 1], uv);
+//    vec4 color = texture(samplers[int(blockType) - 1], uv);
 
-    fragColor += 0.5f * color;
+//    fragColor += 0.5f * color;
 
-    fragColor += 0.5f * color * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
+//    fragColor += 0.5f * color * min(max(dot(normalize(normal), -lightDirection1), 0.0f), 1.0f);
 
-    vec3 viewDirection = normalize(cameraPosition - position);
-    vec3 reflectedLight = reflect(lightDirection1, normalize(normal));
-    float specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
-    if (shininess > 0) specularTerm = pow(specularTerm, shininess);
-    else specularTerm = 1;
-    fragColor +=  k_s * specularTerm;
+//    vec3 viewDirection = normalize(cameraPosition - position);
+//    vec3 reflectedLight = reflect(lightDirection1, normalize(normal));
+//    float specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
+//    if (shininess > 0) specularTerm = pow(specularTerm, shininess);
+//    else specularTerm = 1;
+//    fragColor +=  k_s * specularTerm;
 
-    fragColor += shadow * 0.5f * color * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
+//    fragColor += shadow * 0.5f * color * min(max(dot(normalize(normal), -lightDirection2), 0.0f), 1.0f);
 
-    viewDirection = normalize(cameraPosition - position);
-    reflectedLight = reflect(lightDirection2, normalize(normal));
-    specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
-    if (shininess > 0) specularTerm = pow(specularTerm, shininess);
-    else specularTerm = 1;
-    fragColor += shadow * k_s * specularTerm;
+//    viewDirection = normalize(cameraPosition - position);
+//    reflectedLight = reflect(lightDirection2, normalize(normal));
+//    specularTerm = min(max(dot(viewDirection, reflectedLight), 0.0), 1.0f);
+//    if (shininess > 0) specularTerm = pow(specularTerm, shininess);
+//    else specularTerm = 1;
+//    fragColor += shadow * k_s * specularTerm;
 }

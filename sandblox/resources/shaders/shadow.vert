@@ -5,9 +5,8 @@ layout(location = 2) in vec2 objectUV;
 layout(location = 3) in float objectType;
 
 uniform mat4 lightSpaceMatrix;
-uniform mat4 matrix;
 
 void main()
 {
-    gl_Position = lightSpaceMatrix * matrix * vec4(aPos, 1.0);
+    gl_Position = lightSpaceMatrix * vec4(aPos, 1.0);
 }

@@ -95,6 +95,7 @@ private:
 
     int m_fbo_width;
     int m_fbo_height;
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
     GLuint m_fbo_texture;
     GLuint m_fbo_renderbuffer;

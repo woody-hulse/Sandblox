@@ -178,9 +178,7 @@ void Sandblox::background() {
 
     //Binding Shadow Map FrameBuffer ------
     glGenFramebuffers(1, &depthMapFBO);
-    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
-    unsigned int depthMap;
     glGenTextures(1, &depthMap);
     glBindTexture(GL_TEXTURE_2D, depthMap);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
@@ -266,7 +264,6 @@ void Sandblox::initializeGL() {
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
     m_shadow_map = ShaderLoader::createShaderProgram(":/resources/shaders/shadow.vert", ":/resources/shaders/shadow.frag");
 
-    background();
 
     cube.updateParams(1);
 
@@ -366,6 +363,8 @@ void Sandblox::initializeGL() {
 
     player = Player();
 
+    background();
+
     //drawPrimitives();
 
     sceneChanged();
@@ -381,43 +380,41 @@ void Sandblox::paintGL() {
 
     //Creating Shadow map---------------------
 
-    float near_plane = 0.1f, far_plane = 100.f;
+    float near_plane = 0.1f, far_plane = 200.f;
     glm::mat4 orthgonalProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
     glm::vec3 lightdir = survival ? glm::vec3(lightDirection3) : glm::vec3(lightDirection1);
     glm::mat4 lightView = glm::lookAt(-20.0f * lightdir, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 lightView = glm::lookAt(glm::vec3(10.f, 10.f, 10.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
-    //glm::mat4 lightSpaceMatrix = lightProjection * lightView;
     glUseProgram(m_shadow_map);
     glUniformMatrix4fv(glGetUniformLocation(m_shadow_map, "lightSpaceMatrix"), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
-    unsigned int shadowMapWidth = 2048, shadowMapHeight = 2048;
 
 
     // Depth testing needed for Shadow Map
     glEnable(GL_DEPTH_TEST);
 
     // Preparations for the Shadow Map
-    glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
     glClear(GL_DEPTH_BUFFER_BIT);
 
 
     //FIX! Want: send all object space points and corresponding ctms to m_shadow_map and draw scene ****************
     //creating vbo
-    terrain4.drawShape(m_shadow_map);
-    terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
-    terrain4.shapeData.shape = &terrain4;
+    //terrain4.drawShape(m_shadow_map);
+    //terrain4.shapeData.numTriangles = terrain4.vertexSize() / 9;
+    //terrain4.shapeData.shape = &terrain4;
     glBindVertexArray(terrain4.shapeData.shape->vao);
 
     //drawing scene in shadow map
-
-    GLint modelLocation = glGetUniformLocation(m_shadow_map, "matrix");
-    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, &terrain.shapeData.ctm[0][0]);
-    //glDrawArrays(GL_TRIANGLES, 0, terrain.shapeData.numTriangles / 9);
-
-    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-    glUseProgram(0);
+    //glUniformMatrix4fv(modelLocation, 1, GL_FALSE, &terrain.shapeData.ctm[0][0]);
+    glDrawArrays(GL_TRIANGLES, 0, terrain4.shapeData.numTriangles / 9);
 
     //************************
+
+    glBindVertexArray(0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
+    glUseProgram(0);
 
     //--------------------------------------
 
@@ -439,6 +436,8 @@ void Sandblox::paintGL() {
     //Binding shadow map as texture and sending lightspacematrix
     glActiveTexture(GL_TEXTURE8);
     glBindTexture(GL_TEXTURE_2D, depthMap);
+    GLint textureLocation = glGetUniformLocation(m_shader, "shadowMap");
+    glUniform1i(textureLocation, 8);
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "lightSpaceMatrix"), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
     //-----------------------------
     glBindVertexArray(terrain4.shapeData.shape->vao);
